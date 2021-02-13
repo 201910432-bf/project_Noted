@@ -1,0 +1,92 @@
+        <div class="show__list">
+            <div class="show__list__header">
+                <h3>Note List</h3>
+                <img src="../../images/remove.png" width="22" alt="">
+            </div>
+            <div class="show__list__content">
+                <% fetchData.map((data,key) => { %>
+                    <% if(key === 0){ %>
+                        <div class="content__list">
+                            <h3><%=data.title %></h3>
+                            <div class="note__time">
+                                <p><%=data.description %></p>
+                                <span>4:52 PM</span>
+                            </div>
+                        </div>
+                    <% }else{ %>
+                          <div class="content__list list__notFocus">
+                            <h3><%=data.title %></h3>
+                            <div class="note__time">
+                                <p><%=data.description %></p>
+                                <span>4:52 PM</span>
+                            </div>
+                        </div>
+                    <% } %>
+                <% }) %>
+            </div>
+            <div class="add__note">
+                <a href="#" onClick="showAddNote('show');">Add new notes</a>
+            </div>
+        </div>
+
+        <div class="list__main__content">
+            <div class="list__main__content__wrap">
+                <div class="main__content__header">
+                    <p><%=listData[0].title%></p>
+                </div>
+                <div class="main__content__remaining__edit">
+                    <span>3 tasks remaining</span>
+                    <a href="">Edit</a>
+                </div>
+                <div class="main__content__add">
+                    <input type="text" id="addListText" value="">
+                    <button type="button" onclick="addList('<%=listData[0].listKeys %>')">+</button>
+                </div>
+                <div class="main__content__checkbox">
+                    <div class="main__content__checkbox__wrap" id="wrapLabel">
+
+                        <% listData.map((data,key) =>{ %>
+                             <% const listString = data.list; %>
+                             <% const splitData = listString.split(","); %>
+                             <% const listKeysString = data.listKeys; %>
+                             <% const splitDataKey = listKeysString.split(","); %>
+                             <% console.log(splitDataKey) %>
+
+                             <% for(let i=0;i<splitData.length;i++){ %>
+                                <label for="">
+                                    <input type="checkbox" value="<%=splitDataKey[i] %>" id="<%=splitDataKey[i] %>" onclick="checkboxClick('<%=splitDataKey[i] %>')">
+                                    <span><%=splitData[i] %></span>
+                                </label>
+                            <% } %>
+                        <% }) %>
+
+
+
+
+                        <!-- <label for="">
+                            <input type="checkbox" name="" id="">
+                            <span>Special list</span>
+                        </label>
+                        <label for="">
+                            <input type="checkbox" name="" id="">
+                            <span>Special list</span>
+                        </label> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="add__note__settings" id="showAddNote">
+                <div class="add__note__options">
+                    <div class="exit__btn">
+                        <button type="button" onClick="showAddNote('hide');">X</button>
+                    </div>
+                    <div class="add__note__content">
+                        <label for="noteTitle">Note Title</label>
+                        <div class="text__container">
+                            <input type="text" id="noteTitle"><br>
+                            <button type="button">Save</button>
+                        </div>
+                    </div>
+                </div>
+        </div>

@@ -1,0 +1,123 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500&family=Roboto:wght@300;400;500&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: roboto, sans-serif;
+}
+
+.container {
+  display: flex;
+}
+
+li {
+  list-style-type: none;
+}
+a {
+  text-decoration: none;
+}
+
+.side__panel {
+  background-color: #ff4e78;
+  max-width: 15em;
+  width: 25em;
+  height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* side bar heading setting */
+
+.side__panel__header {
+  color: white;
+
+  display: flex;
+  align-items: center;
+  flex: 0.3;
+  justify-content: center;
+  width: 100%;
+}
+
+/* side panel options settings */
+
+.side__panel__options {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+  background-color: #ff4e78;
+}
+
+.side__panel__options a {
+  color: white;
+  padding: 1em 2em;
+  width: 90%;
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* .side__panel__options a:not(:nth-child(1)) {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.side__panel__options a:nth-child(2) {
+  display: flex;
+  align-items: center;
+  border-radius: 1.5em 0 0 0;
+}
+.side__panel__options a:nth-child(3) {
+  display: flex;
+  align-items: center;
+  border-radius: 0 0 0 1.5em;
+} */
+
+.side__panel__options a:not(:nth-child(1)) {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.side__panel__options a:not(:nth-child(0)) {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.side__panel__options a:nth-child(1) {
+  display: flex;
+  align-items: center;
+  border-radius: 1.5em 0 0 0;
+}
+.side__panel__options a:nth-child(2) {
+  display: flex;
+  align-items: center;
+  border-radius: 0 0 0 1.5em;
+}
+
+/* user container settings */
+.side__panel_user {
+  color: white;
+  flex: 0.22;
+}
+
+.user__container {
+  background-color: rgba(255, 255, 255, 0.3);
+  width: 12em;
+  height: 4.7em;
+  border-radius: 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.user__name {
+  margin: 0.3em;
+}
+
+/* icons setting*/
+.material-icons.md-48 {
+  font-size: 40px;
+}
+.material-icons.user_bgcolor {
+  background-color: #c4c4c473;
+  border-radius: 2px;
+}

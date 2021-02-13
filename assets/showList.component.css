@@ -1,0 +1,145 @@
+.show__list {
+  width: 40em;
+  height: 100vh;
+  background-color: #f2f2f2;
+  border: 1px solid #cabfbf7e;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.show__list__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 auto;
+  width: 91%;
+  height: 7em;
+  flex: 1;
+}
+
+.show__list__header h3 {
+  color: #5c5454;
+}
+
+.show__list__content {
+  overflow-y: auto;
+  height: 400px;
+  flex: 3;
+}
+
+.content__list {
+  background-color: #fff;
+  border-top: 1px solid #cabfbf7e;
+  border-bottom: 1px solid #cabfbf7e;
+  padding: 0.5em 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.list__notFocus {
+  background-color: #f2f2f2;
+}
+
+.content__list h3 {
+  color: #5c5454;
+}
+
+.note__time {
+  margin: 0.5em 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.content__list p,
+.content__list span {
+  color: #908787;
+  font-size: 12px;
+}
+
+.content__list p {
+  width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.add__note {
+  margin-top: 2em;
+  flex: 0.7;
+}
+
+.add__note a {
+  color: #5c5454;
+  margin: 0 auto;
+  width: 15em;
+  height: 4.7em;
+  border-radius: 5px;
+  border: 1px solid #0000003d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #d2ddda;
+}
+
+.add__note__settings {
+  visibility: hidden;
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(92, 92, 92, 0.521);
+}
+
+.add__note__options {
+  border-radius: 5px;
+  width: 25em;
+  height: 20em;
+  background-color: #f2f2f2;
+}
+
+.exit__btn {
+  width: 100%;
+  height: 2.5em;
+  display: flex;
+  justify-content: flex-end;
+  background-color: rgb(99, 99, 99);
+}
+.exit__btn > button {
+  margin: 0.5em;
+  padding: 0.3em;
+}
+
+.add__note__content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 40vh;
+  text-align: center;
+}
+
+.add__note__content > label {
+  font-size: 25px;
+  margin-bottom: 1.5em;
+}
+
+.add__note__content .text__container input {
+  width: 20em;
+  font-size: 15px;
+  padding: 0.5em;
+  outline: none;
+  border-radius: 5px;
+  border-width: thin;
+  border-color: lightgray;
+}
+
+.text__container > button {
+  margin-top: 0.7em;
+  padding: 0.5em 2em;
+}

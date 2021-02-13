@@ -1,0 +1,79 @@
+.list__main__content {
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(255, 147, 147, 0.2);
+  border: 1px solid #cabfbf7e;
+}
+
+.list__main__content__wrap {
+  width: 80%;
+  margin: 0 auto;
+  height: 99.9vh;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.main__content__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 3em;
+}
+
+.main__content__header p {
+  font-size: 2em;
+  font-weight: bold;
+  color: #5e5656;
+}
+
+.main__content__remaining__edit {
+  flex: 0.1;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5em;
+}
+
+.main__content__add {
+  display: flex;
+  justify-content: center;
+}
+
+.main__content__add input[type="text"] {
+  width: 100%;
+  border-radius: 5px 0px 0px 5px;
+  outline: none;
+  border-top: 1px solid grey;
+  border-bottom: 1px solid grey;
+  border-left: 1px solid grey;
+  border-right: 0px solid grey;
+}
+
+.main__content__add button {
+  padding: 0.5em 1em;
+  border-radius: 0px 5px 5px 0px;
+  outline: none;
+  border-top: 1px solid grey;
+  border-bottom: 1px solid grey;
+  border-left: 0px solid grey;
+  border-right: 1px solid grey;
+  background-color: #fff;
+}
+
+.main__content__checkbox {
+  flex: 1;
+}
+
+.main__content__checkbox__wrap {
+  flex: 1;
+  overflow-y: auto;
+  height: 450px;
+  margin-top: 1em;
+  display: flex;
+  flex-direction: column;
+}
+
+.main__content__checkbox label {
+  margin-top: 0.5em;
+}

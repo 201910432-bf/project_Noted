@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyNote</title>
+    <link rel="stylesheet" href="../assets/main.component.css">
+    <link rel="stylesheet" href="../assets/showList.component.css">
+    <link rel="stylesheet" href="../assets/list.component.css">
+    <link rel="stylesheet" href="../assets/ideasList.component.css">
+    <link rel="stylesheet" href="../node_modules/material-design-icons/iconfont/material-icons.css">
+    <script src="../assets/ckeditor/ckeditor.js"></script>
+    <script src="../controller/controller.js"></script>
+    
+</head>
+<body>
+    <div class="container">
+        <%- include("./sidebar.component.ejs") -%>
+        
+        <% if(tabKey == "note"){ %>
+            <%- include("./notetab.component.ejs") -%>
+        <% }else if(tabKey == "idea"){ %>
+            <%- include("./ideatab.component.ejs") -%>
+        <% } %>
+    </div>
+</body>
+</html>

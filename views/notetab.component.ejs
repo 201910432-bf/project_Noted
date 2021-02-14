@@ -5,20 +5,23 @@
             </div>
             <div class="show__list__content">
                 <% fetchData.map((data,key) => { %>
+                    <% const destructureArray = data.note_list.split(','); %>
+                    <% const destructureTime = new Date(data.note_insertDate) %>
+
                     <% if(key === 0){ %>
-                        <div class="content__list">
-                            <h3><%=data.title %></h3>
+                        <div class="content__list" onClick="window.location.href = 'http://localhost:5000/note/<%=key%>'">
+                            <h3><%=data.note_title %></h3>
                             <div class="note__time">
-                                <p><%=data.description %></p>
-                                <span>4:52 PM</span>
+                                <p><%=destructureArray[0] %></p>
+                                <span><%=destructureTime.toLocaleTimeString('en-US') %></span>
                             </div>
                         </div>
                     <% }else{ %>
-                          <div class="content__list list__notFocus">
-                            <h3><%=data.title %></h3>
+                        <div class="content__list list__notFocus" onClick="window.location.href = 'http://localhost:5000/note/<%=key%>'">
+                            <h3><%=data.note_title %></h3>
                             <div class="note__time">
-                                <p><%=data.description %></p>
-                                <span>4:52 PM</span>
+                                <p><%=destructureArray[0] %></p>
+                                <span><%=destructureTime.toLocaleTimeString('en-US') %></span>
                             </div>
                         </div>
                     <% } %>
@@ -32,7 +35,7 @@
         <div class="list__main__content">
             <div class="list__main__content__wrap">
                 <div class="main__content__header">
-                    <p><%=listData[0].title%></p>
+                    <p><%=fetchData[noteId].note_title%></p>
                 </div>
                 <div class="main__content__remaining__edit">
                     <span>3 tasks remaining</span>
@@ -40,37 +43,26 @@
                 </div>
                 <div class="main__content__add">
                     <input type="text" id="addListText" value="">
-                    <button type="button" onclick="addList('<%=listData[0].listKeys %>')">+</button>
+                    <button type="button" onclick="addList('<%=fetchData[noteId].note_keys %>')">+</button>
                 </div>
                 <div class="main__content__checkbox">
                     <div class="main__content__checkbox__wrap" id="wrapLabel">
+                        <% const listString = fetchData[noteId].note_list; %>
+                        <% const splitData = listString.split(","); %>
+                        <% const listKeysString = fetchData[noteId].note_keys; %>
+                        <% const splitDataKey = listKeysString.split(","); %>
+                        <% console.log(splitDataKey) %>
 
-                        <% listData.map((data,key) =>{ %>
-                             <% const listString = data.list; %>
-                             <% const splitData = listString.split(","); %>
-                             <% const listKeysString = data.listKeys; %>
-                             <% const splitDataKey = listKeysString.split(","); %>
-                             <% console.log(splitDataKey) %>
-
-                             <% for(let i=0;i<splitData.length;i++){ %>
-                                <label for="">
-                                    <input type="checkbox" value="<%=splitDataKey[i] %>" id="<%=splitDataKey[i] %>" onclick="checkboxClick('<%=splitDataKey[i] %>')">
-                                    <span><%=splitData[i] %></span>
-                                </label>
-                            <% } %>
-                        <% }) %>
-
-
-
-
-                        <!-- <label for="">
-                            <input type="checkbox" name="" id="">
-                            <span>Special list</span>
-                        </label>
+                        <% for(let i=0;i<splitData.length;i++){ %>
                         <label for="">
-                            <input type="checkbox" name="" id="">
-                            <span>Special list</span>
-                        </label> -->
+                            <input type="checkbox" value="<%=splitDataKey[i]%>,<%=splitData[i]%>" id="<%=splitDataKey[i] %>" onclick="checkboxClick('<%=splitDataKey[i] %>')">
+                            <span><%=splitData[i] %></span>
+                        </label>
+                        <% } %>
+
+                    </div>
+                    <div class="note__savebtn">
+                        <button type="submit" onClick="passtoUrl()">Save</button>
                     </div>
                 </div>
             </div>

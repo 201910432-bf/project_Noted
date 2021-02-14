@@ -14,6 +14,7 @@ const showAddNote = (trigger) => {
 // ];
 
 const addList = (listData) => {
+  console.log(listData);
   //   sampleData.map((data) => {
   //     const listString = data.list;
   //     const splitData = listString.split(",");
@@ -27,7 +28,10 @@ const addList = (listData) => {
     const splitData = listData.split(",");
     const keys = listData.split(",");
 
-    var newId = keys.length;
+    var newId =
+      document.getElementById("wrapLabel").getElementsByTagName("input")
+        .length + 1;
+
     for (let i = 0; i < splitData.length; i++) {
       if (newId == splitData[i]) newId++;
     }
@@ -35,7 +39,7 @@ const addList = (listData) => {
     var stringTemp = `
     <label for="">
         <input type="checkbox" value="${
-          list + " " + newId
+          newId + "," + list
         }" id="${newId}" onclick="checkboxClick('${newId}')">
         <span>${list}</span>
     </label>`;
@@ -54,7 +58,28 @@ const checkboxClick = (idKey) => {
     dataElement.id = idKey;
     dataElement.checked = true;
     globalDataVariable.push(dataElement);
+  } else {
   }
 
-  console.log(globalDataVariable);
+  console.log(dataElement);
+};
+
+const passtoUrl = () => {
+  const fetchList = document
+    .getElementById("wrapLabel")
+    .getElementsByTagName("input");
+
+  var idArray = [];
+  var valueArray = [];
+  for (let i = 0; i < fetchList.length; i++) {
+    const splitData = fetchList[i].value.split(",");
+    idArray.push(splitData[0]);
+    valueArray.push(splitData[1]);
+  }
+
+  console.log(idArray);
+
+  window.location.href = `http://localhost:5000/auth/savenote/${JSON.stringify(
+    globalDataVariable
+  )}/${idArray}/${valueArray}`;
 };

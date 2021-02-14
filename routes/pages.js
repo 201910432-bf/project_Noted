@@ -5,27 +5,24 @@ const commands = require("../controller/commands");
 router.get("/", (req, res) => {
   res.render("main.component.ejs", {
     fetchData: commands.getData(),
-    message: "hello from server",
+    noteId: 0,
     tabKey: "note",
   });
 });
 
-const sampleData = [
-  {
-    title: "assignment",
-    list: "new,assignment,newnew,test,tesing..",
-    listKeys: "1,2,3,4,5",
-  },
-];
-
 router.get("/note", (req, res) => {
-  // console.log(commands.getData());
-  console.log(sampleData);
-
   res.render("main.component.ejs", {
     fetchData: commands.getData(),
-    listData: sampleData,
-    message: "hello from server",
+    noteId: 0,
+    tabKey: "note",
+  });
+});
+
+router.get("/note/:id", (req, res) => {
+  const getID = [req.params.id];
+  res.render("main.component.ejs", {
+    fetchData: commands.getData(),
+    noteId: getID,
     tabKey: "note",
   });
 });

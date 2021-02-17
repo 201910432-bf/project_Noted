@@ -7,8 +7,8 @@ dotenv.config({ path: "./.env" });
 
 const app = express();
 
-app.use(bodyparser.urlencoded({ extended: false }));
-app.use(bodyparser.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 //for using an ejs engine
 // app.set("views", path.join(__dirname, "viewsFolder")); //if you want to use diff name other that views folder
@@ -23,7 +23,7 @@ const assetIconFontDirectory = path.join(
 );
 const controllerDirectory = path.join(__dirname, "./controller");
 
-//fetching data
+//fetching assets data
 app.use("/assets", express.static(assetDirectory));
 app.use("/images", express.static(assetImgDirectory));
 app.use(

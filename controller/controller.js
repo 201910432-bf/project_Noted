@@ -9,17 +9,80 @@ const showAddNote = (trigger) => {
   }
 };
 
-// const sampleData = [
-//   { title: "assignment", list: "new,assignment,newnew,test" },
-// ];
+const changeTab = (tabName) => {
+  var request = new XMLHttpRequest();
+
+  request.onreadystatechange = function () {
+    if (request.readyState === XMLHttpRequest.DONE) {
+      if (request.status === 200) {
+      }
+    }
+  };
+
+  request.open("GET", "http://localhost:8080/submit-name?name=" + name, true);
+  request.send(null);
+};
+
+const getNoteData = (key) => {
+  var request = new XMLHttpRequest();
+  const sendfile = document.getElementById("sendfile");
+
+  request.onreadystatechange = function () {
+    if (request.readyState === XMLHttpRequest.DONE) {
+      if (request.status === 200) {
+        const response = JSON.parse(request.response);
+        response.map((data, idkey) => {
+          const listString = data.command[data.noteId].note_list;
+          const splitData = listString.split(",");
+          const listKeysString = data.command[data.noteId].note_keys;
+          const splitDataKey = listKeysString.split(",");
+
+          console.log(splitData[0]);
+          sendfile.innerHTML = `
+            <div class="list__main__content__wrap">
+                <div class="main__content__header">
+                    <p>${data.command[key].note_title}</p>
+                </div>
+                <div class="main__content__remaining__edit">
+                    <span>3 tasks remaining</span>
+                    <a href="">Edit</a>
+                </div>
+                <div class="main__content__add">
+                    <input type="text" id="addListText" value="">
+                    <button type="button" onclick="addList('${data.noteId}')">+</button>
+                </div>
+                <div class="main__content__checkbox">
+                    <div class="main__content__checkbox__wrap" id="wrapLabel">
+                      //template
+                    </div>
+                    <div class="note__savebtn">
+                        <button type="submit" onClick="passtoUrl()">Save</button>
+                    </div>
+                </div>
+            </div>
+          `;
+
+          var template = "";
+          for (let i = 0; i < splitData.length; i++) {
+            if (splitData[0] != "") {
+              template += `<label for="">
+              <input type="checkbox" value="${splitDataKey[i]},${splitData[i]}" id="${splitDataKey[i]}" onclick="checkboxClick('${splitDataKey[i]}')">
+              <span>${splitData[i]}</span>
+              </label>`;
+            }
+          }
+          document.getElementById("wrapLabel").innerHTML = template;
+        });
+      }
+    }
+  };
+
+  request.open("GET", "http://localhost:5000/note/id?id=" + key, true);
+  request.send(null);
+};
 
 const addList = (listData) => {
   console.log(listData);
-  //   sampleData.map((data) => {
-  //     const listString = data.list;
-  //     const splitData = listString.split(",");
-  //     console.log(splitData);
-  //   });
 
   const list = document.getElementById("addListText").value;
   const divList = document.getElementById("wrapLabel");
@@ -40,7 +103,7 @@ const addList = (listData) => {
     <label for="">
         <input type="checkbox" value="${
           newId + "," + list
-        }" id="${newId}" onclick="checkboxClick('${newId}')">
+        }" id="${newId}" onclick="checkboxClick('${newId}')" >
         <span>${list}</span>
     </label>`;
 
@@ -59,9 +122,11 @@ const checkboxClick = (idKey) => {
     dataElement.checked = true;
     globalDataVariable.push(dataElement);
   } else {
+    const index = globalDataVariable.filter((item) => item.id != idKey);
+    globalDataVariable = index;
   }
 
-  console.log(dataElement);
+  console.log(globalDataVariable);
 };
 
 const passtoUrl = () => {
@@ -82,4 +147,22 @@ const passtoUrl = () => {
   window.location.href = `http://localhost:5000/auth/savenote/${JSON.stringify(
     globalDataVariable
   )}/${idArray}/${valueArray}`;
+};
+
+const addNote = () => {
+  const noteTitle = document.getElementById("noteTitle");
+  var request = new XMLHttpRequest();
+
+  request.onreadystatechange = function () {
+    if (request.readyState === XMLHttpRequest.DONE) {
+      if (request.status === 200) {
+      }
+    }
+  };
+  request.open(
+    "GET",
+    `http://localhost:5000/createNote/note?notename=${noteTitle.value}`,
+    true
+  );
+  request.send(null);
 };

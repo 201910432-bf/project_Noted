@@ -9,7 +9,7 @@
                     <% const destructureTime = new Date(data.note_insertDate) %>
 
                     <% if(key === 0){ %>
-                        <div class="content__list" onClick="window.location.href = 'http://localhost:5000/note/<%=key%>'">
+                        <div class="content__list" onClick="getNoteData('<%= key %>')">
                             <h3><%=data.note_title %></h3>
                             <div class="note__time">
                                 <p><%=destructureArray[0] %></p>
@@ -17,7 +17,7 @@
                             </div>
                         </div>
                     <% }else{ %>
-                        <div class="content__list list__notFocus" onClick="window.location.href = 'http://localhost:5000/note/<%=key%>'">
+                        <div class="content__list list__notFocus" onClick="getNoteData('<%= key %>')">
                             <h3><%=data.note_title %></h3>
                             <div class="note__time">
                                 <p><%=destructureArray[0] %></p>
@@ -32,7 +32,7 @@
             </div>
         </div>
 
-        <div class="list__main__content">
+        <div class="list__main__content" id="sendfile">
             <div class="list__main__content__wrap">
                 <div class="main__content__header">
                     <p><%=fetchData[noteId].note_title%></p>
@@ -77,7 +77,7 @@
                         <label for="noteTitle">Note Title</label>
                         <div class="text__container">
                             <input type="text" id="noteTitle"><br>
-                            <button type="button">Save</button>
+                            <button type="button" onClick="addNote()">Save</button>
                         </div>
                     </div>
                 </div>

@@ -41,10 +41,19 @@ router.get("/createNote/note", (req, res) => {
   res.send(noteName);
 });
 
-router.get("/savenote/:data/:idKeyData/:valueData", (req, res) => {
-  commands.insertData(req.params.data);
+router.post("/savenote/note", (req, res) => {
+  commands.insertData(
+    req.query.objectChecked,
+    req.query.arrayId,
+    req.query.arrayValue
+  );
+
   res.send(
-    req.params.data + " " + req.params.idKeyData + " " + req.params.valueData
+    req.query.objectChecked +
+      " " +
+      req.query.arrayId +
+      " " +
+      req.query.arrayValue
   );
   // res.redirect("/note");
 });

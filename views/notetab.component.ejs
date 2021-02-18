@@ -3,13 +3,13 @@
                 <h3>Note List</h3>
                 <img src="../../images/remove.png" width="22" alt="">
             </div>
-            <div class="show__list__content">
+            <div class="show__list__content" id="noteList">
                 <% fetchData.map((data,key) => { %>
                     <% const destructureArray = data.note_list.split(','); %>
                     <% const destructureTime = new Date(data.note_insertDate) %>
 
                     <% if(key === 0){ %>
-                        <div class="content__list" id="<%= key %>" onClick="getNoteData('<%= key %>')">
+                        <div class="content__list" id="<%= key %>" onClick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>')">
                             <h3><%=data.note_title %></h3>
                             <div class="note__time">
                                 <p><%=destructureArray[0] %></p>
@@ -17,7 +17,7 @@
                             </div>
                         </div>
                     <% }else{ %>
-                        <div class="content__list list__notFocus" id="<%= key %>" onClick="getNoteData('<%= key %>')">
+                        <div class="content__list list__notFocus" id="<%= key %>" onClick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>')">
                             <h3><%=data.note_title %></h3>
                             <div class="note__time">
                                 <p><%=destructureArray[0] %></p>
@@ -51,18 +51,28 @@
                         <% const splitData = listString.split(","); %>
                         <% const listKeysString = fetchData[noteId].note_keys; %>
                         <% const splitDataKey = listKeysString.split(","); %>
-                        <% console.log(splitDataKey) %>
 
+                        <% const objectCheckedData = fetchData[noteId].checked_list; %>
+                        <% const checkedID = JSON.parse(objectCheckedData) %>
+
+                        
                         <% for(let i=0;i<splitData.length;i++){ %>
-                        <label for="">
-                            <input type="checkbox" value="<%=splitDataKey[i]%>,<%=splitData[i]%>" id="<%=splitDataKey[i] %>" onclick="checkboxClick('<%=splitDataKey[i] %>')">
-                            <span><%=splitData[i] %></span>
-                        </label>
+                            <% if(checkedID.some(e => e.id.replace("checkBox","") == i )) {%>
+                                <label for="">
+                                    <input type="checkbox" value="<%=splitDataKey[i]%>,<%=splitData[i]%>" id="<%=splitDataKey[i]%>checkBox" onclick="checkboxClick('<%=splitDataKey[i]%>checkBox')" checked>
+                                    <span><%=splitData[i] %></span>
+                                </label>
+                            <% }else{ %>
+                                <label for="">
+                                    <input type="checkbox" value="<%=splitDataKey[i]%>,<%=splitData[i]%>" id="<%=splitDataKey[i]%>checkBox" onclick="checkboxClick('<%=splitDataKey[i]%>checkBox')">
+                                    <span><%=splitData[i] %></span>
+                                </label>
+                            <% } %>
                         <% } %>
 
                     </div>
                     <div class="note__savebtn">
-                        <button type="submit" onClick="passtoUrl()">Save</button>
+                        <button type="submit" onClick="passtoUrl('<%= JSON.stringify(checkedID) %>')">Save</button>
                     </div>
                 </div>
             </div>

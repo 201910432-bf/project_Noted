@@ -14,8 +14,8 @@ function getData() {
 }
 getData();
 
-const insertData = (data) => {
-  console.log(data, "throw from commands");
+const insertData = (checkedData, arrayId, arrayValues) => {
+  console.log(checkedData, arrayId, arrayValues, "throw from commands");
 };
 
 const insertNote = (note) => {
@@ -43,8 +43,8 @@ const insertNote = (note) => {
       console.log("Failed", err);
       return;
     } else {
-      console.log(note, "Added Success! ", date);
       getData();
+      console.log(note, "Added Success! ", date);
     }
   });
 };

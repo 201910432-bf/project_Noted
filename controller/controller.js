@@ -1,4 +1,5 @@
 var globalDataVariable = [];
+var dataElement = {};
 
 const showAddNote = (trigger) => {
   const showNote = document.getElementById("showAddNote");
@@ -24,10 +25,12 @@ const changeTab = (tabName) => {
 };
 
 var lastNode;
-const getNoteData = (key) => {
+const getNoteData = (key, data) => {
   var request = new XMLHttpRequest();
   const sendfile = document.getElementById("sendfile");
+
   console.log(key);
+
   const getFirstNode = document.getElementById(0);
   const getCurrentNode = document.getElementById(key);
   const getLastNode = document.getElementById(lastNode);
@@ -65,7 +68,7 @@ const getNoteData = (key) => {
                 </div>
                 <div class="main__content__checkbox">
                     <div class="main__content__checkbox__wrap" id="wrapLabel">
-                      //template
+
                     </div>
                     <div class="note__savebtn">
                         <button type="submit" onClick="passtoUrl()">Save</button>
@@ -75,12 +78,46 @@ const getNoteData = (key) => {
           `;
 
           var template = "";
+          var distinct = false;
+          const noteJson = data.command[key].checked_list;
+          if (noteJson != "") {
+            JSON.parse(noteJson).some((e) => {
+              if (globalDataVariable.some((e2) => e2.id == e.id)) {
+                distinct = true;
+              }
+
+              if (distinct != true) {
+                globalDataVariable.push(e);
+                console.log(globalDataVariable);
+              }
+            });
+            // JSON.parse(noteJson).map((e) => {
+            //   globalDataVariable.push(e);
+            // });
+          }
+
           for (let i = 0; i < splitData.length; i++) {
             if (splitData[0] != "") {
-              template += `<label for="">
-              <input type="checkbox" value="${splitDataKey[i]},${splitData[i]}" id="${splitDataKey[i]}" onclick="checkboxClick('${splitDataKey[i]}')">
-              <span>${splitData[i]}</span>
-              </label>`;
+              if (
+                noteJson != "" &&
+                JSON.parse(noteJson).some(
+                  (e) => e.id.replace("checkBox", "") == i
+                )
+              ) {
+                template += `
+                  <label for="">
+                  <input type="checkbox" value="${splitDataKey[i]},${splitData[i]}" id="${splitDataKey[i]}checkBox" onclick="checkboxClick('${splitDataKey[i]}checkBox')" checked>
+                  <span>${splitData[i]}</span>
+                  </label>
+                  `;
+              } else {
+                template += `
+                <label for="">
+                <input type="checkbox" value="${splitDataKey[i]},${splitData[i]}" id="${splitDataKey[i]}checkBox" onclick="checkboxClick('${splitDataKey[i]}checkBox')" >
+                <span>${splitData[i]}</span>
+                </label>
+                `;
+              }
             }
           }
           document.getElementById("wrapLabel").innerHTML = template;
@@ -115,7 +152,7 @@ const addList = (listData) => {
     <label for="">
         <input type="checkbox" value="${
           newId + "," + list
-        }" id="${newId}" onclick="checkboxClick('${newId}')" >
+        }" id="${newId}checkBox" onclick="checkboxClick('${newId}checkBox')" >
         <span>${list}</span>
     </label>`;
 
@@ -128,7 +165,6 @@ const checkboxClick = (idKey) => {
   const checkboxId = document.getElementById(idKey).value;
   console.log(checkboxId);
 
-  var dataElement = {};
   if (document.getElementById(idKey).checked) {
     dataElement.id = idKey;
     dataElement.checked = true;
@@ -141,7 +177,12 @@ const checkboxClick = (idKey) => {
   console.log(globalDataVariable);
 };
 
-const passtoUrl = () => {
+const passtoUrl = (originalData) => {
+  if (globalDataVariable == "" && originalData != undefined) {
+    globalDataVariable = JSON.parse(originalData);
+    console.log(globalDataVariable);
+  }
+
   const fetchList = document
     .getElementById("wrapLabel")
     .getElementsByTagName("input");
@@ -155,10 +196,27 @@ const passtoUrl = () => {
   }
 
   console.log(idArray);
+  var request = new XMLHttpRequest();
 
-  window.location.href = `http://localhost:5000/savenote/${JSON.stringify(
-    globalDataVariable
-  )}/${idArray}/${valueArray}`;
+  request.onreadystatechange = function () {
+    if (request.readyState === XMLHttpRequest.DONE) {
+      if (request.status === 200) {
+      }
+    }
+  };
+  request.open(
+    "POST",
+    `http://localhost:5000/savenote/note/?objectChecked=${JSON.stringify(
+      globalDataVariable
+    )}&arrayId=${idArray}&arrayValue=${valueArray}`,
+    true
+  );
+
+  request.send(null);
+
+  // window.location.href = `http://localhost:5000/savenote/${JSON.stringify(
+  //   globalDataVariable
+  // )}/${idArray}/${valueArray}`;
 };
 
 const addNote = () => {
@@ -168,6 +226,7 @@ const addNote = () => {
   request.onreadystatechange = function () {
     if (request.readyState === XMLHttpRequest.DONE) {
       if (request.status === 200) {
+        window.location.reload();
       }
     }
   };

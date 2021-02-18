@@ -23,10 +23,22 @@ const changeTab = (tabName) => {
   request.send(null);
 };
 
+var lastNode;
 const getNoteData = (key) => {
   var request = new XMLHttpRequest();
   const sendfile = document.getElementById("sendfile");
+  console.log(key);
+  const getFirstNode = document.getElementById(0);
+  const getCurrentNode = document.getElementById(key);
+  const getLastNode = document.getElementById(lastNode);
 
+  getFirstNode.classList.add("list__notFocus");
+  getCurrentNode.classList.remove("list__notFocus");
+  if (lastNode != undefined) {
+    getLastNode.classList.add("list__notFocus");
+  }
+
+  lastNode = key;
   request.onreadystatechange = function () {
     if (request.readyState === XMLHttpRequest.DONE) {
       if (request.status === 200) {
@@ -144,7 +156,7 @@ const passtoUrl = () => {
 
   console.log(idArray);
 
-  window.location.href = `http://localhost:5000/auth/savenote/${JSON.stringify(
+  window.location.href = `http://localhost:5000/savenote/${JSON.stringify(
     globalDataVariable
   )}/${idArray}/${valueArray}`;
 };

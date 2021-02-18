@@ -19,16 +19,34 @@ const insertData = (data) => {
 };
 
 const insertNote = (note) => {
-  // const queryString = `INSERT INTO note_table (note_title, note_insertDate, note_updateDate) VALUES ('${note}', '${mySQLDateString}', '${mySQLDateString}') `;
-  // conn.db.query(queryString, (err, result) => {
-  //   if (err) {
-  //     console.log("Failed", err);
-  //     return;
-  //   } else {
-  //     console.log(note, "Added Success! ", date);
-  //     getData();
-  //   }
-  // });
+  //here
+  const date = new Date();
+  const todayTime = date.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: false,
+  });
+  const todayDate = date.toLocaleDateString("en", {
+    weekday: "short",
+    year: "numeric",
+    month: "2-digit",
+    day: "numeric",
+  });
+
+  const nowDate = todayDate + ", " + todayTime;
+  console.log(new Date(nowDate));
+  console.log(todayTime);
+
+  const queryString = `INSERT INTO note_table (note_title, note_insertDate, note_updateDate) VALUES ('${note}', '${nowDate}', '${nowDate}') `;
+  conn.db.query(queryString, (err, result) => {
+    if (err) {
+      console.log("Failed", err);
+      return;
+    } else {
+      console.log(note, "Added Success! ", date);
+      getData();
+    }
+  });
 };
 
 module.exports = {

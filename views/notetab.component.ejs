@@ -9,19 +9,19 @@
                     <% const destructureTime = new Date(data.note_insertDate) %>
 
                     <% if(key === 0){ %>
-                        <div class="content__list" onClick="getNoteData('<%= key %>')">
+                        <div class="content__list" id="<%= key %>" onClick="getNoteData('<%= key %>')">
                             <h3><%=data.note_title %></h3>
                             <div class="note__time">
                                 <p><%=destructureArray[0] %></p>
-                                <span><%=destructureTime.toLocaleTimeString('en-US') %></span>
+                                <span><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
                             </div>
                         </div>
                     <% }else{ %>
-                        <div class="content__list list__notFocus" onClick="getNoteData('<%= key %>')">
+                        <div class="content__list list__notFocus" id="<%= key %>" onClick="getNoteData('<%= key %>')">
                             <h3><%=data.note_title %></h3>
                             <div class="note__time">
                                 <p><%=destructureArray[0] %></p>
-                                <span><%=destructureTime.toLocaleTimeString('en-US') %></span>
+                                <span><%=destructureTime.toLocaleTimeString() %></span>
                             </div>
                         </div>
                     <% } %>

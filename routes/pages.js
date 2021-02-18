@@ -41,5 +41,13 @@ router.get("/createNote/note", (req, res) => {
   res.send(noteName);
 });
 
+router.get("/savenote/:data/:idKeyData/:valueData", (req, res) => {
+  commands.insertData(req.params.data);
+  res.send(
+    req.params.data + " " + req.params.idKeyData + " " + req.params.valueData
+  );
+  // res.redirect("/note");
+});
+
 //export the router
 module.exports = router;

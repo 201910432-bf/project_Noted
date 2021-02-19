@@ -26,6 +26,16 @@ router.get("/note/id", (req, res) => {
   res.send([{ command: commands.getData(), noteId: getID }]);
 });
 
+router.get("/note/:id", (req, res) => {
+  const getID = req.params.id;
+  console.log(commands.getData());
+  res.render("main.component.ejs", {
+    fetchData: commands.getData(),
+    noteId: getID,
+    tabKey: "note",
+  });
+});
+
 //go to idea tab
 router.get("/idea", (req, res) => {
   res.render("main.component.ejs", {
@@ -48,13 +58,6 @@ router.post("/savenote/note", (req, res) => {
     req.query.arrayValue
   );
 
-  res.send(
-    req.query.objectChecked +
-      " " +
-      req.query.arrayId +
-      " " +
-      req.query.arrayValue
-  );
   // res.redirect("/note");
 });
 

@@ -53,11 +53,11 @@
                         <% const splitDataKey = listKeysString.split(","); %>
 
                         <% const objectCheckedData = fetchData[noteId].checked_list; %>
-                        <% const checkedID = JSON.parse(objectCheckedData) %>
-
+                        
+                        <% const checkedID =  objectCheckedData != "" ? JSON.parse(objectCheckedData) : "" %>
                         
                         <% for(let i=0;i<splitData.length;i++){ %>
-                            <% if(checkedID.some(e => e.id.replace("checkBox","") == i )) {%>
+                            <% if(checkedID != "" && checkedID.some(e => e.id.replace("checkBox","") == i+1 )) {%>
                                 <label for="">
                                     <input type="checkbox" value="<%=splitDataKey[i]%>,<%=splitData[i]%>" id="<%=splitDataKey[i]%>checkBox" onclick="checkboxClick('<%=splitDataKey[i]%>checkBox')" checked>
                                     <span><%=splitData[i] %></span>

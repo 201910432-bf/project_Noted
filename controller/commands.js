@@ -16,6 +16,7 @@ getData();
 
 const insertData = (checkedData, arrayId, arrayValues) => {
   console.log(checkedData, arrayId, arrayValues, "throw from commands");
+  const queryString = "SELECT * FROM note_table";
 };
 
 const insertNote = (note) => {
@@ -45,6 +46,7 @@ const insertNote = (note) => {
     } else {
       getData();
       console.log(note, "Added Success! ", date);
+      getData();
     }
   });
 };

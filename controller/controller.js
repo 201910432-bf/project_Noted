@@ -1,5 +1,4 @@
 var globalDataVariable = [];
-var dataElement = {};
 
 const showAddNote = (trigger) => {
   const showNote = document.getElementById("showAddNote");
@@ -10,26 +9,11 @@ const showAddNote = (trigger) => {
   }
 };
 
-const changeTab = (tabName) => {
-  var request = new XMLHttpRequest();
-
-  request.onreadystatechange = function () {
-    if (request.readyState === XMLHttpRequest.DONE) {
-      if (request.status === 200) {
-      }
-    }
-  };
-
-  request.open("GET", "http://localhost:8080/submit-name?name=" + name, true);
-  request.send(null);
-};
-
 var lastNode;
 const getNoteData = (key, data) => {
+  globalDataVariable = [];
   var request = new XMLHttpRequest();
   const sendfile = document.getElementById("sendfile");
-
-  console.log(key);
 
   const getFirstNode = document.getElementById(0);
   const getCurrentNode = document.getElementById(key);
@@ -37,7 +21,7 @@ const getNoteData = (key, data) => {
 
   getFirstNode.classList.add("list__notFocus");
   getCurrentNode.classList.remove("list__notFocus");
-  if (lastNode != undefined) {
+  if (lastNode != undefined && lastNode != key) {
     getLastNode.classList.add("list__notFocus");
   }
 
@@ -52,7 +36,9 @@ const getNoteData = (key, data) => {
           const listKeysString = data.command[data.noteId].note_keys;
           const splitDataKey = listKeysString.split(",");
 
-          console.log(splitData[0]);
+          // console.log(data.command[key]);
+          // console.log(splitData[0]);
+
           sendfile.innerHTML = `
             <div class="list__main__content__wrap">
                 <div class="main__content__header">
@@ -101,7 +87,7 @@ const getNoteData = (key, data) => {
               if (
                 noteJson != "" &&
                 JSON.parse(noteJson).some(
-                  (e) => e.id.replace("checkBox", "") == i
+                  (e) => e.id.replace("checkBox", "") == i + 1
                 )
               ) {
                 template += `
@@ -164,6 +150,7 @@ const addList = (listData) => {
 const checkboxClick = (idKey) => {
   const checkboxId = document.getElementById(idKey).value;
   console.log(checkboxId);
+  var dataElement = {};
 
   if (document.getElementById(idKey).checked) {
     dataElement.id = idKey;
@@ -173,11 +160,22 @@ const checkboxClick = (idKey) => {
     const index = globalDataVariable.filter((item) => item.id != idKey);
     globalDataVariable = index;
   }
-
   console.log(globalDataVariable);
 };
 
 const passtoUrl = (originalData) => {
+  console.log(originalData);
+
+  if (originalData != undefined) {
+    for (let i = 0; i < JSON.parse(originalData).length; i++) {
+      if (globalDataVariable.includes(JSON.parse(originalData)[i])) {
+        globalDataVariable.push(JSON.parse(originalData)[i]);
+      }
+    }
+  }
+
+  console.log(globalDataVariable);
+
   if (globalDataVariable == "" && originalData != undefined) {
     globalDataVariable = JSON.parse(originalData);
     console.log(globalDataVariable);
@@ -213,10 +211,6 @@ const passtoUrl = (originalData) => {
   );
 
   request.send(null);
-
-  // window.location.href = `http://localhost:5000/savenote/${JSON.stringify(
-  //   globalDataVariable
-  // )}/${idArray}/${valueArray}`;
 };
 
 const addNote = () => {

@@ -72,7 +72,7 @@
 
                     </div>
                     <div class="note__savebtn">
-                        <button type="submit" onClick="passtoUrl('<%= JSON.stringify(checkedID) %>')">Save</button>
+                        <button type="submit" onClick="passtoUrl('<%= JSON.stringify(checkedID) %>','<%= fetchData[noteId].id %>','<%= fetchData[noteId].note_title %>')">Save</button>
                     </div>
                 </div>
             </div>

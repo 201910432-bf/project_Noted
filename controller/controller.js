@@ -36,7 +36,7 @@ const getNoteData = (key, data) => {
           const listKeysString = data.command[data.noteId].note_keys;
           const splitDataKey = listKeysString.split(",");
 
-          // console.log(data.command[key]);
+          console.log(data.command[key]);
           // console.log(splitData[0]);
 
           sendfile.innerHTML = `
@@ -57,7 +57,7 @@ const getNoteData = (key, data) => {
 
                     </div>
                     <div class="note__savebtn">
-                        <button type="submit" onClick="passtoUrl()">Save</button>
+                        <button type="submit" onClick="passtoUrl('',${data.command[key].id},'${data.command[key].note_title}')">Save</button>
                     </div>
                 </div>
             </div>
@@ -77,9 +77,6 @@ const getNoteData = (key, data) => {
                 console.log(globalDataVariable);
               }
             });
-            // JSON.parse(noteJson).map((e) => {
-            //   globalDataVariable.push(e);
-            // });
           }
 
           for (let i = 0; i < splitData.length; i++) {
@@ -163,10 +160,12 @@ const checkboxClick = (idKey) => {
   console.log(globalDataVariable);
 };
 
-const passtoUrl = (originalData) => {
+const passtoUrl = (originalData, key, title) => {
   console.log(originalData);
+  console.log(key);
+  console.log(title);
 
-  if (originalData != undefined) {
+  if (originalData != "") {
     for (let i = 0; i < JSON.parse(originalData).length; i++) {
       if (globalDataVariable.includes(JSON.parse(originalData)[i])) {
         globalDataVariable.push(JSON.parse(originalData)[i]);
@@ -176,7 +175,7 @@ const passtoUrl = (originalData) => {
 
   console.log(globalDataVariable);
 
-  if (globalDataVariable == "" && originalData != undefined) {
+  if (globalDataVariable == "" && originalData != "") {
     globalDataVariable = JSON.parse(originalData);
     console.log(globalDataVariable);
   }
@@ -206,7 +205,7 @@ const passtoUrl = (originalData) => {
     "POST",
     `http://localhost:5000/savenote/note/?objectChecked=${JSON.stringify(
       globalDataVariable
-    )}&arrayId=${idArray}&arrayValue=${valueArray}`,
+    )}&arrayId=${idArray}&arrayValue=${valueArray}&title=${title}&key=${key}`,
     true
   );
 

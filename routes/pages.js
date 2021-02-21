@@ -55,7 +55,9 @@ router.post("/savenote/note", (req, res) => {
   commands.insertData(
     req.query.objectChecked,
     req.query.arrayId,
-    req.query.arrayValue
+    req.query.arrayValue,
+    req.query.title,
+    req.query.key
   );
 
   // res.redirect("/note");

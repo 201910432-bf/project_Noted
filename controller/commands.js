@@ -49,14 +49,9 @@ const insertNote = (note) => {
 
   const queryString = `INSERT INTO note_table (note_title, note_insertDate, note_updateDate) VALUES ('${note}', '${nowDate}', '${nowDate}') `;
   conn.db.query(queryString, (err, result) => {
-    if (err) {
-      console.log("Failed", err);
-      return;
-    } else {
-      getData();
-      console.log(note, "Added Success! ", date);
-      getData();
-    }
+    if (err) console.log("Failed", err);
+    else console.log("Added Success! ");
+    getData();
   });
 };
 

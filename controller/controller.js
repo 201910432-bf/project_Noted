@@ -11,6 +11,7 @@ const showAddNote = (trigger) => {
 
 var lastNode;
 const getNoteData = (key, data) => {
+  console.log(key);
   globalDataVariable = [];
   var request = new XMLHttpRequest();
   const sendfile = document.getElementById("sendfile");
@@ -89,14 +90,14 @@ const getNoteData = (key, data) => {
               ) {
                 template += `
                   <label for="">
-                  <input type="checkbox" value="${splitDataKey[i]},${splitData[i]}" id="${splitDataKey[i]}checkBox" onclick="checkboxClick('${splitDataKey[i]}checkBox')" checked>
+                  <input type="checkbox" value="${splitDataKey[i]},${splitData[i]}" id="${splitDataKey[i]}checkBox" onclick="checkboxClick('${splitDataKey[i]}checkBox','')" checked>
                   <span>${splitData[i]}</span>
                   </label>
                   `;
               } else {
                 template += `
                 <label for="">
-                <input type="checkbox" value="${splitDataKey[i]},${splitData[i]}" id="${splitDataKey[i]}checkBox" onclick="checkboxClick('${splitDataKey[i]}checkBox')" >
+                <input type="checkbox" value="${splitDataKey[i]},${splitData[i]}" id="${splitDataKey[i]}checkBox" onclick="checkboxClick('${splitDataKey[i]}checkBox','')" >
                 <span>${splitData[i]}</span>
                 </label>
                 `;
@@ -135,7 +136,7 @@ const addList = (listData) => {
     <label for="">
         <input type="checkbox" value="${
           newId + "," + list
-        }" id="${newId}checkBox" onclick="checkboxClick('${newId}checkBox')" >
+        }" id="${newId}checkBox" onclick="checkboxClick('${newId}checkBox','')" >
         <span>${list}</span>
     </label>`;
 
@@ -144,7 +145,12 @@ const addList = (listData) => {
   }
 };
 
-const checkboxClick = (idKey) => {
+const checkboxClick = (idKey, originalData) => {
+  console.log(originalData);
+  if (globalDataVariable.length == 0 && originalData != "") {
+    globalDataVariable = JSON.parse(originalData);
+  }
+
   const checkboxId = document.getElementById(idKey).value;
   console.log(checkboxId);
   var dataElement = {};
@@ -195,12 +201,12 @@ const passtoUrl = (originalData, key, title) => {
   console.log(idArray);
   var request = new XMLHttpRequest();
 
-  request.onreadystatechange = function () {
-    if (request.readyState === XMLHttpRequest.DONE) {
-      if (request.status === 200) {
-      }
-    }
-  };
+  // request.onreadystatechange = function () {
+  //   if (request.readyState === XMLHttpRequest.DONE) {
+  //     if (request.status === 200) {
+  //     }
+  //   }
+  // };
   request.open(
     "POST",
     `http://localhost:5000/savenote/note/?objectChecked=${JSON.stringify(
@@ -219,7 +225,7 @@ const addNote = () => {
   request.onreadystatechange = function () {
     if (request.readyState === XMLHttpRequest.DONE) {
       if (request.status === 200) {
-        window.location.reload();
+        window.location.href = "http://localhost:5000/note";
       }
     }
   };

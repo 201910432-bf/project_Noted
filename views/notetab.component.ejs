@@ -9,7 +9,7 @@
                     <% const destructureTime = new Date(data.note_insertDate) %>
 
                     <% if(key === 0){ %>
-                        <div class="content__list" id="<%= key %>" onClick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>')">
+                        <div class="content__list list__notFocus" id="<%= key %>" onClick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>')">
                             <h3><%=data.note_title %></h3>
                             <div class="note__time">
                                 <p><%=destructureArray[0] %></p>
@@ -28,7 +28,7 @@
                 <% }) %>
             </div>
             <div class="add__note">
-                <a href="#" onClick="showAddNote('show');">Add new notes</a>
+                <a href="javascript:void(0)" onClick="showAddNote('show');">Add new notes</a>
             </div>
         </div>
 
@@ -59,12 +59,12 @@
                         <% for(let i=0;i<splitData.length;i++){ %>
                             <% if(checkedID != "" && checkedID.some(e => e.id.replace("checkBox","") == i+1 )) {%>
                                 <label for="">
-                                    <input type="checkbox" value="<%=splitDataKey[i]%>,<%=splitData[i]%>" id="<%=splitDataKey[i]%>checkBox" onclick="checkboxClick('<%=splitDataKey[i]%>checkBox')" checked>
+                                    <input type="checkbox" value="<%=splitDataKey[i]%>,<%=splitData[i]%>" id="<%=splitDataKey[i]%>checkBox" onclick="checkboxClick('<%=splitDataKey[i]%>checkBox','<%= JSON.stringify(checkedID) %>')" checked>
                                     <span><%=splitData[i] %></span>
                                 </label>
                             <% }else{ %>
                                 <label for="">
-                                    <input type="checkbox" value="<%=splitDataKey[i]%>,<%=splitData[i]%>" id="<%=splitDataKey[i]%>checkBox" onclick="checkboxClick('<%=splitDataKey[i]%>checkBox')">
+                                    <input type="checkbox" value="<%=splitDataKey[i]%>,<%=splitData[i]%>" id="<%=splitDataKey[i]%>checkBox" onclick="checkboxClick('<%=splitDataKey[i]%>checkBox','<%= JSON.stringify(checkedID) %>')">
                                     <span><%=splitData[i] %></span>
                                 </label>
                             <% } %>

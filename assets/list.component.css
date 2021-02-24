@@ -91,3 +91,7 @@
 .main__content__checkbox label {
   margin-top: 0.5em;
 }
+
+.checkedList {
+  text-decoration: line-through;
+}

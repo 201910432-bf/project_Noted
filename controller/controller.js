@@ -91,14 +91,14 @@ const getNoteData = (key, data) => {
                 template += `
                   <label for="">
                   <input type="checkbox" value="${splitDataKey[i]},${splitData[i]}" id="${splitDataKey[i]}checkBox" onclick="checkboxClick('${splitDataKey[i]}checkBox','')" checked>
-                  <span>${splitData[i]}</span>
+                  <span id="${splitDataKey[i]}checkBoxSpan" class="checkedList" >${splitData[i]}</span>
                   </label>
                   `;
               } else {
                 template += `
                 <label for="">
                 <input type="checkbox" value="${splitDataKey[i]},${splitData[i]}" id="${splitDataKey[i]}checkBox" onclick="checkboxClick('${splitDataKey[i]}checkBox','')" >
-                <span>${splitData[i]}</span>
+                <span id="${splitDataKey[i]}checkBoxSpan">${splitData[i]}</span>
                 </label>
                 `;
               }
@@ -137,7 +137,7 @@ const addList = (listData) => {
         <input type="checkbox" value="${
           newId + "," + list
         }" id="${newId}checkBox" onclick="checkboxClick('${newId}checkBox','')" >
-        <span>${list}</span>
+        <span id='${newId}checkBoxSpan'>${list}</span>
     </label>`;
 
     divList.innerHTML += stringTemp;
@@ -152,6 +152,8 @@ const checkboxClick = (idKey, originalData) => {
   }
 
   const checkboxId = document.getElementById(idKey).value;
+  const checkSpanId = document.getElementById(idKey + "Span");
+
   console.log(checkboxId);
   var dataElement = {};
 
@@ -159,9 +161,11 @@ const checkboxClick = (idKey, originalData) => {
     dataElement.id = idKey;
     dataElement.checked = true;
     globalDataVariable.push(dataElement);
+    checkSpanId.classList.add("checkedList");
   } else {
     const index = globalDataVariable.filter((item) => item.id != idKey);
     globalDataVariable = index;
+    checkSpanId.classList.remove("checkedList");
   }
   console.log(globalDataVariable);
 };

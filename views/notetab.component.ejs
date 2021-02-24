@@ -60,12 +60,12 @@
                             <% if(checkedID != "" && checkedID.some(e => e.id.replace("checkBox","") == i+1 )) {%>
                                 <label for="">
                                     <input type="checkbox" value="<%=splitDataKey[i]%>,<%=splitData[i]%>" id="<%=splitDataKey[i]%>checkBox" onclick="checkboxClick('<%=splitDataKey[i]%>checkBox','<%= JSON.stringify(checkedID) %>')" checked>
-                                    <span><%=splitData[i] %></span>
+                                    <span id="<%=splitDataKey[i]%>checkBoxSpan" class="checkedList"><%=splitData[i] %></span>
                                 </label>
                             <% }else{ %>
                                 <label for="">
                                     <input type="checkbox" value="<%=splitDataKey[i]%>,<%=splitData[i]%>" id="<%=splitDataKey[i]%>checkBox" onclick="checkboxClick('<%=splitDataKey[i]%>checkBox','<%= JSON.stringify(checkedID) %>')">
-                                    <span><%=splitData[i] %></span>
+                                    <span id="<%=splitDataKey[i]%>checkBoxSpan" ><%=splitData[i] %></span>
                                 </label>
                             <% } %>
                         <% } %>

@@ -63,5 +63,9 @@ router.post("/savenote/note", (req, res) => {
   // res.redirect("/note");
 });
 
+router.get("/update/note", (req, res) => {
+  res.send("ff");
+});
+
 //export the router
 module.exports = router;

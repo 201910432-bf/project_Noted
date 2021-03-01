@@ -38,7 +38,7 @@ const getNoteData = (key, data) => {
           const splitDataKey = listKeysString.split(",");
 
           console.log(data.command[key]);
-          // console.log(splitData[0]);
+          console.log(splitData);
 
           sendfile.innerHTML = `
             <div class="list__main__content__wrap">
@@ -89,22 +89,24 @@ const getNoteData = (key, data) => {
                 )
               ) {
                 template += `
-                <div class="checkBoxLabel">
+                <div class="checkBoxLabel checkBoxLabel${i}">
                   <label for="">
                   <input type="checkbox" value="${splitDataKey[i]},${splitData[i]}" id="${splitDataKey[i]}checkBox" onclick="checkboxClick('${splitDataKey[i]}checkBox','')" checked>
-                  <span id="${splitDataKey[i]}checkBoxSpan" class="checkedList" >${splitData[i]}</span>
+                  <span id="${splitDataKey[i]}checkBoxSpan" class="checkedList spanListText" >${splitData[i]}</span>
+                  <input style="text-decoration: line-through;" type="text" class="editListTextInput" value="${splitData[i]}">
                   </label>
-                  <a class="removeBtn get${splitDataKey[i]}" href="javascript:void(0)" onclick="removeClick('${splitDataKey[i]}')" id="checkBoxRemove" value="${splitDataKey[i]}"><img width="15" src="../assets/images/removeIcon.png" alt=""></a>
+                  <a class="removeBtn get${splitDataKey[i]}" href="javascript:void(0)" onclick="removeClick('${splitDataKey[i]}','${splitData}')" id="checkBoxRemove" value="${splitDataKey[i]}"><img width="15" src="../assets/images/removeIcon.png" alt=""></a>
                 </div>
                   `;
               } else {
                 template += `
-                <div class="checkBoxLabel">
+                <div class="checkBoxLabel checkBoxLabel${i}">
                   <label for="">
                   <input type="checkbox" value="${splitDataKey[i]},${splitData[i]}" id="${splitDataKey[i]}checkBox" onclick="checkboxClick('${splitDataKey[i]}checkBox','')" >
-                  <span id="${splitDataKey[i]}checkBoxSpan">${splitData[i]}</span>
+                  <span id="${splitDataKey[i]}checkBoxSpan" class="spanListText">${splitData[i]}</span>
+                  <input type="text" class="editListTextInput" value="${splitData[i]}">                  
                   </label>
-                  <a class="removeBtn get${splitDataKey[i]}" href="javascript:void(0)" onclick="removeClick('${splitDataKey[i]}')" id="checkBoxRemove" value="${splitDataKey[i]}"><img width="15" src="../assets/images/removeIcon.png" alt=""></a>
+                  <a class="removeBtn get${splitDataKey[i]}" href="javascript:void(0)" onclick="removeClick('${splitDataKey[i]}','${splitData}')" id="checkBoxRemove" value="${splitDataKey[i]}"><img width="15" src="../assets/images/removeIcon.png" alt=""></a>
                 </div>
                 `;
               }
@@ -292,6 +294,15 @@ const editClick = () => {
     }
   }
 };
-const removeClick = (data) => {
-  console.log(data);
+const removeClick = (key, arrayData) => {
+  console.log(key);
+  console.log(arrayData);
+  const NodeList = document.querySelector(`.checkBoxLabel${key - 1}`);
+
+  // NodeList.remove();
+  // console.log(NodeList);
+  console.log(globalDataVariable);
+  //remove the div object to the globalDataVariable
+
+  // window.location.href = "http://localhost:5000/update/note";
 };

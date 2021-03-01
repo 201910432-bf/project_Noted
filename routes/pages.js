@@ -64,7 +64,22 @@ router.post("/savenote/note", (req, res) => {
 });
 
 router.get("/update/note", (req, res) => {
-  res.send("ff");
+  commands.UpdateNote(
+    req.query.noteName,
+    req.query.noteKey,
+    req.query.checkList,
+    req.query.noteId
+  );
+
+  res.send(
+    req.query.noteName +
+      " " +
+      req.query.noteKey +
+      " " +
+      req.query.checkList +
+      " " +
+      req.query.noteId
+  );
 });
 
 //export the router

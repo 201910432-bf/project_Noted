@@ -95,7 +95,7 @@ const getNoteData = (key, data) => {
                   <span id="${splitDataKey[i]}checkBoxSpan" class="checkedList spanListText" >${splitData[i]}</span>
                   <input style="text-decoration: line-through;" type="text" class="editListTextInput" value="${splitData[i]}">
                   </label>
-                  <a class="removeBtn get${splitDataKey[i]}" href="javascript:void(0)" onclick="removeClick('${splitDataKey[i]}','${splitData}')" id="checkBoxRemove" value="${splitDataKey[i]}"><img width="15" src="../assets/images/removeIcon.png" alt=""></a>
+                  <a class="removeBtn get${splitDataKey[i]}" href="javascript:void(0)" onclick="removeClick('${splitDataKey[i]}','${splitData}','${data.command[key].id}')" id="checkBoxRemove" value="${splitDataKey[i]}"><img width="15" src="../assets/images/removeIcon.png" alt=""></a>
                 </div>
                   `;
               } else {
@@ -106,7 +106,7 @@ const getNoteData = (key, data) => {
                   <span id="${splitDataKey[i]}checkBoxSpan" class="spanListText">${splitData[i]}</span>
                   <input type="text" class="editListTextInput" value="${splitData[i]}">                  
                   </label>
-                  <a class="removeBtn get${splitDataKey[i]}" href="javascript:void(0)" onclick="removeClick('${splitDataKey[i]}','${splitData}')" id="checkBoxRemove" value="${splitDataKey[i]}"><img width="15" src="../assets/images/removeIcon.png" alt=""></a>
+                  <a class="removeBtn get${splitDataKey[i]}" href="javascript:void(0)" onclick="removeClick('${splitDataKey[i]}','${splitData}','${data.command[key].id}')" id="checkBoxRemove" value="${splitDataKey[i]}"><img width="15" src="../assets/images/removeIcon.png" alt=""></a>
                 </div>
                 `;
               }
@@ -294,15 +294,61 @@ const editClick = () => {
     }
   }
 };
-const removeClick = (key, arrayData) => {
+
+const removeClick = (key, arrayData, noteId) => {
   console.log(key);
   console.log(arrayData);
+  console.log(noteId);
+
   const NodeList = document.querySelector(`.checkBoxLabel${key - 1}`);
+  NodeList.remove();
 
-  // NodeList.remove();
-  // console.log(NodeList);
-  console.log(globalDataVariable);
-  //remove the div object to the globalDataVariable
+  const allCheckBox = document.querySelectorAll('input[type="checkbox"]');
+  const allInput = document.querySelectorAll(".editListTextInput");
 
-  // window.location.href = "http://localhost:5000/update/note";
+  var setNewArrayObj = [];
+  var arrayId = [];
+  var arrayName = [];
+
+  allCheckBox.forEach((item, idkey) => {
+    if (allCheckBox[idkey].checked) {
+      setNewArrayObj.push({
+        id: `${idkey + 1}checkBox`,
+        checked: true,
+      });
+    }
+  });
+
+  allInput.forEach((item, idkey) => {
+    arrayId.push(idkey + 1);
+    arrayName.push(item.value);
+  });
+
+  console.log(setNewArrayObj);
+  console.log(arrayId);
+  console.log(arrayName);
+
+  var request = new XMLHttpRequest();
+
+  request.onreadystatechange = function () {
+    if (request.readyState === XMLHttpRequest.DONE) {
+      if (request.status === 200) {
+      }
+    }
+  };
+  request.open(
+    "GET",
+    `http://localhost:5000/update/note?noteName=${arrayName}&noteKey=${arrayId}&checkList=${JSON.stringify(
+      setNewArrayObj
+    )}&noteId=${noteId}`,
+    true
+  );
+  request.send(null);
+
+  //remove list item working
+  //edit list item not yet done
+
+  // window.location.href = `http://localhost:5000/update/note?noteName=${arrayName}&noteId=${arrayId}&checkList=${JSON.stringify(
+  //   setNewArrayObj
+  // )}`;
 };

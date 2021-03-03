@@ -47,7 +47,7 @@ const getNoteData = (key, data) => {
                 </div>
                 <div class="main__content__remaining__edit">
                     <span>3 tasks remaining</span>
-                    <a href="javascript:void(0)" onclick="editClick()">Edit</a>
+                    <a href="javascript:void(0)" onclick="editClick('${data.command[key].id}')">Edit</a>
                 </div>
                 <div class="main__content__add">
                     <input type="text" id="addListText" value="">
@@ -136,9 +136,13 @@ const addList = (listData) => {
       document.getElementById("wrapLabel").getElementsByTagName("input")
         .length + 1;
 
+    // newId = document.querySelectorAll("#wrapLabel input") + 1;
+
     for (let i = 0; i < splitData.length; i++) {
       if (newId == splitData[i]) newId++;
+      console.log(splitData[i]);
     }
+    console.log(newId);
 
     var stringTemp = `
     <div class="checkBoxLabel">
@@ -146,8 +150,9 @@ const addList = (listData) => {
           <input type="checkbox" value="${
             newId + "," + list
           }" id="${newId}checkBox" onclick="checkboxClick('${newId}checkBox','')" >
-          <span id='${newId}checkBoxSpan'>${list}</span>
+          <span class="spanListText" id='${newId}checkBoxSpan'>${list}</span>
       </label>
+
       <a href="#"><img width="15" src="../assets/images/removeIcon.png" alt=""></a>
     </div>
     `;
@@ -223,23 +228,23 @@ const passtoUrl = (originalData, key, title) => {
   //if click save while textfield is active get all the data of text field and make it as valueArray
   //update all change to all string js template
 
-  // var request = new XMLHttpRequest();
+  var request = new XMLHttpRequest();
 
-  // request.onreadystatechange = function () {
-  //   if (request.readyState === XMLHttpRequest.DONE) {
-  //     if (request.status === 200) {
-  //     }
-  //   }
-  // };
-  // request.open(
-  //   "POST",
-  //   `http://localhost:5000/savenote/note/?objectChecked=${JSON.stringify(
-  //     globalDataVariable
-  //   )}&arrayId=${idArray}&arrayValue=${valueArray}&title=${title}&key=${key}`,
-  //   true
-  // );
+  request.onreadystatechange = function () {
+    if (request.readyState === XMLHttpRequest.DONE) {
+      if (request.status === 200) {
+      }
+    }
+  };
+  request.open(
+    "POST",
+    `http://localhost:5000/savenote/note/?objectChecked=${JSON.stringify(
+      globalDataVariable
+    )}&arrayId=${idArray}&arrayValue=${valueArray}&title=${title}&key=${key}`,
+    true
+  );
 
-  // request.send(null);
+  request.send(null);
 };
 
 const addNote = () => {
@@ -261,39 +266,85 @@ const addNote = () => {
   request.send(null);
 };
 
-const editClick = () => {
+const editClick = (noteId) => {
+  console.log(noteId);
+
+  var timeoutId;
+  $(`.editListTextInput`).on("input propertychange change", function () {
+    console.log("running");
+
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(function () {
+      saveToDB(noteId);
+    }, 1000);
+  });
+
   const checkBoxRemove = document.querySelectorAll(".removeBtn");
   const spanListText = document.querySelectorAll(".spanListText");
   const editListTextInput = document.getElementsByClassName(
     "editListTextInput"
   );
 
-  console.log(editListTextInput);
-  if (
-    checkBoxRemove[0].style.visibility == "" ||
-    checkBoxRemove[0].style.visibility == "hidden"
-  ) {
-    for (let data of checkBoxRemove) {
-      data.style.visibility = "visible";
-    }
-    for (let data of editListTextInput) {
-      data.style.visibility = "visible";
-    }
-    for (let data of spanListText) {
-      data.style.display = "none";
-    }
-  } else {
-    for (let data of checkBoxRemove) {
-      data.style.visibility = "hidden";
-    }
-    for (let data of editListTextInput) {
-      data.style.visibility = "hidden";
-    }
-    for (let data of spanListText) {
-      data.style.display = "inline-block";
+  // console.log(editListTextInput.length);
+  if (checkBoxRemove.length > 0) {
+    if (
+      checkBoxRemove[0].style.visibility == "" ||
+      checkBoxRemove[0].style.visibility == "hidden"
+    ) {
+      for (let data of checkBoxRemove) {
+        data.style.visibility = "visible";
+      }
+      for (let data of editListTextInput) {
+        data.style.visibility = "visible";
+      }
+      for (let data of spanListText) {
+        data.style.display = "none";
+      }
+    } else {
+      for (let data of checkBoxRemove) {
+        data.style.visibility = "hidden";
+      }
+
+      for (let i = 0; i < editListTextInput.length; i++) {
+        editListTextInput[i].style.visibility = "hidden";
+        spanListText[i].innerHTML = editListTextInput[i].value;
+      }
+
+      for (let data of spanListText) {
+        data.style.display = "inline-block";
+      }
     }
   }
 };
+
+function saveToDB(noteId) {
+  const allInput = document.querySelectorAll(".editListTextInput");
+  var arrayName = [];
+
+  allInput.forEach((item, idkey) => {
+    arrayName.push(item.value);
+  });
+
+  console.log(arrayName);
+
+  var request = new XMLHttpRequest();
+
+  request.onreadystatechange = function () {
+    if (request.readyState === XMLHttpRequest.DONE) {
+      if (request.status === 200) {
+      }
+    }
+  };
+
+  request.open(
+    "GET",
+    `http://localhost:5000/update/noteList?noteName=${arrayName}&noteId=${noteId}`,
+    true
+  );
+  request.send(null);
+  console.log("Saving to the db");
+  // window.location.href = `http://localhost:5000/update/noteList?noteName=${arrayName}&noteId=${noteId}`;
+}
 
 const removeClick = (key, arrayData, noteId) => {
   console.log(key);

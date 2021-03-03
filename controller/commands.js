@@ -69,9 +69,24 @@ const UpdateNote = (checkedData, arrayId, arrayValues, noteId) => {
   });
 };
 
+const UpdateNoteList = (checkedData, noteId) => {
+  console.log("from command");
+  console.log(checkedData, noteId);
+
+  const record = [checkedData, nowDate, noteId];
+  const queryString =
+    "UPDATE note_table SET note_list=?, note_updateDate=? WHERE id=?  ";
+  conn.db.query(queryString, record, (err, result) => {
+    if (err) throw err;
+    else console.log("success");
+    getData();
+  });
+};
+
 module.exports = {
   getData: getData,
   insertData: insertData,
   insertNote: insertNote,
   UpdateNote: UpdateNote,
+  UpdateNoteList: UpdateNoteList,
 };

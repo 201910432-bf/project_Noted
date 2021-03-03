@@ -82,5 +82,11 @@ router.get("/update/note", (req, res) => {
   );
 });
 
+router.get("/update/noteList", (req, res) => {
+  commands.UpdateNoteList(req.query.noteName, req.query.noteId);
+
+  res.send(req.query.noteName + " " + req.query.noteId);
+});
+
 //export the router
 module.exports = router;

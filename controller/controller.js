@@ -57,9 +57,6 @@ const getNoteData = (key, data) => {
                     <div class="main__content__checkbox__wrap" id="wrapLabel">
 
                     </div>
-                    <div class="note__savebtn">
-                        <button type="submit" onClick="passtoUrl('',${data.command[key].id},'${data.command[key].note_title}')">Save</button>
-                    </div>
                 </div>
             </div>
           `;
@@ -122,7 +119,6 @@ const getNoteData = (key, data) => {
   request.send(null);
 };
 
-var countKey;
 const addList = (listData, listId, listTitle) => {
   console.log(listData);
   console.log(listId);
@@ -132,25 +128,21 @@ const addList = (listData, listId, listTitle) => {
   const divList = document.getElementById("wrapLabel");
 
   if (list.replace(/\s/g, "").length) {
-    const splitData = listData.split(",");
-    const keys = listData.split(",");
-
     var newId = document.querySelectorAll("[type=checkbox]").length + 1;
 
     console.log(newId);
-
     var stringTemp = `
-    <div class="checkBoxLabel">
-      <label for="">
-          <input type="checkbox" class="ClasscheckBox" value="${
-            newId + "," + list
-          }" id="${newId}checkBox" onclick="checkboxClick('${newId}checkBox','')" >
-          <span class="spanListText" id='${newId}checkBoxSpan'>${list}</span>
-      </label>
-
-      <a href="#"><img width="15" src="../assets/images/removeIcon.png" alt=""></a>
-    </div>
-    `;
+      <div class="checkBoxLabel checkBoxLabel${newId - 1}">
+        <label for="">
+            <input type="checkbox" class="ClasscheckBox" value="${
+              newId + "," + list
+            }" id="${newId}checkBox" onclick="checkboxClick('${newId}checkBox','')" >
+            <span class="spanListText" id='${newId}checkBoxSpan'>${list}</span>
+            <input type="text" class="editListTextInput" value="${list}">                  
+        </label>
+        <a class="removeBtn get${newId}" href="javascript:void(0)" onclick="removeClick('${newId}','${listData}','${listId}')" id="checkBoxRemove" value="${newId}"><img width="15" src="../assets/images/removeIcon.png" alt=""></a>
+      </div>
+      `;
 
     divList.innerHTML += stringTemp;
     document.getElementById("addListText").value = "";

@@ -45,7 +45,7 @@
                 </div>
                 <div class="main__content__add">
                     <input type="text" id="addListText" value="">
-                    <button type="button" onclick="addList('<%=fetchData[noteId].note_keys %>','<%=fetchData[noteId].id %>','<%=fetchData[noteId].note_title%>')">+</button>
+                    <button type="button" onclick="addList('<%=fetchData[noteId].note_list %>','<%=fetchData[noteId].id %>','<%=fetchData[noteId].note_title%>')">+</button>
                 </div>
                 <div class="main__content__checkbox">
                     <div class="main__content__checkbox__wrap" id="wrapLabel">
@@ -86,9 +86,7 @@
 
                     </div>
                 </div>
-                <div class="note__savebtn">
-                    <button type="submit" onClick="passtoUrl('<%= JSON.stringify(checkedID) %>','<%= fetchData[noteId].id %>','<%= fetchData[noteId].note_title %>')">Save</button>
-                </div>
+                <!-- remove class note__savebtn -->
             </div>
         </div>
         <% } %>

@@ -152,6 +152,7 @@ const addList = (listData, listId, listTitle) => {
 
 const checkboxClick = (idKey, originalData, key) => {
   console.log(originalData);
+  console.log(idKey);
   console.log(key);
 
   if (globalDataVariable.length == 0 && originalData != "") {
@@ -289,6 +290,8 @@ const editClick = (noteId) => {
     "editListTextInput"
   );
 
+  const checkBoxes = document.querySelectorAll("[type=checkbox]");
+
   // console.log(editListTextInput.length);
   if (checkBoxRemove.length > 0) {
     if (
@@ -304,6 +307,12 @@ const editClick = (noteId) => {
       for (let data of spanListText) {
         data.style.display = "none";
       }
+      for (var i = 0; i < checkBoxes.length; i++) {
+        console.log(checkBoxes[i].id);
+        document
+          .getElementById(checkBoxes[i].id)
+          .setAttribute("disabled", "disabled");
+      }
     } else {
       for (let data of checkBoxRemove) {
         data.style.visibility = "hidden";
@@ -316,6 +325,11 @@ const editClick = (noteId) => {
 
       for (let data of spanListText) {
         data.style.display = "inline-block";
+      }
+
+      for (var i = 0; i < checkBoxes.length; i++) {
+        console.log(checkBoxes[i].id);
+        document.getElementById(checkBoxes[i].id).removeAttribute("disabled");
       }
     }
   }

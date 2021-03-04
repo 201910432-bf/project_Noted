@@ -42,6 +42,15 @@ const insertNote = (note) => {
   });
 };
 
+const removeNote = (noteId) => {
+  const queryString = `DELETE FROM note_table WHERE id = '${noteId}'`;
+  conn.db.query(queryString, (err, result) => {
+    if (err) console.log("Failed", err);
+    else console.log("Added Success! ");
+    getData();
+  });
+};
+
 const UpdateNote = (checkedData, arrayId, arrayValues, noteId) => {
   console.log("from command");
   console.log(checkedData, arrayId, arrayValues, noteId);
@@ -104,4 +113,5 @@ module.exports = {
   UpdateNote: UpdateNote,
   UpdateCheckNoteList: UpdateCheckNoteList,
   UpdateNoteList: UpdateNoteList,
+  removeNote: removeNote,
 };

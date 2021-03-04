@@ -8,22 +8,31 @@
                 <% fetchData.map((data,key) => { %>
                     <% const destructureArray = data.note_list.split(','); %>
                     <% const destructureTime = new Date(data.note_insertDate) %>
-                    <% console.log(data)%>
-
+                    <% console.log(data.id)%>
                     <% if(key === 0){ %>
-                        <div class="content__list list__notFocus" id="<%= key %>" onClick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>')">
-                            <h3><%=data.note_title %></h3>
-                            <div class="note__time">
-                                <p><%=destructureArray[0] %></p>
-                                <span><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
+                        <div class="content__list list__notFocus" id="<%= key %>">
+                            <div class="info" onClick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>')">
+                                <h3><%=data.note_title %></h3>
+                                <div class="note__time">
+                                    <p><%=destructureArray[0] %></p>
+                                    <span id="spanTimeUpdate"><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
+                                </div>
+                            </div>
+                            <div id="removeContainer" class="removeClass" onclick="removeNoteFromList('<%=data.id%>')"">
+                                <img width="20"src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgMzg0IDM4NCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzg0IDM4NDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPGc+DQoJPGc+DQoJCTxnPg0KCQkJPHBhdGggZD0iTTY0LDM0MS4zMzNDNjQsMzY0LjkwNyw4My4wOTMsMzg0LDEwNi42NjcsMzg0aDE3MC42NjdDMzAwLjkwNywzODQsMzIwLDM2NC45MDcsMzIwLDM0MS4zMzN2LTI1Nkg2NFYzNDEuMzMzeiIvPg0KCQkJPHBvbHlnb24gcG9pbnRzPSIyNjYuNjY3LDIxLjMzMyAyNDUuMzMzLDAgMTM4LjY2NywwIDExNy4zMzMsMjEuMzMzIDQyLjY2NywyMS4zMzMgNDIuNjY3LDY0IDM0MS4zMzMsNjQgMzQxLjMzMywyMS4zMzMgCQkJIi8+DQoJCTwvZz4NCgk8L2c+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8L3N2Zz4NCg==" />
                             </div>
                         </div>
                     <% }else{ %>
-                        <div class="content__list list__notFocus" id="<%= key %>" onClick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>')">
-                            <h3><%=data.note_title %></h3>
-                            <div class="note__time">
-                                <p><%=destructureArray[0] %></p>
-                                <span><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
+                        <div class="content__list list__notFocus" id="<%= key %>" >
+                            <div class="info" onclick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>')">
+                                <h3><%=data.note_title %></h3>
+                                <div class="note__time">
+                                    <p><%=destructureArray[0] %></p>
+                                    <span id="spanTimeUpdate"><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
+                                </div>
+                            </div>
+                            <div id="removeContainer" class="removeClass" onclick="removeNoteFromList('<%=data.id%>')">
+                                <img width="20"src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgMzg0IDM4NCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzg0IDM4NDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPGc+DQoJPGc+DQoJCTxnPg0KCQkJPHBhdGggZD0iTTY0LDM0MS4zMzNDNjQsMzY0LjkwNyw4My4wOTMsMzg0LDEwNi42NjcsMzg0aDE3MC42NjdDMzAwLjkwNywzODQsMzIwLDM2NC45MDcsMzIwLDM0MS4zMzN2LTI1Nkg2NFYzNDEuMzMzeiIvPg0KCQkJPHBvbHlnb24gcG9pbnRzPSIyNjYuNjY3LDIxLjMzMyAyNDUuMzMzLDAgMTM4LjY2NywwIDExNy4zMzMsMjEuMzMzIDQyLjY2NywyMS4zMzMgNDIuNjY3LDY0IDM0MS4zMzMsNjQgMzQxLjMzMywyMS4zMzMgCQkJIi8+DQoJCTwvZz4NCgk8L2c+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8L3N2Zz4NCg==" />
                             </div>
                         </div>
                     <% } %>

@@ -52,6 +52,14 @@ router.get("/createNote/note", (req, res) => {
   res.redirect("/note/" + listKey);
 });
 
+router.get("/remove/note", (req, res) => {
+  const idNote = req.query.noteId;
+
+  commands.removeNote(idNote);
+  // res.send(idNote);
+  res.redirect("/note/" + 0);
+});
+
 router.post("/savenote/note", (req, res) => {
   commands.insertData(
     req.query.arrayId,

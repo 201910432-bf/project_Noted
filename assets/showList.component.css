@@ -32,11 +32,23 @@
   background-color: #fff;
   border-top: 1px solid #cabfbf7e;
   border-bottom: 1px solid #cabfbf7e;
-  padding: 0.5em 1em;
+  padding: 0em 0em 0em 1em;
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
   cursor: pointer;
+}
+
+.info {
+  padding: 0.5em 0;
+}
+
+.removeClass {
+  background-color: #ff4e7717;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.5em;
+  display: none;
 }
 
 .list__notFocus {

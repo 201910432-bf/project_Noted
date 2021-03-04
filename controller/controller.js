@@ -1,7 +1,44 @@
 var globalDataVariable = [];
 
+var showRemoveIcon = false;
 const onClickRemoveBtn = () => {
   console.log("trash click");
+  const remove = document.querySelectorAll("#removeContainer");
+  const spanTimeUpdate = document.querySelectorAll("#spanTimeUpdate");
+
+  if (showRemoveIcon === false) {
+    for (let i = 0; i < remove.length; i++) {
+      remove[i].style.display = "flex";
+      spanTimeUpdate[i].style.visibility = "hidden";
+    }
+    showRemoveIcon = true;
+  } else {
+    for (let i = 0; i < remove.length; i++) {
+      remove[i].style.display = "none";
+      spanTimeUpdate[i].style.visibility = "visible";
+    }
+    showRemoveIcon = false;
+  }
+};
+
+const removeNoteFromList = (idNote) => {
+  console.log(idNote);
+  const noteTitle = document.getElementById("noteTitle");
+  var request = new XMLHttpRequest();
+  request.onreadystatechange = function () {
+    if (request.readyState === XMLHttpRequest.DONE) {
+      if (request.status === 200) {
+        window.location.href = `http://localhost:5000/note/${0}`; //zero for now
+      }
+    }
+  };
+  request.open(
+    "GET",
+    `http://localhost:5000/remove/note?noteId=${idNote}`,
+    true
+  );
+  request.send(null);
+  // window.location.href = `http://localhost:5000/remove/note?noteId=${idNote}`;
 };
 
 const showAddNote = (trigger) => {
@@ -15,6 +52,14 @@ const showAddNote = (trigger) => {
 
 var lastNode;
 const getNoteData = (key, data) => {
+  const remove = document.querySelectorAll("#removeContainer");
+
+  if (remove[0].style.display == "flex") {
+    for (let i = 0; i < remove.length; i++) {
+      onClickRemoveBtn();
+    }
+  }
+
   console.log(key);
   globalDataVariable = [];
   var request = new XMLHttpRequest();

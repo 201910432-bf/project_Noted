@@ -48,7 +48,7 @@ router.get("/idea", (req, res) => {
 router.get("/createNote/note", (req, res) => {
   const noteName = req.query.notename;
   commands.insertNote(noteName);
-  res.send(noteName);
+  res.redirect("/note");
 });
 
 router.post("/savenote/note", (req, res) => {

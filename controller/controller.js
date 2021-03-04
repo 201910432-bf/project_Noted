@@ -266,21 +266,8 @@ const passtoUrl = (originalData, title, key) => {
 
 const addNote = () => {
   const noteTitle = document.getElementById("noteTitle");
-  var request = new XMLHttpRequest();
 
-  request.onreadystatechange = function () {
-    if (request.readyState === XMLHttpRequest.DONE) {
-      if (request.status === 200) {
-        window.location.href = "http://localhost:5000/note";
-      }
-    }
-  };
-  request.open(
-    "GET",
-    `http://localhost:5000/createNote/note?notename=${noteTitle.value}`,
-    true
-  );
-  request.send(null);
+  window.location.href = `http://localhost:5000/createNote/note?notename=${noteTitle.value}`;
 };
 
 const editClick = (noteId) => {

@@ -1,3 +1,4 @@
+        <% var counter = 0; %>
         <div class="show__list">
             <div class="show__list__header">
                 <h3>Note List</h3>
@@ -7,6 +8,7 @@
                 <% fetchData.map((data,key) => { %>
                     <% const destructureArray = data.note_list.split(','); %>
                     <% const destructureTime = new Date(data.note_insertDate) %>
+                    <% console.log(data)%>
 
                     <% if(key === 0){ %>
                         <div class="content__list list__notFocus" id="<%= key %>" onClick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>')">
@@ -40,7 +42,7 @@
                     <p><%=fetchData[noteId].note_title%></p>
                 </div>
                 <div class="main__content__remaining__edit">
-                    <span>3 tasks remaining</span>
+                    <span><span id="taskRemaining">3</span> tasks remaining</span>
                     <a href="javascript:void(0)" onclick="editClick('<%=fetchData[noteId].id %>')">Edit</a>
                 </div>
                 <div class="main__content__add">
@@ -70,7 +72,7 @@
                                         <a class="removeBtn get<%=splitDataKey[i]%>" href="javascript:void(0)" onclick="removeClick('<%=splitDataKey[i]%>','<%=splitData%>','<%=fetchData[noteId].id %>')" id="checkBoxRemove" value="<%=splitDataKey[i]%>"><img width="15" src="../assets/images/removeIcon.png" alt=""></a>
                                     </div>
                                 <% }else{ %>
-
+                                    <% counter++; %>
                                     <div class="checkBoxLabel checkBoxLabel<%=i%>">
                                         <label for="">
                                             <input type="checkbox" class="ClasscheckBox" value="<%=splitDataKey[i]%>,<%=splitData[i]%>" id="<%=splitDataKey[i]%>checkBox" onclick="checkboxClick('<%=splitDataKey[i]%>checkBox','<%= JSON.stringify(checkedID) %>','<%=fetchData[noteId].id %>')">
@@ -80,9 +82,10 @@
                                         <a class="removeBtn get<%=splitDataKey[i]%>" href="javascript:void(0)" onclick="removeClick('<%=splitDataKey[i]%>','<%=splitData%>','<%=fetchData[noteId].id %>')" id="checkBoxRemove" value="<%=splitDataKey[i]%>"><img width="15" src="../assets/images/removeIcon.png" alt=""></a>
                                     </div>
                                 <% } %>
-                            <% } %>
+                            <% }  %>
+                            <script>const counterValue = document.getElementById("taskRemaining").innerHTML = '<%=counter %>' </script>
                         <% } %>
-
+                        
                     </div>
                 </div>
                 <!-- remove class note__savebtn -->

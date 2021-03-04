@@ -127,6 +127,9 @@ const addList = (listData, listId, listTitle) => {
 
   const list = document.getElementById("addListText").value;
   const divList = document.getElementById("wrapLabel");
+  let counterValue = document.getElementById("taskRemaining").innerHTML;
+  document.getElementById("taskRemaining").innerHTML =
+    parseInt(counterValue) + 1;
 
   if (list.replace(/\s/g, "").length) {
     var newId = document.querySelectorAll("[type=checkbox]").length + 1;
@@ -170,16 +173,21 @@ const checkboxClick = (idKey, originalData, key) => {
 
   console.log(checkboxId);
   var dataElement = {};
+  let counterValue = document.getElementById("taskRemaining").innerHTML;
 
   if (document.getElementById(idKey).checked) {
     dataElement.id = idKey;
     dataElement.checked = true;
     globalDataVariable.push(dataElement);
     checkSpanId.classList.add("checkedList");
+    document.getElementById("taskRemaining").innerHTML =
+      parseInt(counterValue) - 1;
   } else {
     const index = globalDataVariable.filter((item) => item.id != idKey);
     globalDataVariable = index;
     checkSpanId.classList.remove("checkedList");
+    document.getElementById("taskRemaining").innerHTML =
+      parseInt(counterValue) + 1;
   }
 
   var timeoutId;
@@ -269,7 +277,22 @@ const passtoUrl = (originalData, title, key) => {
 const addNote = (listKey) => {
   const noteTitle = document.getElementById("noteTitle");
 
-  window.location.href = `http://localhost:5000/createNote/note?notename=${noteTitle.value}`;
+  var request = new XMLHttpRequest();
+
+  request.onreadystatechange = function () {
+    if (request.readyState === XMLHttpRequest.DONE) {
+      if (request.status === 200) {
+        window.location.href = `http://localhost:5000/note/${listKey}`;
+      }
+    }
+  };
+
+  request.open(
+    "GET",
+    `http://localhost:5000/createNote/note?notename=${noteTitle.value}&listKey=${listKey}`,
+    true
+  );
+  request.send(null);
 };
 
 const editClick = (noteId) => {

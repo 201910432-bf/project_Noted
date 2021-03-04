@@ -28,7 +28,6 @@ router.get("/note/id", (req, res) => {
 
 router.get("/note/:id", (req, res) => {
   const getID = req.params.id;
-  console.log(commands.getData());
   res.render("main.component.ejs", {
     fetchData: commands.getData(),
     noteId: getID,
@@ -47,8 +46,10 @@ router.get("/idea", (req, res) => {
 
 router.get("/createNote/note", (req, res) => {
   const noteName = req.query.notename;
+  const listKey = req.query.listKey;
+
   commands.insertNote(noteName);
-  res.redirect("/note");
+  res.redirect("/note/" + listKey);
 });
 
 router.post("/savenote/note", (req, res) => {

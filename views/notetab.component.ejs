@@ -2,7 +2,7 @@
         <div class="show__list">
             <div class="show__list__header">
                 <h3>Note List</h3>
-                <img src="../../images/remove.png" width="22" alt="">
+                <img src="../../images/remove.png" width="22" alt="" onclick="onClickRemoveBtn()">
             </div>
             <div class="show__list__content" id="noteList">
                 <% fetchData.map((data,key) => { %>
@@ -42,7 +42,7 @@
                     <p><%=fetchData[noteId].note_title%></p>
                 </div>
                 <div class="main__content__remaining__edit">
-                    <span><span id="taskRemaining">3</span> tasks remaining</span>
+                    <span><span id="taskRemaining">0</span> tasks remaining</span>
                     <a href="javascript:void(0)" onclick="editClick('<%=fetchData[noteId].id %>')">Edit</a>
                 </div>
                 <div class="main__content__add">

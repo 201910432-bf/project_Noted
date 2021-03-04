@@ -1,5 +1,9 @@
 var globalDataVariable = [];
 
+const onClickRemoveBtn = () => {
+  console.log("trash click");
+};
+
 const showAddNote = (trigger) => {
   const showNote = document.getElementById("showAddNote");
   if (trigger === "show") {
@@ -46,7 +50,7 @@ const getNoteData = (key, data) => {
                     <p>${data.command[key].note_title}</p>
                 </div>
                 <div class="main__content__remaining__edit">
-                    <span>3 tasks remaining</span>
+                  <span><span id="taskRemaining">0</span> tasks remaining</span>
                     <a href="javascript:void(0)" onclick="editClick('${data.command[key].id}')">Edit</a>
                 </div>
                 <div class="main__content__add">
@@ -77,6 +81,9 @@ const getNoteData = (key, data) => {
             });
           }
 
+          let counterValue = document.getElementById("taskRemaining").innerHTML;
+          var counter = 0;
+
           for (let i = 0; i < splitData.length; i++) {
             if (splitData[0] != "") {
               if (
@@ -98,17 +105,19 @@ const getNoteData = (key, data) => {
               } else {
                 template += `
                 <div class="checkBoxLabel checkBoxLabel${i}">
-                  <label for="">
-                  <input type="checkbox" class="ClasscheckBox" value="${splitDataKey[i]},${splitData[i]}" id="${splitDataKey[i]}checkBox" onclick="checkboxClick('${splitDataKey[i]}checkBox','','${data.command[key].id}')" >
-                  <span id="${splitDataKey[i]}checkBoxSpan" class="spanListText">${splitData[i]}</span>
-                  <input type="text" class="editListTextInput" value="${splitData[i]}">                  
-                  </label>
-                  <a class="removeBtn get${splitDataKey[i]}" href="javascript:void(0)" onclick="removeClick('${splitDataKey[i]}','${splitData}','${data.command[key].id}')" id="checkBoxRemove" value="${splitDataKey[i]}"><img width="15" src="../assets/images/removeIcon.png" alt=""></a>
+                <label for="">
+                <input type="checkbox" class="ClasscheckBox" value="${splitDataKey[i]},${splitData[i]}" id="${splitDataKey[i]}checkBox" onclick="checkboxClick('${splitDataKey[i]}checkBox','','${data.command[key].id}')" >
+                <span id="${splitDataKey[i]}checkBoxSpan" class="spanListText">${splitData[i]}</span>
+                <input type="text" class="editListTextInput" value="${splitData[i]}">                  
+                </label>
+                <a class="removeBtn get${splitDataKey[i]}" href="javascript:void(0)" onclick="removeClick('${splitDataKey[i]}','${splitData}','${data.command[key].id}')" id="checkBoxRemove" value="${splitDataKey[i]}"><img width="15" src="../assets/images/removeIcon.png" alt=""></a>
                 </div>
                 `;
+                counter++;
               }
             }
           }
+          document.getElementById("taskRemaining").innerHTML = counter;
           document.getElementById("wrapLabel").innerHTML = template;
         });
         window.history.replaceState(null, null, `/note/${key}`);
@@ -398,6 +407,9 @@ const removeClick = (key, arrayData, noteId) => {
 
   const allCheckBox = document.querySelectorAll('input[type="checkbox"]');
   const allInput = document.querySelectorAll(".editListTextInput");
+  let counterValue = document.getElementById("taskRemaining").innerHTML;
+  document.getElementById("taskRemaining").innerHTML =
+    parseInt(counterValue) - 1;
 
   var setNewArrayObj = [];
   var arrayId = [];

@@ -53,12 +53,21 @@ router.get("/createNote/note", (req, res) => {
 
 router.post("/savenote/note", (req, res) => {
   commands.insertData(
-    req.query.objectChecked,
     req.query.arrayId,
     req.query.arrayValue,
     req.query.title,
     req.query.key
   );
+
+  // res.send(
+  //   req.query.arrayId +
+  //     " " +
+  //     req.query.arrayValue +
+  //     " " +
+  //     req.query.title +
+  //     " " +
+  //     req.query.key
+  // );
 
   // res.redirect("/note");
 });
@@ -80,6 +89,12 @@ router.get("/update/note", (req, res) => {
       " " +
       req.query.noteId
   );
+});
+
+router.get("/update/noteCheck", (req, res) => {
+  commands.UpdateCheckNoteList(req.query.objectChecked, req.query.key);
+
+  res.send(req.query.objectChecked + " " + req.query.key);
 });
 
 router.get("/update/noteList", (req, res) => {

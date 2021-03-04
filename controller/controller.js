@@ -51,7 +51,7 @@ const getNoteData = (key, data) => {
                 </div>
                 <div class="main__content__add">
                     <input type="text" id="addListText" value="">
-                    <button type="button" onclick="addList('${data.noteId}')">+</button>
+                    <button type="button" onclick="addList('${data.noteId}','${data.command[key].id}','${data.command[key].note_title}')">+</button>
                 </div>
                 <div class="main__content__checkbox">
                     <div class="main__content__checkbox__wrap" id="wrapLabel">
@@ -91,7 +91,7 @@ const getNoteData = (key, data) => {
                 template += `
                 <div class="checkBoxLabel checkBoxLabel${i}">
                   <label for="">
-                  <input type="checkbox" value="${splitDataKey[i]},${splitData[i]}" id="${splitDataKey[i]}checkBox" onclick="checkboxClick('${splitDataKey[i]}checkBox','')" checked>
+                  <input type="checkbox" class="ClasscheckBox" value="${splitDataKey[i]},${splitData[i]}" id="${splitDataKey[i]}checkBox" onclick="checkboxClick('${splitDataKey[i]}checkBox','','${data.command[key].id}')" checked>
                   <span id="${splitDataKey[i]}checkBoxSpan" class="checkedList spanListText" >${splitData[i]}</span>
                   <input style="text-decoration: line-through;" type="text" class="editListTextInput" value="${splitData[i]}">
                   </label>
@@ -102,7 +102,7 @@ const getNoteData = (key, data) => {
                 template += `
                 <div class="checkBoxLabel checkBoxLabel${i}">
                   <label for="">
-                  <input type="checkbox" value="${splitDataKey[i]},${splitData[i]}" id="${splitDataKey[i]}checkBox" onclick="checkboxClick('${splitDataKey[i]}checkBox','')" >
+                  <input type="checkbox" class="ClasscheckBox" value="${splitDataKey[i]},${splitData[i]}" id="${splitDataKey[i]}checkBox" onclick="checkboxClick('${splitDataKey[i]}checkBox','','${data.command[key].id}')" >
                   <span id="${splitDataKey[i]}checkBoxSpan" class="spanListText">${splitData[i]}</span>
                   <input type="text" class="editListTextInput" value="${splitData[i]}">                  
                   </label>
@@ -122,8 +122,11 @@ const getNoteData = (key, data) => {
   request.send(null);
 };
 
-const addList = (listData) => {
+var countKey;
+const addList = (listData, listId, listTitle) => {
   console.log(listData);
+  console.log(listId);
+  console.log(listTitle);
 
   const list = document.getElementById("addListText").value;
   const divList = document.getElementById("wrapLabel");
@@ -132,22 +135,14 @@ const addList = (listData) => {
     const splitData = listData.split(",");
     const keys = listData.split(",");
 
-    var newId =
-      document.getElementById("wrapLabel").getElementsByTagName("input")
-        .length + 1;
+    var newId = document.querySelectorAll("[type=checkbox]").length + 1;
 
-    // newId = document.querySelectorAll("#wrapLabel input") + 1;
-
-    for (let i = 0; i < splitData.length; i++) {
-      if (newId == splitData[i]) newId++;
-      console.log(splitData[i]);
-    }
     console.log(newId);
 
     var stringTemp = `
     <div class="checkBoxLabel">
       <label for="">
-          <input type="checkbox" value="${
+          <input type="checkbox" class="ClasscheckBox" value="${
             newId + "," + list
           }" id="${newId}checkBox" onclick="checkboxClick('${newId}checkBox','')" >
           <span class="spanListText" id='${newId}checkBoxSpan'>${list}</span>
@@ -160,13 +155,20 @@ const addList = (listData) => {
     divList.innerHTML += stringTemp;
     document.getElementById("addListText").value = "";
   }
+  passtoUrl("", listTitle, listId);
 };
 
-const checkboxClick = (idKey, originalData) => {
+const checkboxClick = (idKey, originalData, key) => {
   console.log(originalData);
+  console.log(key);
 
   if (globalDataVariable.length == 0 && originalData != "") {
+    console.log(originalData === "");
     globalDataVariable = JSON.parse(originalData);
+  }
+
+  if (globalDataVariable == "") {
+    globalDataVariable = [];
   }
 
   const checkboxId = document.getElementById(idKey).value;
@@ -185,10 +187,42 @@ const checkboxClick = (idKey, originalData) => {
     globalDataVariable = index;
     checkSpanId.classList.remove("checkedList");
   }
-  console.log(globalDataVariable);
+
+  var timeoutId;
+  $(`.ClasscheckBox`).on("input propertychange change", function () {
+    console.log("running");
+
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(function () {
+      DBupdateCheckBox(key);
+    }, 100);
+  });
 };
 
-const passtoUrl = (originalData, key, title) => {
+function DBupdateCheckBox(key) {
+  console.log("from functionm");
+  console.log(globalDataVariable);
+  var request = new XMLHttpRequest();
+
+  request.onreadystatechange = function () {
+    if (request.readyState === XMLHttpRequest.DONE) {
+      if (request.status === 200) {
+      }
+    }
+  };
+
+  request.open(
+    "GET",
+    `http://localhost:5000/update/noteCheck/?objectChecked=${JSON.stringify(
+      globalDataVariable
+    )}&key=${key}`,
+    true
+  );
+
+  request.send(null);
+}
+
+const passtoUrl = (originalData, title, key) => {
   console.log(originalData);
   console.log(key);
   console.log(title);
@@ -208,10 +242,6 @@ const passtoUrl = (originalData, key, title) => {
     console.log(globalDataVariable);
   }
 
-  // const fetchList = document
-  //   .getElementById("wrapLabel")
-  //   .getElementsByTagName("input");
-
   const fetchList = document.querySelectorAll('input[type="checkbox"]');
   const allList = document.querySelectorAll(".spanListText");
 
@@ -223,10 +253,7 @@ const passtoUrl = (originalData, key, title) => {
     valueArray.push(allList[i].innerHTML);
   }
 
-  console.log(valueArray); //emd hr
-  //if click edit record the last change of all textfield
-  //if click save while textfield is active get all the data of text field and make it as valueArray
-  //update all change to all string js template
+  console.log(valueArray);
 
   var request = new XMLHttpRequest();
 
@@ -238,9 +265,7 @@ const passtoUrl = (originalData, key, title) => {
   };
   request.open(
     "POST",
-    `http://localhost:5000/savenote/note/?objectChecked=${JSON.stringify(
-      globalDataVariable
-    )}&arrayId=${idArray}&arrayValue=${valueArray}&title=${title}&key=${key}`,
+    `http://localhost:5000/savenote/note/?arrayId=${idArray}&arrayValue=${valueArray}&title=${title}&key=${key}`,
     true
   );
 

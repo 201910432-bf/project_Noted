@@ -29,13 +29,13 @@ function getData() {
 }
 getData();
 
-const insertData = (checkedData, arrayId, arrayValues, title, key) => {
-  console.log(checkedData, arrayId, arrayValues, "throw from commands");
+const insertData = (arrayId, arrayValues, title, key) => {
+  console.log(arrayId, arrayValues, "throw from commands");
 
-  const record = [title, arrayValues, arrayId, checkedData, nowDate, key];
+  const record = [title, arrayValues, arrayId, nowDate, key];
 
   const queryString =
-    "UPDATE note_table SET note_title=?, note_list=?, note_keys=?, checked_list=?, note_updateDate=? WHERE id=?  ";
+    "UPDATE note_table SET note_title=?, note_list=?, note_keys=?, note_updateDate=? WHERE id=?  ";
   conn.db.query(queryString, record, (err, result) => {
     if (err) throw err;
     else console.log("success");
@@ -69,6 +69,20 @@ const UpdateNote = (checkedData, arrayId, arrayValues, noteId) => {
   });
 };
 
+const UpdateCheckNoteList = (objectChecked, key) => {
+  console.log("from command");
+  console.log(objectChecked, key);
+
+  const record = [objectChecked, nowDate, key];
+  const queryString =
+    "UPDATE note_table SET checked_list=?, note_updateDate=? WHERE id=?  ";
+  conn.db.query(queryString, record, (err, result) => {
+    if (err) throw err;
+    else console.log("success");
+    getData();
+  });
+};
+
 const UpdateNoteList = (checkedData, noteId) => {
   console.log("from command");
   console.log(checkedData, noteId);
@@ -88,5 +102,6 @@ module.exports = {
   insertData: insertData,
   insertNote: insertNote,
   UpdateNote: UpdateNote,
+  UpdateCheckNoteList: UpdateCheckNoteList,
   UpdateNoteList: UpdateNoteList,
 };

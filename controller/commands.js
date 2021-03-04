@@ -16,19 +16,6 @@ const todayDate = date.toLocaleDateString("en", {
 
 const nowDate = todayDate + ", " + todayTime;
 
-function getData() {
-  const queryString = "SELECT * FROM note_table";
-  conn.db.query(queryString, (err, rows, fields) => {
-    if (err) {
-      console.log("Failed", err);
-      return;
-    }
-    data = JSON.parse(JSON.stringify(rows));
-  });
-  return data;
-}
-getData();
-
 const insertData = (arrayId, arrayValues, title, key) => {
   console.log(arrayId, arrayValues, "throw from commands");
 
@@ -96,6 +83,19 @@ const UpdateNoteList = (checkedData, noteId) => {
     getData();
   });
 };
+
+function getData() {
+  const queryString = "SELECT * FROM note_table";
+  conn.db.query(queryString, (err, rows, fields) => {
+    if (err) {
+      console.log("Failed", err);
+      return;
+    }
+    data = JSON.parse(JSON.stringify(rows));
+  });
+  return data;
+}
+getData();
 
 module.exports = {
   getData: getData,

@@ -56,7 +56,6 @@
 
                         <% const objectCheckedData = fetchData[noteId].checked_list; %>
                         
-                        <% console.log(objectCheckedData) %>
                         <% const checkedID = objectCheckedData != "" ? JSON.parse(objectCheckedData) : "" %>
 
                         <% if(listString !== "") { %>
@@ -105,7 +104,7 @@
                         <label for="noteTitle">Note Title</label>
                         <div class="text__container">
                             <input type="text" id="noteTitle"><br>
-                            <button type="button" onClick="addNote()">Save</button>
+                            <button type="button" onClick="addNote('<%=fetchData.length %>')">Save</button>
                         </div>
                     </div>
                 </div>

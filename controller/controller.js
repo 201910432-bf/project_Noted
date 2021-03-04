@@ -111,6 +111,7 @@ const getNoteData = (key, data) => {
           }
           document.getElementById("wrapLabel").innerHTML = template;
         });
+        window.history.replaceState(null, null, `/note/${key}`);
       }
     }
   };
@@ -265,7 +266,7 @@ const passtoUrl = (originalData, title, key) => {
   request.send(null);
 };
 
-const addNote = () => {
+const addNote = (listKey) => {
   const noteTitle = document.getElementById("noteTitle");
 
   window.location.href = `http://localhost:5000/createNote/note?notename=${noteTitle.value}`;

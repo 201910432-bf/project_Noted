@@ -51,7 +51,9 @@ const showAddNote = (trigger) => {
 };
 
 var lastNode;
-const getNoteData = (key, data) => {
+const getNoteData = (key, data, noteId) => {
+  console.log(noteId, key, lastNode);
+
   const remove = document.querySelectorAll("#removeContainer");
 
   if (remove[0].style.display == "flex") {
@@ -65,7 +67,7 @@ const getNoteData = (key, data) => {
   var request = new XMLHttpRequest();
   const sendfile = document.getElementById("sendfile");
 
-  const getFirstNode = document.getElementById(0);
+  const getFirstNode = document.getElementById(noteId);
   const getCurrentNode = document.getElementById(key);
   const getLastNode = document.getElementById(lastNode);
 

@@ -1,5 +1,6 @@
 const conn = require("../conn");
 var data;
+var dataIdea;
 
 const date = new Date();
 const todayTime = date.toLocaleTimeString("en-US", {
@@ -106,6 +107,35 @@ function getData() {
 }
 getData();
 
+/**
+ *
+ *
+ *
+ */
+
+const insertIdea = (ideaTitle) => {
+  const queryString = `INSERT INTO idea_table (idea_title, idea_insertDate, idea_updateDate) VALUES ('${ideaTitle}', '${nowDate}', '${nowDate}') `;
+  conn.db.query(queryString, (err, result) => {
+    if (err) console.log("Failed", err);
+    else console.log("Added Success! ");
+    getDataIdea();
+  });
+};
+
+function getDataIdea() {
+  const queryString = "SELECT * FROM idea_table";
+  conn.db.query(queryString, (err, rows, fields) => {
+    if (err) {
+      console.log("Failed", err);
+      return;
+    }
+    dataIdea = JSON.parse(JSON.stringify(rows));
+    console.log(dataIdea);
+  });
+  return dataIdea;
+}
+getDataIdea();
+
 module.exports = {
   getData: getData,
   insertData: insertData,
@@ -114,4 +144,6 @@ module.exports = {
   UpdateCheckNoteList: UpdateCheckNoteList,
   UpdateNoteList: UpdateNoteList,
   removeNote: removeNote,
+  getDataIdea: getDataIdea,
+  insertIdea: insertIdea,
 };

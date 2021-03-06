@@ -95,3 +95,64 @@
   border-color: rgb(69, 108, 216);
   border-radius: 5px;
 }
+
+.add__note__settings {
+  visibility: hidden;
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(92, 92, 92, 0.521);
+}
+
+.add__note__options {
+  border-radius: 5px;
+  width: 25em;
+  height: 20em;
+  background-color: #f2f2f2;
+}
+
+.exit__btn {
+  width: 100%;
+  height: 2.5em;
+  display: flex;
+  justify-content: flex-end;
+  background-color: rgb(99, 99, 99);
+}
+
+.exit__btn > button {
+  margin: 0.5em;
+  padding: 0.3em;
+}
+
+.add__note__content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 40vh;
+  text-align: center;
+}
+
+.add__note__content > label {
+  font-size: 25px;
+  margin-bottom: 1.5em;
+}
+
+.add__note__content .text__container input {
+  width: 20em;
+  font-size: 15px;
+  padding: 0.5em;
+  outline: none;
+  border-radius: 5px;
+  border-width: thin;
+  border-color: lightgray;
+}
+
+.text__container > button {
+  margin-top: 0.7em;
+  padding: 0.5em 2em;
+}

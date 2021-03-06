@@ -4,20 +4,46 @@
                 <img src="../images/remove.png" width="22" alt="">
             </div>
             <div class="show__idea__content">
-                <div class="content__idea__list">
-                    <h3>Matutong magluto</h3>
-                    <div class="idea__time">
-                        <span>4:52 PM</span>
+                <% fetchData.map((data,key) => { %>
+                    <% if(key === parseInt(noteId)){ %>
+                    <div class="content__idea__list">
+                        <h3><%=data.idea_title %></h3>
+                        <div class="idea__time">
+                            <span>4:52 PM</span>
+                        </div>
                     </div>
-                </div>
+                    <% }else{ %>
+                        <div class="content__idea__list list__notFocus">
+                            <h3><%=data.idea_title %></h3>
+                            <div class="idea__time">
+                                <span>4:52 PM</span>
+                            </div>
+                        </div>
+                    <% } %>
+                <% }) %>
             </div>
             <div class="add__idea">
-                <a href="">Add new Idea</a>
+                <a href="javascript:void(0)" onClick="showAddIdea('show');">Add new Idea</a>
             </div>
         </div>
         <div class="editor__container">
             <textarea id="textAreaContent" name="editor" cols="30" rows="10" class="ckeditor"></textarea>
             <div class="editor__container__button">
                 <button type="button" onclick="showContent()">Save</button>
+            </div>
+        </div>
+
+        <div class="add__note__settings" id="showAddIdea">
+            <div class="add__note__options">
+                <div class="exit__btn">
+                    <button type="button" onClick="showAddIdea('hide');">X</button>
+                </div>
+                <div class="add__note__content">
+                    <label for="noteTitle">Idea Title</label>
+                    <div class="text__container">
+                        <input type="text" id="ideaTitle"><br>
+                        <button type="button" onClick="addIdea('<%=fetchData.length%>')">Save</button>
+                    </div>
+                </div>
             </div>
         </div>

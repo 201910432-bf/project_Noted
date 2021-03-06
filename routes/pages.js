@@ -35,15 +35,6 @@ router.get("/note/:id", (req, res) => {
   });
 });
 
-//go to idea tab
-router.get("/idea", (req, res) => {
-  res.render("main.component.ejs", {
-    fetchData: commands.getData(),
-    message: "hello from server",
-    tabKey: "idea",
-  });
-});
-
 router.get("/createNote/note", (req, res) => {
   const noteName = req.query.notename;
   const listKey = req.query.listKey;
@@ -110,6 +101,41 @@ router.get("/update/noteList", (req, res) => {
   commands.UpdateNoteList(req.query.noteName, req.query.noteId);
 
   res.send(req.query.noteName + " " + req.query.noteId);
+});
+
+/**
+ *
+ *        Idea TAB
+ *
+ *
+ *
+ *
+ */
+
+//go to idea tab
+router.get("/idea", (req, res) => {
+  res.render("main.component.ejs", {
+    fetchData: commands.getDataIdea(),
+    noteId: 0,
+    tabKey: "idea",
+  });
+});
+
+router.get("/createIdea/idea", (req, res) => {
+  const ideaName = req.query.ideaname;
+  const ideaKey = req.query.ideaKey;
+
+  commands.insertIdea(ideaName);
+  res.redirect("/idea/" + ideaKey);
+});
+
+router.get("/idea/:id", (req, res) => {
+  const getID = req.params.id;
+  res.render("main.component.ejs", {
+    fetchData: commands.getDataIdea(),
+    noteId: getID,
+    tabKey: "idea",
+  });
 });
 
 //export the router

@@ -122,6 +122,17 @@ const insertIdea = (ideaTitle) => {
   });
 };
 
+const UpdateIdeaData = (ideaData, key) => {
+  const record = [ideaData, nowDate, key];
+  const queryString =
+    "UPDATE idea_table SET idea_data=?, idea_updateDate=? WHERE id=?  ";
+  conn.db.query(queryString, record, (err, result) => {
+    if (err) throw err;
+    else console.log("success");
+    getDataIdea();
+  });
+};
+
 function getDataIdea() {
   const queryString = "SELECT * FROM idea_table";
   conn.db.query(queryString, (err, rows, fields) => {
@@ -146,4 +157,5 @@ module.exports = {
   removeNote: removeNote,
   getDataIdea: getDataIdea,
   insertIdea: insertIdea,
+  UpdateIdeaData: UpdateIdeaData,
 };

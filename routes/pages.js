@@ -129,6 +129,11 @@ router.get("/createIdea/idea", (req, res) => {
   res.redirect("/idea/" + ideaKey);
 });
 
+router.get("/idea/id", (req, res) => {
+  const getID = req.query.id;
+  res.send([{ command: commands.getDataIdea(), noteId: getID }]);
+});
+
 router.get("/idea/:id", (req, res) => {
   const getID = req.params.id;
   res.render("main.component.ejs", {
@@ -136,6 +141,12 @@ router.get("/idea/:id", (req, res) => {
     noteId: getID,
     tabKey: "idea",
   });
+});
+
+router.get("/update/ideaData", (req, res) => {
+  commands.getDataIdea();
+  commands.UpdateIdeaData(req.query.ideaData, req.query.key);
+  res.send(req.query.ideaData);
 });
 
 //export the router

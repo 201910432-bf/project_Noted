@@ -46,8 +46,25 @@ const getIdeaData = (key, data, noteId, idNode) => {
   }
   lastNode = key;
 
-  CKEDITOR.instances.textAreaContent.setData(data);
-  window.history.replaceState(null, null, `/idea/${key}`);
+  var request = new XMLHttpRequest();
+
+  request.onreadystatechange = function () {
+    if (request.readyState === XMLHttpRequest.DONE) {
+      if (request.status === 200) {
+        const response = JSON.parse(request.response);
+        response.map((data, mapkey) => {
+          const dataIdea = data.command[data.noteId].idea_data;
+
+          CKEDITOR.instances.textAreaContent.setData(dataIdea);
+
+          window.history.replaceState(null, null, `/idea/${key}`);
+        });
+      }
+    }
+  };
+
+  request.open("GET", "http://localhost:5000/idea/id?id=" + key, true);
+  request.send(null);
 };
 
 const showContent = () => {
@@ -60,6 +77,7 @@ const runFetchCkEditor = (nodeId) => {
   }
 
   console.log(idKey);
+  console.log(nodeId);
 
   var timeoutId;
   $(function () {
@@ -69,13 +87,29 @@ const runFetchCkEditor = (nodeId) => {
 
       clearTimeout(timeoutId);
       timeoutId = setTimeout(function () {
-        DBupdateTextArea(0, value);
+        DBupdateTextArea(idKey, value);
       }, 1000);
     });
   });
 };
 
 const DBupdateTextArea = (key, value) => {
-  console.log("hello");
   console.log(value);
+  var request = new XMLHttpRequest();
+
+  request.onreadystatechange = function () {
+    if (request.readyState === XMLHttpRequest.DONE) {
+      if (request.status === 200) {
+        // const response = JSON.parse(request.response);
+      }
+    }
+  };
+
+  request.open(
+    "GET",
+    `http://localhost:5000/update/ideaData?ideaData=${value}&key=${key}`,
+    true
+  );
+  request.send(null);
+  // window.location.href = `http://localhost:5000/update/ideaData?ideaData="${ciphertext}"&key=${key}`;
 };

@@ -22,9 +22,6 @@
         <% if(tabKey == "note"){ %>
             <%- include("./notetab.component.ejs") -%>
         <% }else if(tabKey == "idea"){ %>
-            <script type="text/javascript">
-                runFetchCkEditor();
-             </script>
             <%- include("./ideatab.component.ejs") -%>
         <% } %>
     </div>

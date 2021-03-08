@@ -28,9 +28,12 @@ const addIdea = (ideaKey) => {
   request.send(null);
 };
 
+var idKey;
 var lastNode;
-const getIdeaData = (key, data, noteId) => {
-  console.log(noteId, key, data);
+const getIdeaData = (key, data, noteId, idNode) => {
+  console.log(noteId, key, data, idNode);
+
+  idKey = idNode;
 
   const getFirstNode = document.getElementById(noteId + "idea");
   const getCurrentNode = document.getElementById(key + "idea");
@@ -42,16 +45,37 @@ const getIdeaData = (key, data, noteId) => {
     getLastNode.classList.add("list__notFocus");
   }
   lastNode = key;
+
+  CKEDITOR.instances.textAreaContent.setData(data);
+  window.history.replaceState(null, null, `/idea/${key}`);
 };
 
 const showContent = () => {
   console.log(CKEDITOR.instances.textAreaContent.getData());
 };
 
-const runFetchCkEditor = () => {
+const runFetchCkEditor = (nodeId) => {
+  if (idKey === undefined) {
+    idKey = nodeId;
+  }
+
+  console.log(idKey);
+
+  var timeoutId;
   $(function () {
     CKEDITOR.instances["textAreaContent"].on("change", function () {
-      console.log(CKEDITOR.instances.textAreaContent.getData());
+      let value = CKEDITOR.instances.textAreaContent.getData();
+      // console.log(CKEDITOR.instances.textAreaContent.getData());
+
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(function () {
+        DBupdateTextArea(0, value);
+      }, 1000);
     });
   });
+};
+
+const DBupdateTextArea = (key, value) => {
+  console.log("hello");
+  console.log(value);
 };

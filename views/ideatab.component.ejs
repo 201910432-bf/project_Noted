@@ -7,7 +7,7 @@
                 <% fetchData.map((data,key) => { %>
                     <% if(key === parseInt(noteId)){ %>
                     <div class="content__idea__list" id="<%= key %>idea">
-                        <div class="info" onclick="getIdeaData('<%= key %>','<%= JSON.stringify(data) %>','<%= noteId %>')">
+                        <div class="info" onclick='getIdeaData("<%= key %>","<%= data.idea_data %>","<%= noteId %>","<%=data.id %>")'>
                             <h3><%=data.idea_title %></h3>
                             <div class="idea__time">
                                 <span>4:52 PM</span>
@@ -16,7 +16,7 @@
                     </div>
                     <% }else{ %>
                         <div class="content__idea__list list__notFocus" id="<%= key %>idea">
-                            <div class="info" onclick="getIdeaData('<%= key %>','<%= JSON.stringify(data) %>','<%= noteId %>')">
+                            <div class="info" onclick='getIdeaData("<%= key %>","<%= data.idea_data %>","<%= noteId %>","<%=data.id %>")'>
                                 <h3><%=data.idea_title %></h3>
                                 <div class="idea__time">
                                     <span>4:52 PM</span>
@@ -32,11 +32,14 @@
         </div>
 
         <% if(fetchData[noteId] !== undefined) { %>
-        <div class="editor__container">
-            <textarea id="textAreaContent" name="editor" cols="30" rows="10" class="ckeditor" onchange="ckeditorOnClick()"></textarea>
-            <div class="editor__container__button">
+        <div class="editor__container" id="edit_container">
+            <textarea id="textAreaContent" name="editor" cols="30" rows="10" class="ckeditor"><%=fetchData[noteId].idea_data%></textarea>
+            <script type="text/javascript">
+                runFetchCkEditor('<%=fetchData[noteId].id%>');
+             </script>
+            <!-- <div class="editor__container__button">
                 <button type="button" onclick="showContent()">Save</button>
-            </div>
+            </div> -->
         </div>
         <% }else{%>
             <div class="no__fetchData">

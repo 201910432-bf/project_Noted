@@ -27,3 +27,31 @@ const addIdea = (ideaKey) => {
   );
   request.send(null);
 };
+
+var lastNode;
+const getIdeaData = (key, data, noteId) => {
+  console.log(noteId, key, data);
+
+  const getFirstNode = document.getElementById(noteId + "idea");
+  const getCurrentNode = document.getElementById(key + "idea");
+  const getLastNode = document.getElementById(lastNode + "idea");
+
+  getFirstNode.classList.add("list__notFocus");
+  getCurrentNode.classList.remove("list__notFocus");
+  if (lastNode != undefined && lastNode != key) {
+    getLastNode.classList.add("list__notFocus");
+  }
+  lastNode = key;
+};
+
+const showContent = () => {
+  console.log(CKEDITOR.instances.textAreaContent.getData());
+};
+
+const runFetchCkEditor = () => {
+  $(function () {
+    CKEDITOR.instances["textAreaContent"].on("change", function () {
+      console.log(CKEDITOR.instances.textAreaContent.getData());
+    });
+  });
+};

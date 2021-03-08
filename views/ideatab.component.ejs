@@ -6,17 +6,21 @@
             <div class="show__idea__content">
                 <% fetchData.map((data,key) => { %>
                     <% if(key === parseInt(noteId)){ %>
-                    <div class="content__idea__list">
-                        <h3><%=data.idea_title %></h3>
-                        <div class="idea__time">
-                            <span>4:52 PM</span>
-                        </div>
-                    </div>
-                    <% }else{ %>
-                        <div class="content__idea__list list__notFocus">
+                    <div class="content__idea__list" id="<%= key %>idea">
+                        <div class="info" onclick="getIdeaData('<%= key %>','<%= JSON.stringify(data) %>','<%= noteId %>')">
                             <h3><%=data.idea_title %></h3>
                             <div class="idea__time">
                                 <span>4:52 PM</span>
+                            </div>
+                        </div>
+                    </div>
+                    <% }else{ %>
+                        <div class="content__idea__list list__notFocus" id="<%= key %>idea">
+                            <div class="info" onclick="getIdeaData('<%= key %>','<%= JSON.stringify(data) %>','<%= noteId %>')">
+                                <h3><%=data.idea_title %></h3>
+                                <div class="idea__time">
+                                    <span>4:52 PM</span>
+                                </div>
                             </div>
                         </div>
                     <% } %>
@@ -26,12 +30,20 @@
                 <a href="javascript:void(0)" onClick="showAddIdea('show');">Add new Idea</a>
             </div>
         </div>
+
+        <% if(fetchData[noteId] !== undefined) { %>
         <div class="editor__container">
-            <textarea id="textAreaContent" name="editor" cols="30" rows="10" class="ckeditor"></textarea>
+            <textarea id="textAreaContent" name="editor" cols="30" rows="10" class="ckeditor" onchange="ckeditorOnClick()"></textarea>
             <div class="editor__container__button">
                 <button type="button" onclick="showContent()">Save</button>
             </div>
         </div>
+        <% }else{%>
+            <div class="no__fetchData">
+                <h1>No Data</h1>
+            </div>
+        <% }%>
+
 
         <div class="add__note__settings" id="showAddIdea">
             <div class="add__note__options">

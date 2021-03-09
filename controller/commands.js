@@ -47,7 +47,7 @@ const removeNote = (noteId) => {
   const queryString = `DELETE FROM note_table WHERE id = '${noteId}'`;
   conn.db.query(queryString, (err, result) => {
     if (err) console.log("Failed", err);
-    else console.log("Added Success! ");
+    else console.log("Remove Success! ");
     getData();
   });
 };
@@ -133,6 +133,15 @@ const UpdateIdeaData = (ideaData, key) => {
   });
 };
 
+const removeIdea = (ideaId) => {
+  const queryString = `DELETE FROM idea_table WHERE id = '${ideaId}'`;
+  conn.db.query(queryString, (err, result) => {
+    if (err) console.log("Failed", err);
+    else console.log("Remove Success!");
+    getDataIdea();
+  });
+};
+
 function getDataIdea() {
   const queryString = "SELECT * FROM idea_table";
   conn.db.query(queryString, (err, rows, fields) => {
@@ -158,4 +167,5 @@ module.exports = {
   getDataIdea: getDataIdea,
   insertIdea: insertIdea,
   UpdateIdeaData: UpdateIdeaData,
+  removeIdea: removeIdea,
 };

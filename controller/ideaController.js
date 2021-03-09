@@ -28,6 +28,42 @@ const addIdea = (ideaKey) => {
   request.send(null);
 };
 
+var showRemoveIconIdea = false;
+const onClickRemoveBtnIdea = () => {
+  console.log("trash click");
+  const remove = document.querySelectorAll("#removeContainerIdea");
+
+  if (showRemoveIconIdea === false) {
+    for (let i = 0; i < remove.length; i++) {
+      remove[i].style.display = "flex";
+    }
+    showRemoveIconIdea = true;
+  } else {
+    for (let i = 0; i < remove.length; i++) {
+      remove[i].style.display = "none";
+    }
+    showRemoveIconIdea = false;
+  }
+};
+
+const removeIdeaFromList = (idIdea) => {
+  var request = new XMLHttpRequest();
+  request.onreadystatechange = function () {
+    if (request.readyState === XMLHttpRequest.DONE) {
+      if (request.status === 200) {
+        window.location.href = `http://localhost:5000/idea/${0}`; //zero for now
+      }
+    }
+  };
+  request.open(
+    "GET",
+    `http://localhost:5000/remove/idea?idIdea=${idIdea}`,
+    true
+  );
+  request.send(null);
+  // window.location.href = `http://localhost:5000/remove/note?noteId=${idNote}`;
+};
+
 var idKey;
 var lastNode;
 const getIdeaData = (key, data, noteId, idNode) => {
@@ -96,14 +132,6 @@ const runFetchCkEditor = (nodeId) => {
 const DBupdateTextArea = (key, value) => {
   console.log(value);
   var request = new XMLHttpRequest();
-
-  request.onreadystatechange = function () {
-    if (request.readyState === XMLHttpRequest.DONE) {
-      if (request.status === 200) {
-        // const response = JSON.parse(request.response);
-      }
-    }
-  };
 
   request.open(
     "GET",

@@ -10,7 +10,7 @@ CKEDITOR.editorConfig = function (config) {
   config.resize_minHeight = 600; // min resize height
   config.resize_minWidth = 500; // min resize width
   // config.width = 724; // starting width
-  config.height = 540; // starting height
+  config.height = 622; // starting height
 
   // Define changes to default configuration here.
   // For complete reference see:

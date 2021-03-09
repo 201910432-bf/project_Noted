@@ -149,5 +149,13 @@ router.get("/update/ideaData", (req, res) => {
   res.send(req.query.ideaData);
 });
 
+router.get("/remove/idea", (req, res) => {
+  const idIdea = req.query.idIdea;
+
+  commands.removeIdea(idIdea);
+  // res.send(idNote);
+  res.redirect("/note/" + 0);
+});
+
 //export the router
 module.exports = router;

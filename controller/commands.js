@@ -1,4 +1,5 @@
 const conn = require("../conn");
+
 const crypto = require("crypto");
 
 var data;
@@ -183,7 +184,7 @@ function hash(input, salt) {
   return ["pbkdf2", "1000", salt, key.toString("hex")].join("$");
 }
 
-const loginUser = (username, userPassword, res) => {
+const loginUser = (username, userPassword, res, req) => {
   conn.db.query(
     "SELECT * FROM user_table WHERE username = ?",
     [username],
@@ -199,8 +200,9 @@ const loginUser = (username, userPassword, res) => {
           const hashed = hash(userPassword, salt);
 
           if (hashed === hashPasswordDB) {
+            req.session.auth = { userId: result[0].id };
             res.sendStatus(200);
-            console.log("Credentials corrent");
+            console.log("Credentials correct");
           } else {
             res.sendStatus(403);
             console.log("Username/Password is invalid");

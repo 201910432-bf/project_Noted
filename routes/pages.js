@@ -1,6 +1,8 @@
 const express = require("express");
 const crypto = require("crypto");
 const bodyParser = require("body-parser");
+const session = require("express-session");
+
 const conn = require("../conn");
 
 const router = express.Router();
@@ -8,6 +10,12 @@ const commands = require("../controller/commands");
 
 router.use(bodyParser.json());
 router.use(express.urlencoded({ extended: true }));
+router.use(
+  session({
+    secret: "secretKamote",
+    cookie: { maxAge: 1000 * 60 * 60 * 24 * 30 },
+  })
+);
 
 //when open just fetch the first value of note
 router.get("/", (req, res) => {
@@ -173,7 +181,7 @@ router.get("/remove/idea", (req, res) => {
  */
 
 router.get("/login", (req, res) => {
-  res.render("login.component.ejs");
+  res.render("Slogin.component.ejs");
 });
 
 function hash(input, salt) {
@@ -204,7 +212,20 @@ router.post("/login/auth", (req, res) => {
 
   console.log(username + " " + userPassword);
 
-  commands.loginUser(username, userPassword, res);
+  commands.loginUser(username, userPassword, res, req);
+});
+
+router.get("/login/auth-check", (req, res) => {
+  if (req.session && req.session.auth && req.session.auth.userId) {
+    res.send("You are logged in: " + req.session.auth.userId.toString());
+  } else {
+    res.send("You are not logged in");
+  }
+});
+
+router.get("/logout", (req, res) => {
+  delete req.session.auth;
+  res.send("You are logged out");
 });
 
 //export the router

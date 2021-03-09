@@ -1,0 +1,23 @@
+@media only screen and (max-width: 630px){
+	.cont{
+		overflow: hidden;
+		position: absolute;
+		width: 400px;
+		align-content: center;
+	}
+
+	.form{
+		width: 400px;
+		height: 100%;
+
+	}
+
+		.register{
+	  text-decoration: none; 
+	  margin: 15px;
+	  font-size: 14px;
+	  color: gray;
+	  text-align: center;
+	  cursor: pointer;
+		}
+}

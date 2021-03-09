@@ -38,15 +38,13 @@ app.use("/controller", express.static(controllerDirectory));
  *
  */
 
-const loginCssDirectory = path.join(__dirname, "./LoginPage/css");
-const loginImgDirectory = path.join(__dirname, "./LoginPage/images");
-const loginResDirectory = path.join(__dirname, "./LoginPage/responsive");
-const loginJsDirectory = path.join(__dirname, "./LoginPage/js");
+const SloginCssDirectory = path.join(__dirname, "./SignupNLogin/css");
+const SloginImgDirectory = path.join(__dirname, "./SignupNLogin/images");
+const SloginJsDirectory = path.join(__dirname, "./SignupNLogin/js");
 
-app.use("/css", express.static(loginCssDirectory));
-app.use("/images", express.static(loginImgDirectory));
-app.use("/responsive", express.static(loginResDirectory));
-app.use("/js", express.static(loginJsDirectory));
+app.use("/css", express.static(SloginCssDirectory));
+app.use("/images", express.static(SloginImgDirectory));
+app.use("/js", express.static(SloginJsDirectory));
 
 //getting the routes
 app.use("/", require("./routes/pages"));

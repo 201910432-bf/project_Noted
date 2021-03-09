@@ -7,8 +7,8 @@ dotenv.config({ path: "./.env" });
 
 const app = express();
 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+// app.use(express.urlencoded({ extended: false }));
+// app.use(express.json());
 
 //for using an ejs engine
 // app.set("views", path.join(__dirname, "viewsFolder")); //if you want to use diff name other that views folder
@@ -31,6 +31,22 @@ app.use(
   express.static(assetIconFontDirectory)
 );
 app.use("/controller", express.static(controllerDirectory));
+
+/**
+ *
+ * login fetchdatas
+ *
+ */
+
+const loginCssDirectory = path.join(__dirname, "./LoginPage/css");
+const loginImgDirectory = path.join(__dirname, "./LoginPage/images");
+const loginResDirectory = path.join(__dirname, "./LoginPage/responsive");
+const loginJsDirectory = path.join(__dirname, "./LoginPage/js");
+
+app.use("/css", express.static(loginCssDirectory));
+app.use("/images", express.static(loginImgDirectory));
+app.use("/responsive", express.static(loginResDirectory));
+app.use("/js", express.static(loginJsDirectory));
 
 //getting the routes
 app.use("/", require("./routes/pages"));

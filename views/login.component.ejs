@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>NOTED</title>
+        <link rel="stylesheet" href="../css/LogIn.css">
+        <link rel="stylesheet" href="../responsive/ResLogIn.css">
+        <link href='https://fonts.googleapis.com/css?family=Advent Pro' rel='stylesheet'>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" 
+        rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+        <script src="../controller/loginController.js"></script>
+    
+    </head>
+    <body>
+        <div class="grid">  
+            <div class="banner">
+            <a href="https://www.myhentaicomics.com" target="blank">
+                    <img src="../images/Banner1.jpg" class="bannerPic" alt="Photo by Jessica Lewis from Pexels">
+                    <div class="display-1">NOTED keeping you organize</div>
+                </a>
+            </div>   
+            <div class="logInCreds">
+                <div class="contLogo">
+                    <img src="../images/n.png" class="logo">
+                </div>
+                <div class="inputFields">
+                    <input type="email" class="form-control" id="inputEmail" placeholder="name@example.com"><br>
+                    <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                    
+                    <h6><a href="#">Forgot Password?</a></h6>
+                    <br>
+                    <button type="button" class="btn btn-primary btn-lg" id="logIn-btn" onclick="loginAuth()">Log in</button>
+                    <hr class="hr1"><br>
+                    <button type="button" class="btn btn-secondary btn-lg" id="signIn-btn">Sign in</button>                  
+                </div>
+
+                    <div class="links">
+                        <a href="https://twitter.com/" target="blank">
+                            <img src="../images/twitter.png" class="tweetLogo" alt="Twitter">
+                        </a>
+                        <a href="https://www.facebook.com/" target="blank">
+                            <img src="../images/facebook.png" class="faceLogo"alt="Facebook">
+                        </a>
+                        <a href="https://www.instagram.com/" target="blank">
+                            <img src="../images/instagram.png" class="igLogo" alt="Instagram">
+                        </a>
+                        <a href="https://github.com/" target="blank">
+                            <img src="../images/github.png" class="GitLogo" alt="Github">
+                        </a>  
+                    </div class="links">  
+                    <h4><a href="#"><center>Terms of services</center></a></h4>            
+            </div>
+        </div>
+    </body>
+    
+    <script src="../js/LogIn.js"></script>
+</html>

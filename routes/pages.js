@@ -1,6 +1,13 @@
 const express = require("express");
+const crypto = require("crypto");
+const bodyParser = require("body-parser");
+const conn = require("../conn");
+
 const router = express.Router();
 const commands = require("../controller/commands");
+
+router.use(bodyParser.json());
+router.use(express.urlencoded({ extended: true }));
 
 //when open just fetch the first value of note
 router.get("/", (req, res) => {
@@ -155,6 +162,49 @@ router.get("/remove/idea", (req, res) => {
   commands.removeIdea(idIdea);
   // res.send(idNote);
   res.redirect("/note/" + 0);
+});
+
+/**
+ *
+ *
+ * Login User
+ *
+ *
+ */
+
+router.get("/login", (req, res) => {
+  res.render("login.component.ejs");
+});
+
+function hash(input, salt) {
+  const key = crypto.pbkdf2Sync(input, salt, 1000, 30, "sha512");
+  return ["pbkdf2", "1000", salt, key.toString("hex")].join("$");
+}
+
+router.get("/hash/:input", (req, res) => {
+  var hashedString = hash(req.params.input, "secretSauce");
+  res.send(hashedString);
+});
+
+router.get("/create/user", (req, res) => {
+  const user = req.query.username;
+  const pass = req.query.password;
+
+  const salt = crypto.randomBytes(128).toString("hex");
+  const userPassword = hash(pass, salt);
+
+  commands.createUser(user, userPassword);
+  console.log(user + " " + userPassword);
+  res.send("post method working");
+});
+
+router.post("/login/auth", (req, res) => {
+  const username = req.body.username;
+  const userPassword = req.body.password;
+
+  console.log(username + " " + userPassword);
+
+  commands.loginUser(username, userPassword, res);
 });
 
 //export the router

@@ -1,4 +1,6 @@
 const conn = require("../conn");
+const crypto = require("crypto");
+
 var data;
 var dataIdea;
 
@@ -156,6 +158,59 @@ function getDataIdea() {
 }
 getDataIdea();
 
+/**
+ *
+ *
+ * user Commands
+ *
+ *
+ *
+ */
+
+const createUser = (username, userPassword) => {
+  conn.db.query(
+    "INSERT INTO user_table (username, password) VALUES (?, ?)",
+    [username, userPassword],
+    function (err, result) {
+      if (err) console.log("Failed", err);
+      else console.log("Added Success! ");
+    }
+  );
+};
+
+function hash(input, salt) {
+  const key = crypto.pbkdf2Sync(input, salt, 1000, 30, "sha512");
+  return ["pbkdf2", "1000", salt, key.toString("hex")].join("$");
+}
+
+const loginUser = (username, userPassword, res) => {
+  conn.db.query(
+    "SELECT * FROM user_table WHERE username = ?",
+    [username],
+    function (err, result) {
+      if (err) console.log("Failed", err);
+      else {
+        if (result.length === 0) {
+          res.sendStatus(403);
+          console.log("Username/Password is invalid");
+        } else {
+          const hashPasswordDB = result[0].password;
+          const salt = hashPasswordDB.split("$")[2];
+          const hashed = hash(userPassword, salt);
+
+          if (hashed === hashPasswordDB) {
+            res.sendStatus(200);
+            console.log("Credentials corrent");
+          } else {
+            res.sendStatus(403);
+            console.log("Username/Password is invalid");
+          }
+        }
+      }
+    }
+  );
+};
+
 module.exports = {
   getData: getData,
   insertData: insertData,
@@ -168,4 +223,6 @@ module.exports = {
   insertIdea: insertIdea,
   UpdateIdeaData: UpdateIdeaData,
   removeIdea: removeIdea,
+  createUser: createUser,
+  loginUser: loginUser,
 };

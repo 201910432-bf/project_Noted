@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 18, 2021 at 10:30 AM
+-- Generation Time: Mar 09, 2021 at 03:33 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.2.34
 
@@ -24,6 +24,27 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `idea_table`
+--
+
+CREATE TABLE `idea_table` (
+  `id` int(11) NOT NULL,
+  `idea_title` varchar(255) NOT NULL,
+  `idea_data` varchar(1000) NOT NULL,
+  `idea_insertDate` varchar(30) NOT NULL,
+  `idea_updateDate` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `idea_table`
+--
+
+INSERT INTO `idea_table` (`id`, `idea_title`, `idea_data`, `idea_insertDate`, `idea_updateDate`) VALUES
+(11, 'qweee', '', 'Tue, 03/9/2021, 10:27', 'Tue, 03/9/2021, 10:27');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `note_table`
 --
 
@@ -32,7 +53,7 @@ CREATE TABLE `note_table` (
   `note_title` varchar(155) NOT NULL,
   `note_list` varchar(255) NOT NULL,
   `note_keys` varchar(255) NOT NULL,
-  `checked_list` varchar(255) NOT NULL,
+  `checked_list` varchar(1000) NOT NULL,
   `note_insertDate` varchar(30) NOT NULL,
   `note_updateDate` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -42,15 +63,19 @@ CREATE TABLE `note_table` (
 --
 
 INSERT INTO `note_table` (`id`, `note_title`, `note_list`, `note_keys`, `checked_list`, `note_insertDate`, `note_updateDate`) VALUES
-(1, 'test title', 'new,assignment,newnew,test,tesing..', '1,2,3,4,5', '[{\"id\":\"1checkBox\",\"checked\":true},{\"id\":\"3checkBox\",\"checked\":true}] ', '2021-02-14', '2021-02-14'),
-(2, 'test title 2', 'ne2w,module,newnew,test,tesing..,additional,data,hello,world', '1,2,3,4,5,6,7,8,9', '', '2021-02-14', '2021-02-14'),
-(31, 'qwe', '', '', '', 'Thu, 02/18/2021, 14:41', 'Thu, 02/18/2021, 14:41'),
-(32, 'ee', '', '', '', 'Thu, 02/18/2021, 14:41', 'Thu, 02/18/2021, 14:41'),
-(33, 'er', '', '', '', 'Thu, 02/18/2021, 14:42', 'Thu, 02/18/2021, 14:42');
+(261, 'new', 'wqe,ewq', '1,2', '[]', 'Thu, 03/4/2021, 21:49', 'Tue, 03/9/2021, 01:17'),
+(262, 'note', 'eqweqwe', '1', '', 'Thu, 03/4/2021, 21:49', 'Fri, 03/5/2021, 14:41'),
+(266, 'notete', 'qwe,qwe', '1,2', '', 'Fri, 03/5/2021, 12:16', 'Mon, 03/8/2021, 21:11');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `idea_table`
+--
+ALTER TABLE `idea_table`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `note_table`
@@ -63,10 +88,16 @@ ALTER TABLE `note_table`
 --
 
 --
+-- AUTO_INCREMENT for table `idea_table`
+--
+ALTER TABLE `idea_table`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
 -- AUTO_INCREMENT for table `note_table`
 --
 ALTER TABLE `note_table`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=267;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

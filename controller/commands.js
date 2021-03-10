@@ -34,11 +34,11 @@ const insertData = (arrayId, arrayValues, title, key) => {
   });
 };
 
-const insertNote = (note) => {
+const insertNote = (note, req) => {
   console.log(new Date(nowDate));
   console.log(todayTime);
 
-  const queryString = `INSERT INTO note_table (note_title, note_insertDate, note_updateDate) VALUES ('${note}', '${nowDate}', '${nowDate}') `;
+  const queryString = `INSERT INTO note_table (note_title, note_insertDate, note_updateDate, userId) VALUES ('${note}', '${nowDate}', '${nowDate}', ${req.session.auth.userId}) `;
   conn.db.query(queryString, (err, result) => {
     if (err) console.log("Failed", err);
     else console.log("Added Success! ");

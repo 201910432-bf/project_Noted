@@ -19,20 +19,30 @@ router.use(
 
 //when open just fetch the first value of note
 router.get("/", (req, res) => {
-  res.render("main.component.ejs", {
-    fetchData: commands.getData(),
-    noteId: 0,
-    tabKey: "note",
-  });
+  if (req.session && req.session.auth && req.session.auth.userId) {
+    res.render("main.component.ejs", {
+      fetchData: commands.getData(),
+      noteId: 0,
+      tabKey: "note",
+      userId: req.session.auth.userId,
+    });
+  } else {
+    res.redirect("/login");
+  }
 });
 
 //when click note button show the first value of note
 router.get("/note", (req, res) => {
-  res.render("main.component.ejs", {
-    fetchData: commands.getData(),
-    noteId: 0,
-    tabKey: "note",
-  });
+  if (req.session && req.session.auth && req.session.auth.userId) {
+    res.render("main.component.ejs", {
+      fetchData: commands.getData(),
+      noteId: 0,
+      tabKey: "note",
+      userId: req.session.auth.userId,
+    });
+  } else {
+    res.redirect("/login");
+  }
 });
 
 //get data of note ID = ?
@@ -43,18 +53,24 @@ router.get("/note/id", (req, res) => {
 
 router.get("/note/:id", (req, res) => {
   const getID = req.params.id;
-  res.render("main.component.ejs", {
-    fetchData: commands.getData(),
-    noteId: getID,
-    tabKey: "note",
-  });
+
+  if (req.session && req.session.auth && req.session.auth.userId) {
+    res.render("main.component.ejs", {
+      fetchData: commands.getData(),
+      noteId: getID,
+      tabKey: "note",
+      userId: req.session.auth.userId,
+    });
+  } else {
+    res.redirect("/login");
+  }
 });
 
 router.get("/createNote/note", (req, res) => {
   const noteName = req.query.notename;
   const listKey = req.query.listKey;
 
-  commands.insertNote(noteName);
+  commands.insertNote(noteName, req);
   res.redirect("/note/" + listKey);
 });
 

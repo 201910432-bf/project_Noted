@@ -1,40 +1,48 @@
         <% var counter = 0; %>
+        <% var firstNode; %>
         <div class="show__list">
             <div class="show__list__header">
                 <h3>Note List</h3>
                 <img src="../../images/remove.png" width="22" alt="" onclick="onClickRemoveBtn()">
             </div>
             <div class="show__list__content" id="noteList">
-                <% fetchData.map((data,key) => { %>
+                <% console.log(fetchData) %>
+                <% fetchData===undefined?fetchData="":fetchData.map((data,key) => { %>
                     <% const destructureArray = data.note_list.split(','); %>
                     <% const destructureTime = new Date(data.note_insertDate) %>
                     <% console.log(noteId)%>
-                    <% if(key === parseInt(noteId)){ %>
-                        <div class="content__list " id="<%= key %>">
-                            <div class="info" onClick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= noteId %>')">
-                                <h3><%=data.note_title %></h3>
-                                <div class="note__time">
-                                    <p><%=destructureArray[0] %></p>
-                                    <span id="spanTimeUpdate"><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
+                    <% if(data.userId === userId){ %>
+                        <% if(key < firstNode || firstNode === undefined){%>
+                            <% firstNode = key; %>
+                        <% } %>
+                        
+                        <% if(key === parseInt(noteId)){ %>
+                            <div class="content__list " id="<%= key %>">
+                                <div class="info" onClick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>')">
+                                    <h3><%=data.note_title %></h3>
+                                    <div class="note__time">
+                                        <p><%=destructureArray[0] %></p>
+                                        <span id="spanTimeUpdate"><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
+                                    </div>
+                                </div>
+                                <div id="removeContainer" class="removeClass" onclick="removeNoteFromList('<%=data.id%>')"">
+                                    <img width="20"src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgMzg0IDM4NCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzg0IDM4NDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPGc+DQoJPGc+DQoJCTxnPg0KCQkJPHBhdGggZD0iTTY0LDM0MS4zMzNDNjQsMzY0LjkwNyw4My4wOTMsMzg0LDEwNi42NjcsMzg0aDE3MC42NjdDMzAwLjkwNywzODQsMzIwLDM2NC45MDcsMzIwLDM0MS4zMzN2LTI1Nkg2NFYzNDEuMzMzeiIvPg0KCQkJPHBvbHlnb24gcG9pbnRzPSIyNjYuNjY3LDIxLjMzMyAyNDUuMzMzLDAgMTM4LjY2NywwIDExNy4zMzMsMjEuMzMzIDQyLjY2NywyMS4zMzMgNDIuNjY3LDY0IDM0MS4zMzMsNjQgMzQxLjMzMywyMS4zMzMgCQkJIi8+DQoJCTwvZz4NCgk8L2c+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8L3N2Zz4NCg==" />
                                 </div>
                             </div>
-                            <div id="removeContainerIdea" class="removeClass" onclick="removeNoteFromList('<%=data.id%>')"">
-                                <img width="20"src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgMzg0IDM4NCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzg0IDM4NDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPGc+DQoJPGc+DQoJCTxnPg0KCQkJPHBhdGggZD0iTTY0LDM0MS4zMzNDNjQsMzY0LjkwNyw4My4wOTMsMzg0LDEwNi42NjcsMzg0aDE3MC42NjdDMzAwLjkwNywzODQsMzIwLDM2NC45MDcsMzIwLDM0MS4zMzN2LTI1Nkg2NFYzNDEuMzMzeiIvPg0KCQkJPHBvbHlnb24gcG9pbnRzPSIyNjYuNjY3LDIxLjMzMyAyNDUuMzMzLDAgMTM4LjY2NywwIDExNy4zMzMsMjEuMzMzIDQyLjY2NywyMS4zMzMgNDIuNjY3LDY0IDM0MS4zMzMsNjQgMzQxLjMzMywyMS4zMzMgCQkJIi8+DQoJCTwvZz4NCgk8L2c+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8L3N2Zz4NCg==" />
-                            </div>
-                        </div>
-                    <% }else{ %>
-                        <div class="content__list list__notFocus" id="<%= key %>" >
-                            <div class="info" onclick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= noteId %>')">
-                                <h3><%=data.note_title %></h3>
-                                <div class="note__time">
-                                    <p><%=destructureArray[0] %></p>
-                                    <span id="spanTimeUpdate"><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
+                        <% }else{ %>
+                            <div class="content__list list__notFocus" id="<%= key %>" >
+                                <div class="info" onclick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>')">
+                                    <h3><%=data.note_title %></h3>
+                                    <div class="note__time">
+                                        <p><%=destructureArray[0] %></p>
+                                        <span id="spanTimeUpdate"><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
+                                    </div>
+                                </div>
+                                <div id="removeContainer" class="removeClass" onclick="removeNoteFromList('<%=data.id%>')">
+                                    <img width="20"src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgMzg0IDM4NCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzg0IDM4NDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPGc+DQoJPGc+DQoJCTxnPg0KCQkJPHBhdGggZD0iTTY0LDM0MS4zMzNDNjQsMzY0LjkwNyw4My4wOTMsMzg0LDEwNi42NjcsMzg0aDE3MC42NjdDMzAwLjkwNywzODQsMzIwLDM2NC45MDcsMzIwLDM0MS4zMzN2LTI1Nkg2NFYzNDEuMzMzeiIvPg0KCQkJPHBvbHlnb24gcG9pbnRzPSIyNjYuNjY3LDIxLjMzMyAyNDUuMzMzLDAgMTM4LjY2NywwIDExNy4zMzMsMjEuMzMzIDQyLjY2NywyMS4zMzMgNDIuNjY3LDY0IDM0MS4zMzMsNjQgMzQxLjMzMywyMS4zMzMgCQkJIi8+DQoJCTwvZz4NCgk8L2c+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8L3N2Zz4NCg==" />
                                 </div>
                             </div>
-                            <div id="removeContainerIdea" class="removeClass" onclick="removeNoteFromList('<%=data.id%>')">
-                                <img width="20"src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgMzg0IDM4NCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzg0IDM4NDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPGc+DQoJPGc+DQoJCTxnPg0KCQkJPHBhdGggZD0iTTY0LDM0MS4zMzNDNjQsMzY0LjkwNyw4My4wOTMsMzg0LDEwNi42NjcsMzg0aDE3MC42NjdDMzAwLjkwNywzODQsMzIwLDM2NC45MDcsMzIwLDM0MS4zMzN2LTI1Nkg2NFYzNDEuMzMzeiIvPg0KCQkJPHBvbHlnb24gcG9pbnRzPSIyNjYuNjY3LDIxLjMzMyAyNDUuMzMzLDAgMTM4LjY2NywwIDExNy4zMzMsMjEuMzMzIDQyLjY2NywyMS4zMzMgNDIuNjY3LDY0IDM0MS4zMzMsNjQgMzQxLjMzMywyMS4zMzMgCQkJIi8+DQoJCTwvZz4NCgk8L2c+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8L3N2Zz4NCg==" />
-                            </div>
-                        </div>
+                        <% } %>
                     <% } %>
                 <% }) %>
             </div>
@@ -43,29 +51,29 @@
             </div>
         </div>
 
-        <% if(fetchData[noteId] !== undefined) { %>
+        <% if(fetchData[noteId] !== undefined && fetchData[firstNode].userId === userId) { %>
 
         <div class="list__main__content" id="sendfile">
             <div class="list__main__content__wrap">
                 <div class="main__content__header">
-                    <p><%=fetchData[noteId].note_title%></p>
+                    <p><%=fetchData[firstNode].note_title%></p>
                 </div>
                 <div class="main__content__remaining__edit">
                     <span><span id="taskRemaining">0</span> tasks remaining</span>
-                    <a href="javascript:void(0)" onclick="editClick('<%=fetchData[noteId].id %>')">Edit</a>
+                    <a href="javascript:void(0)" onclick="editClick('<%=fetchData[firstNode].id %>')">Edit</a>
                 </div>
                 <div class="main__content__add">
                     <input type="text" id="addListText" value="">
-                    <button type="button" onclick="addList('<%=fetchData[noteId].note_list %>','<%=fetchData[noteId].id %>','<%=fetchData[noteId].note_title%>')">+</button>
+                    <button type="button" onclick="addList('<%=fetchData[firstNode].note_list %>','<%=fetchData[firstNode].id %>','<%=fetchData[firstNode].note_title%>')">+</button>
                 </div>
                 <div class="main__content__checkbox">
                     <div class="main__content__checkbox__wrap" id="wrapLabel">
-                        <% const listString = fetchData[noteId].note_list; %>
+                        <% const listString = fetchData[firstNode].note_list; %>
                         <% const splitData = listString.split(","); %>
-                        <% const listKeysString = fetchData[noteId].note_keys; %>
+                        <% const listKeysString = fetchData[firstNode].note_keys; %>
                         <% const splitDataKey = listKeysString.split(","); %>
 
-                        <% const objectCheckedData = fetchData[noteId].checked_list; %>
+                        <% const objectCheckedData = fetchData[firstNode].checked_list; %>
                         
                         <% const checkedID = objectCheckedData != "" ? JSON.parse(objectCheckedData) : "" %>
 
@@ -74,21 +82,21 @@
                                 <% if(checkedID != "" && checkedID.some(e => e.id.replace("checkBox","") == i+1 )) {%>
                                     <div class="checkBoxLabel checkBoxLabel<%=i%>" >
                                         <label for="">
-                                            <input type="checkbox" class="ClasscheckBox" value="<%=splitDataKey[i]%>,<%=splitData[i]%>" id="<%=splitDataKey[i]%>checkBox" onclick="checkboxClick('<%=splitDataKey[i]%>checkBox','<%= JSON.stringify(checkedID) %>','<%=fetchData[noteId].id %>')" checked>
+                                            <input type="checkbox" class="ClasscheckBox" value="<%=splitDataKey[i]%>,<%=splitData[i]%>" id="<%=splitDataKey[i]%>checkBox" onclick="checkboxClick('<%=splitDataKey[i]%>checkBox','<%= JSON.stringify(checkedID) %>','<%=fetchData[firstNode].id %>')" checked>
                                             <span class="checkedList spanListText" id="<%=splitDataKey[i]%>checkBoxSpan"><%=splitData[i] %></span>
                                             <input style="text-decoration: line-through;" type="text" class="editListTextInput" value="<%=splitData[i] %>">
                                         </label>
-                                        <a class="removeBtn get<%=splitDataKey[i]%>" href="javascript:void(0)" onclick="removeClick('<%=splitDataKey[i]%>','<%=splitData%>','<%=fetchData[noteId].id %>')" id="checkBoxRemove" value="<%=splitDataKey[i]%>"><img width="15" src="../assets/images/removeIcon.png" alt=""></a>
+                                        <a class="removeBtn get<%=splitDataKey[i]%>" href="javascript:void(0)" onclick="removeClick('<%=splitDataKey[i]%>','<%=splitData%>','<%=fetchData[firstNode].id %>')" id="checkBoxRemove" value="<%=splitDataKey[i]%>"><img width="15" src="../assets/images/removeIcon.png" alt=""></a>
                                     </div>
                                 <% }else{ %>
                                     <% counter++; %>
                                     <div class="checkBoxLabel checkBoxLabel<%=i%>">
                                         <label for="">
-                                            <input type="checkbox" class="ClasscheckBox" value="<%=splitDataKey[i]%>,<%=splitData[i]%>" id="<%=splitDataKey[i]%>checkBox" onclick="checkboxClick('<%=splitDataKey[i]%>checkBox','<%= JSON.stringify(checkedID) %>','<%=fetchData[noteId].id %>')">
+                                            <input type="checkbox" class="ClasscheckBox" value="<%=splitDataKey[i]%>,<%=splitData[i]%>" id="<%=splitDataKey[i]%>checkBox" onclick="checkboxClick('<%=splitDataKey[i]%>checkBox','<%= JSON.stringify(checkedID) %>','<%=fetchData[firstNode].id %>')">
                                             <span class="spanListText" id="<%=splitDataKey[i]%>checkBoxSpan" ><%=splitData[i] %></span>
                                             <input type="text" class="editListTextInput" value="<%=splitData[i] %>">
                                         </label>
-                                        <a class="removeBtn get<%=splitDataKey[i]%>" href="javascript:void(0)" onclick="removeClick('<%=splitDataKey[i]%>','<%=splitData%>','<%=fetchData[noteId].id %>')" id="checkBoxRemove" value="<%=splitDataKey[i]%>"><img width="15" src="../assets/images/removeIcon.png" alt=""></a>
+                                        <a class="removeBtn get<%=splitDataKey[i]%>" href="javascript:void(0)" onclick="removeClick('<%=splitDataKey[i]%>','<%=splitData%>','<%=fetchData[firstNode].id %>')" id="checkBoxRemove" value="<%=splitDataKey[i]%>"><img width="15" src="../assets/images/removeIcon.png" alt=""></a>
                                     </div>
                                 <% } %>
                             <% }  %>

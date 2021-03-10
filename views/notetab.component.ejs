@@ -7,6 +7,7 @@
             </div>
             <div class="show__list__content" id="noteList">
                 <% console.log(fetchData) %>
+                <% console.log("fetchData") %>
                 <% fetchData===undefined?fetchData="":fetchData.map((data,key) => { %>
                     <% const destructureArray = data.note_list.split(','); %>
                     <% const destructureTime = new Date(data.note_insertDate) %>
@@ -18,7 +19,7 @@
                         
                         <% if(key === parseInt(noteId)){ %>
                             <div class="content__list " id="<%= key %>">
-                                <div class="info" onClick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>')">
+                                <div class="info" onClick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>')">
                                     <h3><%=data.note_title %></h3>
                                     <div class="note__time">
                                         <p><%=destructureArray[0] %></p>
@@ -31,7 +32,7 @@
                             </div>
                         <% }else{ %>
                             <div class="content__list list__notFocus" id="<%= key %>" >
-                                <div class="info" onclick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>')">
+                                <div class="info" onclick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>')">
                                     <h3><%=data.note_title %></h3>
                                     <div class="note__time">
                                         <p><%=destructureArray[0] %></p>

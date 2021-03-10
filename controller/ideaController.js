@@ -66,7 +66,7 @@ const removeIdeaFromList = (idIdea) => {
 
 var idKey;
 var lastNode;
-const getIdeaData = (key, data, noteId, idNode) => {
+const getIdeaData = (key, data, noteId, idNode, current) => {
   console.log(noteId, key, data, idNode);
 
   idKey = idNode;
@@ -79,6 +79,9 @@ const getIdeaData = (key, data, noteId, idNode) => {
   getCurrentNode.classList.remove("list__notFocus");
   if (lastNode != undefined && lastNode != key) {
     getLastNode.classList.add("list__notFocus");
+  } else {
+    const getLastNodeBackup = document.getElementById(current + "idea");
+    getLastNodeBackup.classList.add("list__notFocus");
   }
   lastNode = key;
 
@@ -111,9 +114,6 @@ const runFetchCkEditor = (nodeId) => {
   if (idKey === undefined) {
     idKey = nodeId;
   }
-
-  console.log(idKey);
-  console.log(nodeId);
 
   var timeoutId;
   $(function () {

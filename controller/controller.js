@@ -51,8 +51,8 @@ const showAddNote = (trigger) => {
 };
 
 var lastNode;
-const getNoteData = (key, data, noteId) => {
-  console.log(noteId, key, lastNode);
+const getNoteData = (key, data, noteId, current) => {
+  console.log(noteId, key, lastNode, current);
 
   const remove = document.querySelectorAll("#removeContainer");
 
@@ -75,6 +75,9 @@ const getNoteData = (key, data, noteId) => {
   getCurrentNode.classList.remove("list__notFocus");
   if (lastNode != undefined && lastNode != key) {
     getLastNode.classList.add("list__notFocus");
+  } else {
+    const getLastNodeBackup = document.getElementById(current);
+    getLastNodeBackup.classList.add("list__notFocus");
   }
 
   lastNode = key;

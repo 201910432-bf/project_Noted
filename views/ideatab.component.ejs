@@ -1,3 +1,4 @@
+        <% var firstNode; %>
         <div class="show__idea__list">
             <div class="show__idea__header">
                 <h3>My Ideas</h3>
@@ -5,21 +6,15 @@
             </div>
             <div class="show__idea__content">
                 <% fetchData.map((data,key) => { %>
-                    <% if(key === parseInt(noteId)){ %>
-                    <div class="content__idea__list" id="<%= key %>idea">
-                        <div class="info" onclick='getIdeaData("<%= key %>","<%= data.idea_data %>","<%= noteId %>","<%=data.id %>")'>
-                            <h3><%=data.idea_title %></h3>
-                            <div class="idea__time">
-                                <span id="spanTimeUpdate">4:52 PM</span>
-                            </div>
-                        </div>
-                        <div id="removeContainerIdea" class="removeClass" onclick="removeIdeaFromList('<%=data.id%>')">
-                            <img width="20"src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgMzg0IDM4NCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzg0IDM4NDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPGc+DQoJPGc+DQoJCTxnPg0KCQkJPHBhdGggZD0iTTY0LDM0MS4zMzNDNjQsMzY0LjkwNyw4My4wOTMsMzg0LDEwNi42NjcsMzg0aDE3MC42NjdDMzAwLjkwNywzODQsMzIwLDM2NC45MDcsMzIwLDM0MS4zMzN2LTI1Nkg2NFYzNDEuMzMzeiIvPg0KCQkJPHBvbHlnb24gcG9pbnRzPSIyNjYuNjY3LDIxLjMzMyAyNDUuMzMzLDAgMTM4LjY2NywwIDExNy4zMzMsMjEuMzMzIDQyLjY2NywyMS4zMzMgNDIuNjY3LDY0IDM0MS4zMzMsNjQgMzQxLjMzMywyMS4zMzMgCQkJIi8+DQoJCTwvZz4NCgk8L2c+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8L3N2Zz4NCg==" />
-                        </div>
-                    </div>
-                    <% }else{ %>
-                        <div class="content__idea__list list__notFocus" id="<%= key %>idea">
-                            <div class="info" onclick='getIdeaData("<%= key %>","<%= data.idea_data %>","<%= noteId %>","<%=data.id %>")'>
+                    <% console.log(data) %>
+                    <% console.log("data") %>
+                    <% if(data.userId === userId){ %>
+                        <% if(key < firstNode || firstNode === undefined){%>
+                            <% firstNode = key; %>
+                        <% } %>
+                        <% if(key === parseInt(noteId)){ %>
+                        <div class="content__idea__list" id="<%= key %>idea">
+                            <div class="info" onclick='getIdeaData("<%= key %>","<%= data.idea_data %>","<%= firstNode %>","<%=data.id %>","<%=noteId %>")'>
                                 <h3><%=data.idea_title %></h3>
                                 <div class="idea__time">
                                     <span id="spanTimeUpdate">4:52 PM</span>
@@ -29,6 +24,19 @@
                                 <img width="20"src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgMzg0IDM4NCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzg0IDM4NDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPGc+DQoJPGc+DQoJCTxnPg0KCQkJPHBhdGggZD0iTTY0LDM0MS4zMzNDNjQsMzY0LjkwNyw4My4wOTMsMzg0LDEwNi42NjcsMzg0aDE3MC42NjdDMzAwLjkwNywzODQsMzIwLDM2NC45MDcsMzIwLDM0MS4zMzN2LTI1Nkg2NFYzNDEuMzMzeiIvPg0KCQkJPHBvbHlnb24gcG9pbnRzPSIyNjYuNjY3LDIxLjMzMyAyNDUuMzMzLDAgMTM4LjY2NywwIDExNy4zMzMsMjEuMzMzIDQyLjY2NywyMS4zMzMgNDIuNjY3LDY0IDM0MS4zMzMsNjQgMzQxLjMzMywyMS4zMzMgCQkJIi8+DQoJCTwvZz4NCgk8L2c+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8L3N2Zz4NCg==" />
                             </div>
                         </div>
+                        <% }else{ %>
+                            <div class="content__idea__list list__notFocus" id="<%= key %>idea">
+                                <div class="info" onclick='getIdeaData("<%= key %>","<%= data.idea_data %>","<%= firstNode %>","<%=data.id %>","<%=noteId %>")'>
+                                    <h3><%=data.idea_title %></h3>
+                                    <div class="idea__time">
+                                        <span id="spanTimeUpdate">4:52 PM</span>
+                                    </div>
+                                </div>
+                                <div id="removeContainerIdea" class="removeClass" onclick="removeIdeaFromList('<%=data.id%>')">
+                                    <img width="20"src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgMzg0IDM4NCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzg0IDM4NDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPGc+DQoJPGc+DQoJCTxnPg0KCQkJPHBhdGggZD0iTTY0LDM0MS4zMzNDNjQsMzY0LjkwNyw4My4wOTMsMzg0LDEwNi42NjcsMzg0aDE3MC42NjdDMzAwLjkwNywzODQsMzIwLDM2NC45MDcsMzIwLDM0MS4zMzN2LTI1Nkg2NFYzNDEuMzMzeiIvPg0KCQkJPHBvbHlnb24gcG9pbnRzPSIyNjYuNjY3LDIxLjMzMyAyNDUuMzMzLDAgMTM4LjY2NywwIDExNy4zMzMsMjEuMzMzIDQyLjY2NywyMS4zMzMgNDIuNjY3LDY0IDM0MS4zMzMsNjQgMzQxLjMzMywyMS4zMzMgCQkJIi8+DQoJCTwvZz4NCgk8L2c+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8L3N2Zz4NCg==" />
+                                </div>
+                            </div>
+                        <% } %>
                     <% } %>
                 <% }) %>
             </div>
@@ -37,11 +45,11 @@
             </div>
         </div>
 
-        <% if(fetchData[noteId] !== undefined) { %>
+        <% if(fetchData[firstNode] !== undefined) { %>
         <div class="editor__container" id="edit_container">
-            <textarea id="textAreaContent" name="editor" cols="30" rows="10" class="ckeditor"><%=fetchData[noteId].idea_data%></textarea>
+            <textarea id="textAreaContent" name="editor" cols="30" rows="10" class="ckeditor"><%=fetchData[firstNode].idea_data%></textarea>
             <script type="text/javascript">
-                runFetchCkEditor('<%=fetchData[noteId].id%>');
+                runFetchCkEditor('<%=fetchData[firstNode].id%>');
              </script>
             <!-- <div class="editor__container__button">
                 <button type="button" onclick="showContent()">Save</button>

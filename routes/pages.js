@@ -145,18 +145,23 @@ router.get("/update/noteList", (req, res) => {
 
 //go to idea tab
 router.get("/idea", (req, res) => {
-  res.render("main.component.ejs", {
-    fetchData: commands.getDataIdea(),
-    noteId: 0,
-    tabKey: "idea",
-  });
+  if (req.session && req.session.auth && req.session.auth.userId) {
+    res.render("main.component.ejs", {
+      fetchData: commands.getDataIdea(),
+      noteId: 0,
+      tabKey: "idea",
+      userId: req.session.auth.userId,
+    });
+  } else {
+    res.redirect("/login");
+  }
 });
 
 router.get("/createIdea/idea", (req, res) => {
   const ideaName = req.query.ideaname;
   const ideaKey = req.query.ideaKey;
 
-  commands.insertIdea(ideaName);
+  commands.insertIdea(ideaName, req);
   res.redirect("/idea/" + ideaKey);
 });
 
@@ -167,11 +172,18 @@ router.get("/idea/id", (req, res) => {
 
 router.get("/idea/:id", (req, res) => {
   const getID = req.params.id;
-  res.render("main.component.ejs", {
-    fetchData: commands.getDataIdea(),
-    noteId: getID,
-    tabKey: "idea",
-  });
+
+  if (req.session && req.session.auth && req.session.auth.userId) {
+    console.log(commands.getDataIdea());
+    res.render("main.component.ejs", {
+      fetchData: commands.getDataIdea(),
+      noteId: getID,
+      tabKey: "idea",
+      userId: req.session.auth.userId,
+    });
+  } else {
+    res.redirect("/login");
+  }
 });
 
 router.get("/update/ideaData", (req, res) => {
@@ -197,7 +209,11 @@ router.get("/remove/idea", (req, res) => {
  */
 
 router.get("/login", (req, res) => {
+  // if (req.session && req.session.auth && req.session.auth.userId) {
+  // res.redirect("/note");
+  // } else {
   res.render("Slogin.component.ejs");
+  // }
 });
 
 function hash(input, salt) {

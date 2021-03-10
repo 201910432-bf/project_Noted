@@ -35,9 +35,6 @@ const insertData = (arrayId, arrayValues, title, key) => {
 };
 
 const insertNote = (note, req) => {
-  console.log(new Date(nowDate));
-  console.log(todayTime);
-
   const queryString = `INSERT INTO note_table (note_title, note_insertDate, note_updateDate, userId) VALUES ('${note}', '${nowDate}', '${nowDate}', ${req.session.auth.userId}) `;
   conn.db.query(queryString, (err, result) => {
     if (err) console.log("Failed", err);
@@ -116,8 +113,8 @@ getData();
  *
  */
 
-const insertIdea = (ideaTitle) => {
-  const queryString = `INSERT INTO idea_table (idea_title, idea_insertDate, idea_updateDate) VALUES ('${ideaTitle}', '${nowDate}', '${nowDate}') `;
+const insertIdea = (ideaTitle, req) => {
+  const queryString = `INSERT INTO idea_table (idea_title, idea_insertDate, idea_updateDate, userId) VALUES ('${ideaTitle}', '${nowDate}', '${nowDate}',${req.session.auth.userId}) `;
   conn.db.query(queryString, (err, result) => {
     if (err) console.log("Failed", err);
     else console.log("Added Success! ");
@@ -153,7 +150,6 @@ function getDataIdea() {
       return;
     }
     dataIdea = JSON.parse(JSON.stringify(rows));
-    console.log(dataIdea);
   });
   return dataIdea;
 }

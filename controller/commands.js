@@ -96,6 +96,7 @@ const UpdateNoteList = (checkedData, noteId) => {
 
 function getData() {
   const queryString = "SELECT * FROM note_table";
+
   conn.db.query(queryString, (err, rows, fields) => {
     if (err) {
       console.log("Failed", err);
@@ -196,7 +197,11 @@ const loginUser = (username, userPassword, res, req) => {
           const hashed = hash(userPassword, salt);
 
           if (hashed === hashPasswordDB) {
-            req.session.auth = { userId: result[0].id };
+            req.session.auth = {
+              userId: result[0].id,
+              userName: result[0].username,
+            };
+
             res.sendStatus(200);
             console.log("Credentials correct");
           } else {

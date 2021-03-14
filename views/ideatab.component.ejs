@@ -47,9 +47,9 @@
 
         <% if(fetchData[firstNode] !== undefined) { %>
         <div class="editor__container" id="edit_container">
-            <textarea id="textAreaContent" name="editor" cols="30" rows="10" class="ckeditor"><%=fetchData[firstNode].idea_data%></textarea>
+            <textarea id="textAreaContent" name="editor" cols="30" rows="10" class="ckeditor"><%=fetchData[noteId].idea_data%></textarea>
             <script type="text/javascript">
-                runFetchCkEditor('<%=fetchData[firstNode].id%>');
+                runFetchCkEditor('<%=fetchData[noteId].id%>');
              </script>
             <!-- <div class="editor__container__button">
                 <button type="button" onclick="showContent()">Save</button>

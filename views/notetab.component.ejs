@@ -57,24 +57,24 @@
         <div class="list__main__content" id="sendfile">
             <div class="list__main__content__wrap">
                 <div class="main__content__header">
-                    <p><%=fetchData[firstNode].note_title%></p>
+                    <p><%=fetchData[noteId].note_title%></p>
                 </div>
                 <div class="main__content__remaining__edit">
                     <span><span id="taskRemaining">0</span> tasks remaining</span>
-                    <a href="javascript:void(0)" onclick="editClick('<%=fetchData[firstNode].id %>')">Edit</a>
+                    <a href="javascript:void(0)" onclick="editClick('<%=fetchData[noteId].id %>')">Edit</a>
                 </div>
                 <div class="main__content__add">
                     <input type="text" id="addListText" value="">
-                    <button type="button" onclick="addList('<%=fetchData[firstNode].note_list %>','<%=fetchData[firstNode].id %>','<%=fetchData[firstNode].note_title%>')">+</button>
+                    <button type="button" onclick="addList('<%=fetchData[noteId].note_list %>','<%=fetchData[noteId].id %>','<%=fetchData[noteId].note_title%>')">+</button>
                 </div>
                 <div class="main__content__checkbox">
                     <div class="main__content__checkbox__wrap" id="wrapLabel">
-                        <% const listString = fetchData[firstNode].note_list; %>
+                        <% const listString = fetchData[noteId].note_list; %>
                         <% const splitData = listString.split(","); %>
-                        <% const listKeysString = fetchData[firstNode].note_keys; %>
+                        <% const listKeysString = fetchData[noteId].note_keys; %>
                         <% const splitDataKey = listKeysString.split(","); %>
 
-                        <% const objectCheckedData = fetchData[firstNode].checked_list; %>
+                        <% const objectCheckedData = fetchData[noteId].checked_list; %>
                         
                         <% const checkedID = objectCheckedData != "" ? JSON.parse(objectCheckedData) : "" %>
 

@@ -25,6 +25,7 @@ router.get("/", (req, res) => {
       noteId: 0,
       tabKey: "note",
       userId: req.session.auth.userId,
+      userName: req.session.auth.userName,
     });
   } else {
     res.redirect("/login");
@@ -39,6 +40,7 @@ router.get("/note", (req, res) => {
       noteId: 0,
       tabKey: "note",
       userId: req.session.auth.userId,
+      userName: req.session.auth.userName,
     });
   } else {
     res.redirect("/login");
@@ -60,6 +62,7 @@ router.get("/note/:id", (req, res) => {
       noteId: getID,
       tabKey: "note",
       userId: req.session.auth.userId,
+      userName: req.session.auth.userName,
     });
   } else {
     res.redirect("/login");
@@ -151,6 +154,7 @@ router.get("/idea", (req, res) => {
       noteId: 0,
       tabKey: "idea",
       userId: req.session.auth.userId,
+      userName: req.session.auth.userName,
     });
   } else {
     res.redirect("/login");
@@ -180,6 +184,7 @@ router.get("/idea/:id", (req, res) => {
       noteId: getID,
       tabKey: "idea",
       userId: req.session.auth.userId,
+      userName: req.session.auth.userName,
     });
   } else {
     res.redirect("/login");

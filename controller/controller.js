@@ -24,21 +24,23 @@ const onClickRemoveBtn = () => {
 const removeNoteFromList = (idNote) => {
   console.log(idNote);
   const noteTitle = document.getElementById("noteTitle");
-  var request = new XMLHttpRequest();
-  request.onreadystatechange = function () {
-    if (request.readyState === XMLHttpRequest.DONE) {
-      if (request.status === 200) {
-        window.location.href = `http://localhost:5000/note/${0}`; //zero for now
-      }
-    }
-  };
-  request.open(
-    "GET",
-    `http://localhost:5000/remove/note?noteId=${idNote}`,
-    true
-  );
-  request.send(null);
-  // window.location.href = `http://localhost:5000/remove/note?noteId=${idNote}`;
+
+  // var request = new XMLHttpRequest();
+  // request.onreadystatechange = function () {
+  //   if (request.readyState === XMLHttpRequest.DONE) {
+  //     if (request.status === 200) {
+  //       window.location.href = `http://localhost:5000/note`; //zero for now
+  //     }
+  //   }
+  // };
+  // request.open(
+  //   "GET",
+  //   `http://localhost:5000/remove/note?noteId=${idNote}`,
+  //   true
+  // );
+  // request.send(null);
+
+  window.location.href = `http://localhost:5000/remove/note?noteId=${idNote}`;
 };
 
 const showAddNote = (trigger) => {
@@ -71,6 +73,8 @@ const getNoteData = (key, data, noteId, current) => {
   const getCurrentNode = document.getElementById(key);
   const getLastNode = document.getElementById(lastNode);
 
+  console.log(noteId, key, lastNode);
+
   getFirstNode.classList.add("list__notFocus");
   getCurrentNode.classList.remove("list__notFocus");
   if (lastNode != undefined && lastNode != key) {
@@ -79,8 +83,8 @@ const getNoteData = (key, data, noteId, current) => {
     const getLastNodeBackup = document.getElementById(current);
     getLastNodeBackup.classList.add("list__notFocus");
   }
-
   lastNode = key;
+
   request.onreadystatechange = function () {
     if (request.readyState === XMLHttpRequest.DONE) {
       if (request.status === 200) {
@@ -239,8 +243,9 @@ const checkboxClick = (idKey, originalData, key) => {
     dataElement.checked = true;
     globalDataVariable.push(dataElement);
     checkSpanId.classList.add("checkedList");
-    document.getElementById("taskRemaining").innerHTML =
-      parseInt(counterValue) - 1;
+    document.getElementById("taskRemaining").innerHTML = Math.abs(
+      1 - parseInt(counterValue)
+    );
   } else {
     const index = globalDataVariable.filter((item) => item.id != idKey);
     globalDataVariable = index;
@@ -256,7 +261,7 @@ const checkboxClick = (idKey, originalData, key) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(function () {
       DBupdateCheckBox(key);
-    }, 100);
+    }, 300);
   });
 };
 
@@ -335,23 +340,23 @@ const passtoUrl = (originalData, title, key) => {
 
 const addNote = (listKey) => {
   const noteTitle = document.getElementById("noteTitle");
+  window.location.href = `http://localhost:5000/createNote/note?notename=${noteTitle.value}&listKey=${listKey}`;
 
-  var request = new XMLHttpRequest();
+  // var request = new XMLHttpRequest();
 
-  request.onreadystatechange = function () {
-    if (request.readyState === XMLHttpRequest.DONE) {
-      if (request.status === 200) {
-        window.location.href = `http://localhost:5000/note/${listKey}`;
-      }
-    }
-  };
+  // request.onreadystatechange = function () {
+  //   if (request.readyState === XMLHttpRequest.DONE) {
+  //     if (request.status === 200) {
+  //     }
+  //   }
+  // };
 
-  request.open(
-    "GET",
-    `http://localhost:5000/createNote/note?notename=${noteTitle.value}&listKey=${listKey}`,
-    true
-  );
-  request.send(null);
+  // request.open(
+  //   "GET",
+  //   `http://localhost:5000/createNote/note?notename=${noteTitle.value}&listKey=${listKey}`,
+  //   true
+  // );
+  // request.send(null);
 };
 
 const editClick = (noteId) => {
@@ -458,8 +463,13 @@ const removeClick = (key, arrayData, noteId) => {
   const allCheckBox = document.querySelectorAll('input[type="checkbox"]');
   const allInput = document.querySelectorAll(".editListTextInput");
   let counterValue = document.getElementById("taskRemaining").innerHTML;
-  document.getElementById("taskRemaining").innerHTML =
-    parseInt(counterValue) - 1;
+
+  let resultDeduct = parseInt(counterValue) - 1;
+  if (resultDeduct < 0) {
+    resultDeduct = 0;
+  }
+
+  document.getElementById("taskRemaining").innerHTML = resultDeduct;
 
   var setNewArrayObj = [];
   var arrayId = [];

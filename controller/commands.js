@@ -34,21 +34,23 @@ const insertData = (arrayId, arrayValues, title, key) => {
   });
 };
 
-const insertNote = (note, req) => {
+const insertNote = (note, res, req, listKey) => {
   const queryString = `INSERT INTO note_table (note_title, note_insertDate, note_updateDate, userId) VALUES ('${note}', '${nowDate}', '${nowDate}', ${req.session.auth.userId}) `;
   conn.db.query(queryString, (err, result) => {
     if (err) console.log("Failed", err);
     else console.log("Added Success! ");
     getData();
+    res.redirect(`/note/${listKey}`);
   });
 };
 
-const removeNote = (noteId) => {
+const removeNote = (noteId, res) => {
   const queryString = `DELETE FROM note_table WHERE id = '${noteId}'`;
   conn.db.query(queryString, (err, result) => {
     if (err) console.log("Failed", err);
     else console.log("Remove Success! ");
     getData();
+    res.redirect("/note");
   });
 };
 
@@ -103,9 +105,12 @@ function getData() {
       return;
     }
     data = JSON.parse(JSON.stringify(rows));
+    console.log("from getData method");
+    console.log(data);
   });
   return data;
 }
+
 getData();
 
 /**
@@ -114,12 +119,13 @@ getData();
  *
  */
 
-const insertIdea = (ideaTitle, req) => {
+const insertIdea = (ideaTitle, req, res, ideaKey) => {
   const queryString = `INSERT INTO idea_table (idea_title, idea_insertDate, idea_updateDate, userId) VALUES ('${ideaTitle}', '${nowDate}', '${nowDate}',${req.session.auth.userId}) `;
   conn.db.query(queryString, (err, result) => {
     if (err) console.log("Failed", err);
     else console.log("Added Success! ");
     getDataIdea();
+    res.redirect(`/idea/${ideaKey}`);
   });
 };
 
@@ -134,12 +140,13 @@ const UpdateIdeaData = (ideaData, key) => {
   });
 };
 
-const removeIdea = (ideaId) => {
+const removeIdea = (ideaId, res) => {
   const queryString = `DELETE FROM idea_table WHERE id = '${ideaId}'`;
   conn.db.query(queryString, (err, result) => {
     if (err) console.log("Failed", err);
     else console.log("Remove Success!");
     getDataIdea();
+    res.redirect(`/note`);
   });
 };
 

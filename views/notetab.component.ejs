@@ -6,12 +6,13 @@
                 <img src="../../images/remove.png" width="22" alt="" onclick="onClickRemoveBtn()">
             </div>
             <div class="show__list__content" id="noteList">
+                <% console.log("from note tab"); %>
                 <% console.log(fetchData) %>
-                <% console.log("fetchData") %>
                 <% fetchData===undefined?fetchData="":fetchData.map((data,key) => { %>
+                    
                     <% const destructureArray = data.note_list.split(','); %>
                     <% const destructureTime = new Date(data.note_insertDate) %>
-                    <% console.log(noteId)%>
+
                     <% if(data.userId === userId){ %>
                         <% if(key < firstNode || firstNode === undefined){%>
                             <% firstNode = key; %>
@@ -83,21 +84,21 @@
                                 <% if(checkedID != "" && checkedID.some(e => e.id.replace("checkBox","") == i+1 )) {%>
                                     <div class="checkBoxLabel checkBoxLabel<%=i%>" >
                                         <label for="">
-                                            <input type="checkbox" class="ClasscheckBox" value="<%=splitDataKey[i]%>,<%=splitData[i]%>" id="<%=splitDataKey[i]%>checkBox" onclick="checkboxClick('<%=splitDataKey[i]%>checkBox','<%= JSON.stringify(checkedID) %>','<%=fetchData[firstNode].id %>')" checked>
+                                            <input type="checkbox" class="ClasscheckBox" value="<%=splitDataKey[i]%>,<%=splitData[i]%>" id="<%=splitDataKey[i]%>checkBox" onclick="checkboxClick('<%=splitDataKey[i]%>checkBox','<%= JSON.stringify(checkedID) %>','<%=fetchData[noteId].id %>')" checked>
                                             <span class="checkedList spanListText" id="<%=splitDataKey[i]%>checkBoxSpan"><%=splitData[i] %></span>
                                             <input style="text-decoration: line-through;" type="text" class="editListTextInput" value="<%=splitData[i] %>">
                                         </label>
-                                        <a class="removeBtn get<%=splitDataKey[i]%>" href="javascript:void(0)" onclick="removeClick('<%=splitDataKey[i]%>','<%=splitData%>','<%=fetchData[firstNode].id %>')" id="checkBoxRemove" value="<%=splitDataKey[i]%>"><img width="15" src="../assets/images/removeIcon.png" alt=""></a>
+                                        <a class="removeBtn get<%=splitDataKey[i]%>" href="javascript:void(0)" onclick="removeClick('<%=splitDataKey[i]%>','<%=splitData%>','<%=fetchData[noteId].id %>')" id="checkBoxRemove" value="<%=splitDataKey[i]%>"><img width="15" src="../assets/images/removeIcon.png" alt=""></a>
                                     </div>
                                 <% }else{ %>
                                     <% counter++; %>
                                     <div class="checkBoxLabel checkBoxLabel<%=i%>">
                                         <label for="">
-                                            <input type="checkbox" class="ClasscheckBox" value="<%=splitDataKey[i]%>,<%=splitData[i]%>" id="<%=splitDataKey[i]%>checkBox" onclick="checkboxClick('<%=splitDataKey[i]%>checkBox','<%= JSON.stringify(checkedID) %>','<%=fetchData[firstNode].id %>')">
+                                            <input type="checkbox" class="ClasscheckBox" value="<%=splitDataKey[i]%>,<%=splitData[i]%>" id="<%=splitDataKey[i]%>checkBox" onclick="checkboxClick('<%=splitDataKey[i]%>checkBox','<%= JSON.stringify(checkedID) %>','<%=fetchData[noteId].id %>')">
                                             <span class="spanListText" id="<%=splitDataKey[i]%>checkBoxSpan" ><%=splitData[i] %></span>
                                             <input type="text" class="editListTextInput" value="<%=splitData[i] %>">
                                         </label>
-                                        <a class="removeBtn get<%=splitDataKey[i]%>" href="javascript:void(0)" onclick="removeClick('<%=splitDataKey[i]%>','<%=splitData%>','<%=fetchData[firstNode].id %>')" id="checkBoxRemove" value="<%=splitDataKey[i]%>"><img width="15" src="../assets/images/removeIcon.png" alt=""></a>
+                                        <a class="removeBtn get<%=splitDataKey[i]%>" href="javascript:void(0)" onclick="removeClick('<%=splitDataKey[i]%>','<%=splitData%>','<%=fetchData[noteId].id %>')" id="checkBoxRemove" value="<%=splitDataKey[i]%>"><img width="15" src="../assets/images/removeIcon.png" alt=""></a>
                                     </div>
                                 <% } %>
                             <% }  %>

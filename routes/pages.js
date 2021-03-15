@@ -73,16 +73,15 @@ router.get("/createNote/note", (req, res) => {
   const noteName = req.query.notename;
   const listKey = req.query.listKey;
 
-  commands.insertNote(noteName, req);
-  res.redirect("/note/" + listKey);
+  commands.insertNote(noteName, res, req, listKey);
 });
 
 router.get("/remove/note", (req, res) => {
   const idNote = req.query.noteId;
 
-  commands.removeNote(idNote);
+  commands.removeNote(idNote, res);
   // res.send(idNote);
-  res.redirect("/note/" + 0);
+  // res.redirect("/note");
 });
 
 router.post("/savenote/note", (req, res) => {
@@ -165,8 +164,8 @@ router.get("/createIdea/idea", (req, res) => {
   const ideaName = req.query.ideaname;
   const ideaKey = req.query.ideaKey;
 
-  commands.insertIdea(ideaName, req);
-  res.redirect("/idea/" + ideaKey);
+  commands.insertIdea(ideaName, req, res, ideaKey);
+  // res.redirect("/idea/" + ideaKey);
 });
 
 router.get("/idea/id", (req, res) => {
@@ -178,7 +177,6 @@ router.get("/idea/:id", (req, res) => {
   const getID = req.params.id;
 
   if (req.session && req.session.auth && req.session.auth.userId) {
-    console.log(commands.getDataIdea());
     res.render("main.component.ejs", {
       fetchData: commands.getDataIdea(),
       noteId: getID,
@@ -200,9 +198,9 @@ router.get("/update/ideaData", (req, res) => {
 router.get("/remove/idea", (req, res) => {
   const idIdea = req.query.idIdea;
 
-  commands.removeIdea(idIdea);
+  commands.removeIdea(idIdea, res);
   // res.send(idNote);
-  res.redirect("/note/" + 0);
+  // res.redirect("/note/" + 0);
 });
 
 /**
@@ -239,15 +237,13 @@ router.get("/create/user", (req, res) => {
   const userPassword = hash(pass, salt);
 
   commands.createUser(user, userPassword);
-  console.log(user + " " + userPassword);
+
   res.send("post method working");
 });
 
 router.post("/login/auth", (req, res) => {
   const username = req.body.username;
   const userPassword = req.body.password;
-
-  console.log(username + " " + userPassword);
 
   commands.loginUser(username, userPassword, res, req);
 });

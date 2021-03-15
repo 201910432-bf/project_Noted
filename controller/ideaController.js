@@ -9,23 +9,24 @@ const showAddIdea = (trigger) => {
 
 const addIdea = (ideaKey) => {
   const ideaTitle = document.getElementById("ideaTitle");
+  window.location.href = `http://localhost:5000/createIdea/idea?ideaname=${ideaTitle.value}&ideaKey=${ideaKey}`;
 
-  var request = new XMLHttpRequest();
+  // var request = new XMLHttpRequest();
 
-  request.onreadystatechange = function () {
-    if (request.readyState === XMLHttpRequest.DONE) {
-      if (request.status === 200) {
-        window.location.href = `http://localhost:5000/idea/${ideaKey}`;
-      }
-    }
-  };
+  // request.onreadystatechange = function () {
+  //   if (request.readyState === XMLHttpRequest.DONE) {
+  //     if (request.status === 200) {
+  //       window.location.href = `http://localhost:5000/idea/${ideaKey}`;
+  //     }
+  //   }
+  // };
 
-  request.open(
-    "GET",
-    `http://localhost:5000/createIdea/idea?ideaname=${ideaTitle.value}&ideaKey=${ideaKey}`,
-    true
-  );
-  request.send(null);
+  // request.open(
+  //   "GET",
+  //   `http://localhost:5000/createIdea/idea?ideaname=${ideaTitle.value}&ideaKey=${ideaKey}`,
+  //   true
+  // );
+  // request.send(null);
 };
 
 var showRemoveIconIdea = false;
@@ -47,21 +48,21 @@ const onClickRemoveBtnIdea = () => {
 };
 
 const removeIdeaFromList = (idIdea) => {
-  var request = new XMLHttpRequest();
-  request.onreadystatechange = function () {
-    if (request.readyState === XMLHttpRequest.DONE) {
-      if (request.status === 200) {
-        window.location.href = `http://localhost:5000/idea/${0}`; //zero for now
-      }
-    }
-  };
-  request.open(
-    "GET",
-    `http://localhost:5000/remove/idea?idIdea=${idIdea}`,
-    true
-  );
-  request.send(null);
-  // window.location.href = `http://localhost:5000/remove/note?noteId=${idNote}`;
+  // var request = new XMLHttpRequest();
+  // request.onreadystatechange = function () {
+  //   if (request.readyState === XMLHttpRequest.DONE) {
+  //     if (request.status === 200) {
+  //       window.location.href = `http://localhost:5000/idea/${0}`; //zero for now
+  //     }
+  //   }
+  // };
+  // request.open(
+  //   "GET",
+  //   `http://localhost:5000/remove/idea?idIdea=${idIdea}`,
+  //   true
+  // );
+  // request.send(null);
+  window.location.href = `http://localhost:5000/remove/idea?idIdea=${idIdea}`;
 };
 
 var idKey;

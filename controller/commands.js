@@ -172,13 +172,39 @@ getDataIdea();
  *
  */
 
-const createUser = (username, userPassword) => {
+const createUser = (username, email, userPassword, userCPassword, res, req) => {
   conn.db.query(
-    "INSERT INTO user_table (username, password) VALUES (?, ?)",
-    [username, userPassword],
+    "SELECT * FROM user_table WHERE username = ?",
+    [username],
     function (err, result) {
-      if (err) console.log("Failed", err);
-      else console.log("Added Success! ");
+      if (err) {
+        console.log("Failed");
+      } else {
+        if (result.length === 0) {
+          if (userPassword === userCPassword) {
+            conn.db.query(
+              "INSERT INTO user_table (username, email, password) VALUES (?, ?, ?)",
+              [username, email, userPassword],
+              function (err, result) {
+                if (err) console.log("Failed", err);
+                else {
+                  req.session.auth = {
+                    userId: result.insertId,
+                    userName: username,
+                  };
+                  res.status(200).json({ message: "Added Success" });
+                }
+              }
+            );
+          } else {
+            res.status(403).json({ message: "password not match" });
+            console.log("Incorrect Password");
+          }
+        } else {
+          console.log("meron na");
+          res.status(403).json({ message: "user already exist" });
+        }
+      }
     }
   );
 };
@@ -188,10 +214,10 @@ function hash(input, salt) {
   return ["pbkdf2", "1000", salt, key.toString("hex")].join("$");
 }
 
-const loginUser = (username, userPassword, res, req) => {
+const loginUser = (email, userPassword, res, req) => {
   conn.db.query(
-    "SELECT * FROM user_table WHERE username = ?",
-    [username],
+    "SELECT * FROM user_table WHERE email = ?",
+    [email],
     function (err, result) {
       if (err) console.log("Failed", err);
       else {
@@ -208,6 +234,9 @@ const loginUser = (username, userPassword, res, req) => {
               userId: result[0].id,
               userName: result[0].username,
             };
+
+            console.log(req.session.auth.userId);
+            console.log(req.session.auth.userName);
 
             res.sendStatus(200);
             console.log("Credentials correct");

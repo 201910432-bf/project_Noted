@@ -1,5 +1,9 @@
         <% var counter = 0; %>
         <% var firstNode; %>
+
+        <% console.log(fetchData[noteId]) %>
+
+
         <div class="show__list">
             <div class="show__list__header">
                 <h3>Note List</h3>
@@ -53,7 +57,7 @@
             </div>
         </div>
 
-        <% if(fetchData[noteId] !== undefined && fetchData[firstNode].userId === userId) { %>
+        <% if(fetchData[noteId] !== undefined && fetchData[noteId].userId === userId) { %>
 
         <div class="list__main__content" id="sendfile">
             <div class="list__main__content__wrap">

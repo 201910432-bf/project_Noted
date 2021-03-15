@@ -229,23 +229,24 @@ router.get("/hash/:input", (req, res) => {
   res.send(hashedString);
 });
 
-router.get("/create/user", (req, res) => {
-  const user = req.query.username;
-  const pass = req.query.password;
+router.post("/create/user", (req, res) => {
+  const username = req.body.username;
+  const email = req.body.email;
+  const password = req.body.password;
+  const Cpassword = req.body.Cpassword;
 
   const salt = crypto.randomBytes(128).toString("hex");
-  const userPassword = hash(pass, salt);
+  const userPassword = hash(password, salt);
+  const userCPassword = hash(Cpassword, salt);
 
-  commands.createUser(user, userPassword);
-
-  res.send("post method working");
+  commands.createUser(username, email, userPassword, userCPassword, res, req);
 });
 
 router.post("/login/auth", (req, res) => {
-  const username = req.body.username;
+  const email = req.body.email;
   const userPassword = req.body.password;
 
-  commands.loginUser(username, userPassword, res, req);
+  commands.loginUser(email, userPassword, res, req);
 });
 
 router.get("/login/auth-check", (req, res) => {

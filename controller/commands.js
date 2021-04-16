@@ -105,8 +105,8 @@ function getData() {
       return;
     }
     data = JSON.parse(JSON.stringify(rows));
-    console.log("from getData method");
-    console.log(data);
+    // console.log("from getData method");
+    // console.log(data);
   });
   return data;
 }

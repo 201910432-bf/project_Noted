@@ -1,7 +1,8 @@
         <% var counter = 0; %>
         <% var firstNode; %>
+        <% var currentUserData = []; %>
 
-        <% console.log(fetchData[noteId]) %>
+        <!-- <% console.log(fetchData[noteId]) %> -->
 
 
         <div class="show__list">
@@ -10,9 +11,23 @@
                 <img src="../../images/remove.png" width="22" alt="" onclick="onClickRemoveBtn()">
             </div>
             <div class="show__list__content" id="noteList">
-                <% console.log("from note tab"); %>
-                <% console.log(fetchData) %>
+                
                 <% fetchData===undefined?fetchData="":fetchData.map((data,key) => { %>
+                    
+                    <% if(data.userId === userId) {%>
+                        <% console.log(data.userId + " true") %>
+                        <% currentUserData.push(data) %>    
+                    <% } %>
+
+                <% }) %>
+                <% console.log("data") %>
+                <% console.log(currentUserData) %>
+                <% fetchData = currentUserData; %>
+
+
+                <% fetchData===""?fetchData="":fetchData.map((data,key) => { %>
+                    <% console.log(key) %> 
+                    
                     
                     <% const destructureArray = data.note_list.split(','); %>
                     <% const destructureTime = new Date(data.note_insertDate) %>
@@ -24,7 +39,7 @@
                         
                         <% if(key === parseInt(noteId)){ %>
                             <div class="content__list " id="<%= key %>">
-                                <div class="info" onClick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>')">
+                                <div class="info" onClick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>', '<%= userId %>')">
                                     <h3><%=data.note_title %></h3>
                                     <div class="note__time">
                                         <p><%=destructureArray[0] %></p>
@@ -37,7 +52,7 @@
                             </div>
                         <% }else{ %>
                             <div class="content__list list__notFocus" id="<%= key %>" >
-                                <div class="info" onclick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>')">
+                                <div class="info" onclick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>','<%= userId %>')">
                                     <h3><%=data.note_title %></h3>
                                     <div class="note__time">
                                         <p><%=destructureArray[0] %></p>

@@ -53,8 +53,8 @@ const showAddNote = (trigger) => {
 };
 
 var lastNode;
-const getNoteData = (key, data, noteId, current) => {
-  console.log(noteId, key, lastNode, current);
+const getNoteData = (key, data, noteId, current, userId) => {
+  console.log(noteId, key, lastNode, current, userId);
 
   const remove = document.querySelectorAll("#removeContainer");
 
@@ -73,8 +73,6 @@ const getNoteData = (key, data, noteId, current) => {
   const getCurrentNode = document.getElementById(key);
   const getLastNode = document.getElementById(lastNode);
 
-  console.log(noteId, key, lastNode);
-
   getFirstNode.classList.add("list__notFocus");
   getCurrentNode.classList.remove("list__notFocus");
   if (lastNode != undefined && lastNode != key) {
@@ -88,14 +86,30 @@ const getNoteData = (key, data, noteId, current) => {
   request.onreadystatechange = function () {
     if (request.readyState === XMLHttpRequest.DONE) {
       if (request.status === 200) {
-        const response = JSON.parse(request.response);
+        var response = JSON.parse(request.response);
+        var currentUserData = [];
+
+        response.map((data, idkey) => {
+          for (var i = 0; i < data.command.length; i++) {
+            if (data.command[i].userId == userId) {
+              console.log("trueeee" + data.command[i].userId + " " + userId);
+              currentUserData.push(data.command[i]);
+            } else {
+              console.log("false" + data.command[i].userId + " " + userId);
+            }
+          }
+        });
+        console.log(response);
+        response = [{ command: currentUserData, noteId: key }];
+        console.log(response);
+
         response.map((data, idkey) => {
           const listString = data.command[data.noteId].note_list;
           const splitData = listString.split(",");
           const listKeysString = data.command[data.noteId].note_keys;
           const splitDataKey = listKeysString.split(",");
 
-          console.log(data.command[key]);
+          console.log(data);
           console.log(splitData);
 
           sendfile.innerHTML = `

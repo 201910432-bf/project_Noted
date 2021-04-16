@@ -8,7 +8,7 @@ const conn = require("../conn");
 const router = express.Router();
 const commands = require("../controller/commands");
 
-router.use(bodyParser.json());
+router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 router.use(
   session({
@@ -50,6 +50,7 @@ router.get("/note", (req, res) => {
 //get data of note ID = ?
 router.get("/note/id", (req, res) => {
   const getID = req.query.id;
+  console.log(getID + " the id");
   res.send([{ command: commands.getData(), noteId: getID }]);
 });
 
@@ -212,11 +213,11 @@ router.get("/remove/idea", (req, res) => {
  */
 
 router.get("/login", (req, res) => {
-  // if (req.session && req.session.auth && req.session.auth.userId) {
-  // res.redirect("/note");
-  // } else {
-  res.render("Slogin.component.ejs");
-  // }
+  if (req.session && req.session.auth && req.session.auth.userId) {
+    res.redirect("/note");
+  } else {
+    res.render("Slogin.component.ejs");
+  }
 });
 
 function hash(input, salt) {

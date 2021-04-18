@@ -208,11 +208,12 @@ const addList = (listData, listId, listTitle) => {
   document.getElementById("taskRemaining").innerHTML =
     parseInt(counterValue) + 1;
 
-  if (list.replace(/\s/g, "").length) {
-    var newId = document.querySelectorAll("[type=checkbox]").length + 1;
+  if (list != "") {
+    if (list.replace(/\s/g, "").length) {
+      var newId = document.querySelectorAll("[type=checkbox]").length + 1;
 
-    console.log(newId);
-    var stringTemp = `
+      console.log(newId);
+      var stringTemp = `
       <div class="checkBoxLabel checkBoxLabel${newId - 1}">
         <label for="">
             <input type="checkbox" class="ClasscheckBox" value="${
@@ -225,10 +226,14 @@ const addList = (listData, listId, listTitle) => {
       </div>
       `;
 
-    divList.innerHTML += stringTemp;
-    document.getElementById("addListText").value = "";
+      divList.innerHTML += stringTemp;
+      document.getElementById("addListText").value = "";
+    }
+
+    passtoUrl("", listTitle, listId);
+  } else {
+    alert("Please enter task title");
   }
-  passtoUrl("", listTitle, listId);
 };
 
 const checkboxClick = (idKey, originalData, key) => {
@@ -354,7 +359,12 @@ const passtoUrl = (originalData, title, key) => {
 
 const addNote = (listKey) => {
   const noteTitle = document.getElementById("noteTitle");
-  window.location.href = `http://localhost:5000/createNote/note?notename=${noteTitle.value}&listKey=${listKey}`;
+
+  if (noteTitle.value == "") {
+    alert("Please enter a note title");
+  } else {
+    window.location.href = `http://localhost:5000/createNote/note?notename=${noteTitle.value}&listKey=${listKey}`;
+  }
 
   // var request = new XMLHttpRequest();
 

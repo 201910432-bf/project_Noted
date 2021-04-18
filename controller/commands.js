@@ -20,28 +20,32 @@ const todayDate = date.toLocaleDateString("en", {
 
 const nowDate = todayDate + ", " + todayTime;
 
-const insertData = (arrayId, arrayValues, title, key) => {
-  console.log(arrayId, arrayValues, "throw from commands");
+const insertData = async (arrayId, arrayValues, title, key) => {
+  try {
+    console.log(arrayId, arrayValues, "throw from commands");
 
-  const record = [title, arrayValues, arrayId, nowDate, key];
+    const record = [title, arrayValues, arrayId, nowDate, key];
 
-  const queryString =
-    "UPDATE note_table SET note_title=?, note_list=?, note_keys=?, note_updateDate=? WHERE id=?  ";
-  conn.db.query(queryString, record, (err, result) => {
-    if (err) throw err;
-    else console.log("success");
+    const queryString =
+      "UPDATE note_table SET note_title=?, note_list=?, note_keys=?, note_updateDate=? WHERE id=?  ";
+    await conn.db.promise().query(queryString, record);
     getData();
-  });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
-const insertNote = (note, res, req, listKey) => {
-  const queryString = `INSERT INTO note_table (note_title, note_insertDate, note_updateDate, userId) VALUES ('${note}', '${nowDate}', '${nowDate}', ${req.session.auth.userId}) `;
-  conn.db.query(queryString, (err, result) => {
-    if (err) console.log("Failed", err);
-    else console.log("Added Success! ");
-    getData();
-    res.redirect(`/note/${listKey}`);
-  });
+const insertNote = async (note, res, req, listKey) => {
+  try {
+    const queryString = `INSERT INTO note_table (note_title, note_insertDate, note_updateDate, userId) VALUES ('${note}', '${nowDate}', '${nowDate}', ${req.session.auth.userId}) `;
+
+    await conn.db.promise().query(queryString);
+
+    await getData();
+    await res.redirect(`/note/${listKey}`);
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const removeNote = (noteId, res) => {
@@ -96,19 +100,14 @@ const UpdateNoteList = (checkedData, noteId) => {
   });
 };
 
-function getData() {
+async function getData() {
   const queryString = "SELECT * FROM note_table";
 
-  conn.db.query(queryString, (err, rows, fields) => {
-    if (err) {
-      console.log("Failed", err);
-      return;
-    }
-    data = JSON.parse(JSON.stringify(rows));
-    // console.log("from getData method");
-    // console.log(data);
-  });
-  return data;
+  const rows = await conn.db.promise().query(queryString);
+  data = await JSON.parse(JSON.stringify(rows));
+  // console.log("from getData method");
+  // console.log(data[0]);
+  return await data[0];
 }
 
 getData();

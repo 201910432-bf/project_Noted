@@ -18,10 +18,10 @@ router.use(
 );
 
 //when open just fetch the first value of note
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   if (req.session && req.session.auth && req.session.auth.userId) {
     res.render("main.component.ejs", {
-      fetchData: commands.getData(),
+      fetchData: await commands.getData(),
       noteId: 0,
       tabKey: "note",
       userId: req.session.auth.userId,
@@ -33,10 +33,10 @@ router.get("/", (req, res) => {
 });
 
 //when click note button show the first value of note
-router.get("/note", (req, res) => {
+router.get("/note", async (req, res) => {
   if (req.session && req.session.auth && req.session.auth.userId) {
     res.render("main.component.ejs", {
-      fetchData: commands.getData(),
+      fetchData: await commands.getData(),
       noteId: 0,
       tabKey: "note",
       userId: req.session.auth.userId,
@@ -48,18 +48,18 @@ router.get("/note", (req, res) => {
 });
 
 //get data of note ID = ?
-router.get("/note/id", (req, res) => {
+router.get("/note/id", async (req, res) => {
   const getID = req.query.id;
   console.log(getID + " the id");
-  res.send([{ command: commands.getData(), noteId: getID }]);
+  res.send([{ command: await commands.getData(), noteId: getID }]);
 });
 
-router.get("/note/:id", (req, res) => {
+router.get("/note/:id", async (req, res) => {
   const getID = req.params.id;
 
   if (req.session && req.session.auth && req.session.auth.userId) {
     res.render("main.component.ejs", {
-      fetchData: commands.getData(),
+      fetchData: await commands.getData(),
       noteId: getID,
       tabKey: "note",
       userId: req.session.auth.userId,

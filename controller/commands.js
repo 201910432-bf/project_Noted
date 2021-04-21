@@ -100,14 +100,19 @@ const UpdateNoteList = (checkedData, noteId) => {
   });
 };
 
-async function getData() {
+function getData() {
   const queryString = "SELECT * FROM note_table";
 
-  const rows = await conn.db.promise().query(queryString);
-  data = await JSON.parse(JSON.stringify(rows));
-  // console.log("from getData method");
-  // console.log(data[0]);
-  return await data[0];
+  conn.db.query(queryString, (err, rows, fields) => {
+    if (err) {
+      console.log("Failed", err);
+      return;
+    }
+    data = JSON.parse(JSON.stringify(rows));
+    // console.log("from getData method");
+    // console.log(data);
+  });
+  return data;
 }
 
 getData();
@@ -119,6 +124,7 @@ getData();
  */
 
 const insertIdea = (ideaTitle, req, res, ideaKey) => {
+  console.log(ideaTitle + " qwrwerwer");
   const queryString = `INSERT INTO idea_table (idea_title, idea_insertDate, idea_updateDate, userId) VALUES ('${ideaTitle}', '${nowDate}', '${nowDate}',${req.session.auth.userId}) `;
   conn.db.query(queryString, (err, result) => {
     if (err) console.log("Failed", err);
@@ -145,7 +151,7 @@ const removeIdea = (ideaId, res) => {
     if (err) console.log("Failed", err);
     else console.log("Remove Success!");
     getDataIdea();
-    res.redirect(`/note`);
+    res.redirect(`/idea`);
   });
 };
 

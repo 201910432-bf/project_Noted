@@ -48,18 +48,18 @@ router.get("/note", async (req, res) => {
 });
 
 //get data of note ID = ?
-router.get("/note/id", async (req, res) => {
+router.get("/note/id", (req, res) => {
   const getID = req.query.id;
   console.log(getID + " the id");
-  res.send([{ command: await commands.getData(), noteId: getID }]);
+  res.send([{ command: commands.getData(), noteId: getID }]);
 });
 
-router.get("/note/:id", async (req, res) => {
+router.get("/note/:id", (req, res) => {
   const getID = req.params.id;
 
   if (req.session && req.session.auth && req.session.auth.userId) {
     res.render("main.component.ejs", {
-      fetchData: await commands.getData(),
+      fetchData: commands.getData(),
       noteId: getID,
       tabKey: "note",
       userId: req.session.auth.userId,
@@ -93,15 +93,15 @@ router.post("/savenote/note", (req, res) => {
     req.query.key
   );
 
-  // res.send(
-  //   req.query.arrayId +
-  //     " " +
-  //     req.query.arrayValue +
-  //     " " +
-  //     req.query.title +
-  //     " " +
-  //     req.query.key
-  // );
+  res.send(
+    req.query.arrayId +
+      " " +
+      req.query.arrayValue +
+      " " +
+      req.query.title +
+      " " +
+      req.query.key
+  );
 
   // res.redirect("/note");
 });
@@ -164,6 +164,8 @@ router.get("/idea", (req, res) => {
 router.get("/createIdea/idea", (req, res) => {
   const ideaName = req.query.ideaname;
   const ideaKey = req.query.ideaKey;
+
+  console.log(ideaName + " idea nameee");
 
   commands.insertIdea(ideaName, req, res, ideaKey);
   // res.redirect("/idea/" + ideaKey);

@@ -84,8 +84,8 @@ const getNoteData = (key, data, noteId, current, userId) => {
   lastNode = key;
 
   request.onreadystatechange = function () {
-    if (request.readyState === XMLHttpRequest.DONE) {
-      if (request.status === 200) {
+    if (request.readyState == XMLHttpRequest.DONE) {
+      if (request.status == 200) {
         var response = JSON.parse(request.response);
         var currentUserData = [];
 
@@ -109,6 +109,7 @@ const getNoteData = (key, data, noteId, current, userId) => {
           const listKeysString = data.command[data.noteId].note_keys;
           const splitDataKey = listKeysString.split(",");
 
+          console.log("data");
           console.log(data);
           console.log(splitData);
 

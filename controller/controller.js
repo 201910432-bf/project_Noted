@@ -395,11 +395,32 @@ const passtoUrl = (originalData, title, key) => {
 
 const addNote = (listKey) => {
   const noteTitle = document.getElementById("noteTitle");
+  const lvlprio = document.getElementById("notePrio");
+  const noteMonth = document.getElementById("noteMonth");
+  const noteDay = document.getElementById("noteDay");
+  const noteYear = document.getElementById("noteYear");
 
-  if (noteTitle.value == "") {
-    alert("Please enter a note title");
+  console.log(
+    lvlprio.value +
+      " " +
+      noteTitle.value +
+      " " +
+      noteMonth.value +
+      " " +
+      noteDay.value +
+      " " +
+      noteYear.value
+  );
+
+  if (
+    noteTitle.value == "" ||
+    lvlprio.value == "" ||
+    noteMonth.value == "" ||
+    noteDay.value == ""
+  ) {
+    alert("Please fill all inputs");
   } else {
-    window.location.href = `http://localhost:5000/createNote/note?notename=${noteTitle.value}&listKey=${listKey}`;
+    window.location.href = `http://localhost:5000/createNote/note?notename=${noteTitle.value}&lvlprio=${lvlprio.value}&noteMonth=${noteMonth.value}&noteDay=${noteDay.value}&noteYear=${noteYear.value}&listKey=${listKey}`;
   }
 
   // var request = new XMLHttpRequest();

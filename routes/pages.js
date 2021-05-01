@@ -74,9 +74,24 @@ router.get("/note/:id", (req, res) => {
 
 router.get("/createNote/note", (req, res) => {
   const noteName = req.query.notename;
+  const lvlprio = req.query.lvlprio;
+  const noteMonth = req.query.noteMonth;
+  const noteDay = req.query.noteDay;
+  const noteYear = req.query.noteYear;
   const listKey = req.query.listKey;
 
+  const date = new Date(noteYear + "-" + noteMonth + "-" + noteDay);
+  const deadline = date.toLocaleDateString("en", {
+    weekday: "short",
+    year: "numeric",
+    month: "2-digit",
+    day: "numeric",
+  });
+
+  console.log(deadline); // end here
+
   commands.insertNote(noteName, res, req, listKey);
+  // res.send("nice baby");
 });
 
 router.get("/remove/note", (req, res) => {

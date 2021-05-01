@@ -11,6 +11,10 @@
                 <img src="../../images/remove.png" width="22" alt="" onclick="onClickRemoveBtn()">
             </div>
             <div class="show__list__content" id="noteList">
+                <div class="high_prio">
+                    <h3>HIGH PRIORITY</h3>
+                </div>
+
                 <% console.log(fetchData) %>
                 
                 <% fetchData===undefined?fetchData="":fetchData.map((data,key) => { %>
@@ -22,6 +26,7 @@
 
                 <% }) %>
                 <% console.log("data") %>
+                <% console.log("currentUserData") %>
                 <% console.log(currentUserData) %>
                 <% fetchData = currentUserData; %>
 
@@ -38,7 +43,7 @@
                             <% firstNode = key; %>
                         <% } %>
                         
-                        <% if(key === parseInt(noteId)){ %>
+                        <% if(key === parseInt(noteId) && data.priority_level === "HIGH"){ %>
                             <div class="content__list " id="<%= key %>">
                                 <div class="info" onClick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>', '<%= userId %>')">
                                     <h3><%=data.note_title %></h3>
@@ -51,7 +56,7 @@
                                     <img width="20"src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgMzg0IDM4NCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzg0IDM4NDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPGc+DQoJPGc+DQoJCTxnPg0KCQkJPHBhdGggZD0iTTY0LDM0MS4zMzNDNjQsMzY0LjkwNyw4My4wOTMsMzg0LDEwNi42NjcsMzg0aDE3MC42NjdDMzAwLjkwNywzODQsMzIwLDM2NC45MDcsMzIwLDM0MS4zMzN2LTI1Nkg2NFYzNDEuMzMzeiIvPg0KCQkJPHBvbHlnb24gcG9pbnRzPSIyNjYuNjY3LDIxLjMzMyAyNDUuMzMzLDAgMTM4LjY2NywwIDExNy4zMzMsMjEuMzMzIDQyLjY2NywyMS4zMzMgNDIuNjY3LDY0IDM0MS4zMzMsNjQgMzQxLjMzMywyMS4zMzMgCQkJIi8+DQoJCTwvZz4NCgk8L2c+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8L3N2Zz4NCg==" />
                                 </div>
                             </div>
-                        <% }else{ %>
+                        <% }else if(data.priority_level === "HIGH"){ %>
                             <div class="content__list list__notFocus" id="<%= key %>" >
                                 <div class="info" onclick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>','<%= userId %>')">
                                     <h3><%=data.note_title %></h3>
@@ -67,6 +72,53 @@
                         <% } %>
                     <% } %>
                 <% }) %>
+
+                <div class="low_prio">
+                    <h3>LOW PRIORITY</h3>
+                </div>
+
+                <% fetchData===""?fetchData="":fetchData.map((data,key) => { %>
+                    <% console.log(key) %> 
+                    
+                    
+                    <% const destructureArray = data.note_list.split(','); %>
+                    <% const destructureTime = new Date(data.note_insertDate) %>
+
+                    <% if(data.userId === userId){ %>
+                        <% if(key < firstNode || firstNode === undefined){%>
+                            <% firstNode = key; %>
+                        <% } %>
+                        
+                        <% if(key === parseInt(noteId) && data.priority_level === "LOW"){ %>
+                            <div class="content__list " id="<%= key %>">
+                                <div class="info" onClick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>', '<%= userId %>')">
+                                    <h3><%=data.note_title %></h3>
+                                    <div class="note__time">
+                                        <p><%=destructureArray[0] %></p>
+                                        <span id="spanTimeUpdate"><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
+                                    </div>
+                                </div>
+                                <div id="removeContainer" class="removeClass" onclick="removeNoteFromList('<%=data.id%>')"">
+                                    <img width="20"src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgMzg0IDM4NCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzg0IDM4NDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPGc+DQoJPGc+DQoJCTxnPg0KCQkJPHBhdGggZD0iTTY0LDM0MS4zMzNDNjQsMzY0LjkwNyw4My4wOTMsMzg0LDEwNi42NjcsMzg0aDE3MC42NjdDMzAwLjkwNywzODQsMzIwLDM2NC45MDcsMzIwLDM0MS4zMzN2LTI1Nkg2NFYzNDEuMzMzeiIvPg0KCQkJPHBvbHlnb24gcG9pbnRzPSIyNjYuNjY3LDIxLjMzMyAyNDUuMzMzLDAgMTM4LjY2NywwIDExNy4zMzMsMjEuMzMzIDQyLjY2NywyMS4zMzMgNDIuNjY3LDY0IDM0MS4zMzMsNjQgMzQxLjMzMywyMS4zMzMgCQkJIi8+DQoJCTwvZz4NCgk8L2c+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8L3N2Zz4NCg==" />
+                                </div>
+                            </div>
+                        <% }else if(data.priority_level === "LOW"){ %>
+                            <div class="content__list list__notFocus" id="<%= key %>" >
+                                <div class="info" onclick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>','<%= userId %>')">
+                                    <h3><%=data.note_title %></h3>
+                                    <div class="note__time">
+                                        <p><%=destructureArray[0] %></p>
+                                        <span id="spanTimeUpdate"><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
+                                    </div>
+                                </div>
+                                <div id="removeContainer" class="removeClass" onclick="removeNoteFromList('<%=data.id%>')">
+                                    <img width="20"src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgMzg0IDM4NCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzg0IDM4NDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPGc+DQoJPGc+DQoJCTxnPg0KCQkJPHBhdGggZD0iTTY0LDM0MS4zMzNDNjQsMzY0LjkwNyw4My4wOTMsMzg0LDEwNi42NjcsMzg0aDE3MC42NjdDMzAwLjkwNywzODQsMzIwLDM2NC45MDcsMzIwLDM0MS4zMzN2LTI1Nkg2NFYzNDEuMzMzeiIvPg0KCQkJPHBvbHlnb24gcG9pbnRzPSIyNjYuNjY3LDIxLjMzMyAyNDUuMzMzLDAgMTM4LjY2NywwIDExNy4zMzMsMjEuMzMzIDQyLjY2NywyMS4zMzMgNDIuNjY3LDY0IDM0MS4zMzMsNjQgMzQxLjMzMywyMS4zMzMgCQkJIi8+DQoJCTwvZz4NCgk8L2c+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8L3N2Zz4NCg==" />
+                                </div>
+                            </div>
+                        <% } %>
+                    <% } %>
+                <% }) %>
+
             </div>
             <div class="add__note">
                 <a href="javascript:void(0)" onClick="showAddNote('show');">Add new notes</a>
@@ -143,11 +195,50 @@
                         <button type="button" onClick="showAddNote('hide');">X</button>
                     </div>
                     <div class="add__note__content">
-                        <label for="noteTitle">Note Title</label>
                         <div class="text__container">
+                            <label for="noteTitle">Note Title</label>
                             <input type="text" id="noteTitle"><br>
-                            <button type="button" onClick="addNote('<%=fetchData.length %>')">Save</button>
+
+                            <label for="noteTitle">Level of Priority</label>
+                            <select name="level" id="noteTitle">
+                                <option value="" disabled selected>SELECT</option>
+                                <option value="HIGH">HIGH</option>
+                                <option value="LOW">LOW</option>
+                            </select>
+                            <br>
                         </div>
+                        <div class="date_pick">
+                            <label for="noteTitle">Note Deadline</label>
+                            <div class="select_pick">
+                                <select name="level" id="noteMonth">
+                                    <option value="" disabled selected>Month</option>
+                                    <option value="01">JAN</option>
+                                    <option value="02">FEB</option>
+                                    <option value="03">MAR</option>
+                                    <option value="04">APR</option>
+                                    <option value="05">MAY</option>
+                                    <option value="06">JUN</option>
+                                    <option value="07">JUL</option>
+                                    <option value="08">AUG</option>
+                                    <option value="09">SEP</option>
+                                    <option value="10">OCT</option>
+                                    <option value="11">NOV</option>
+                                    <option value="12">DEC</option>
+                                </select>
+                                <select name="level" id="noteDay">
+                                    <option value="" disabled selected>Day</option>
+                                </select>
+                                <select name="level" id="noteYear">
+                                    <% var getYear = new Date().getFullYear(); %>
+                                    <% for(var i=getYear; i < getYear+5; i++){ %>
+                                        <option value=<%i%>><%=i%></option>
+                                    <% } %>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+
+                        <button type="button" onClick="addNote('<%=fetchData.length %>')">Save</button>
                     </div>
                 </div>
         </div>

@@ -28,6 +28,23 @@
   flex: 3;
 }
 
+.high_prio {
+  color: rgb(187, 44, 44);
+  padding-left: 1.5em;
+  margin-bottom: 0.5em;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+.low_prio {
+  color: rgb(20, 172, 33);
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+  margin-top: 1em;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
 .content__list {
   background-color: #fff;
   border-top: 1px solid #cabfbf7e;
@@ -111,7 +128,7 @@
 .add__note__options {
   border-radius: 5px;
   width: 25em;
-  height: 20em;
+  height: 23em;
   background-color: #f2f2f2;
 }
 
@@ -133,16 +150,21 @@
   justify-content: center;
   flex-direction: column;
   width: 100%;
-  height: 40vh;
-  text-align: center;
+  height: 50vh;
+  /* text-align: center; */
 }
 
-.add__note__content > label {
-  font-size: 25px;
-  margin-bottom: 1.5em;
+.text__container {
+  display: flex;
+  flex-direction: column;
 }
 
-.add__note__content .text__container input {
+.text__container > label {
+  font-size: 18px;
+}
+
+.add__note__content .text__container input,
+.text__container select {
   width: 20em;
   font-size: 15px;
   padding: 0.5em;
@@ -152,7 +174,22 @@
   border-color: lightgray;
 }
 
-.text__container > button {
+.add__note__content > button {
   margin-top: 0.7em;
   padding: 0.5em 2em;
+}
+
+.date_pick label {
+  font-size: 18px;
+}
+
+.date_pick select {
+  width: 6.5em;
+  font-size: 15px;
+
+  padding: 0.5em;
+  outline: none;
+  border-radius: 5px;
+  border-width: thin;
+  border-color: lightgray;
 }

@@ -95,7 +95,7 @@
   border-radius: 5px;
 }
 
-.add__note__settings {
+.add__idea__settings {
   visibility: hidden;
   position: absolute;
   width: 100%;
@@ -106,7 +106,7 @@
   background-color: rgba(92, 92, 92, 0.521);
 }
 
-.add__note__options {
+.add__idea__options {
   border-radius: 5px;
   width: 25em;
   height: 20em;
@@ -126,7 +126,7 @@
   padding: 0.3em;
 }
 
-.add__note__content {
+.add__idea__content {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -136,12 +136,12 @@
   text-align: center;
 }
 
-.add__note__content > label {
+.add__idea__content > label {
   font-size: 25px;
   margin-bottom: 1.5em;
 }
 
-.add__note__content .text__container input {
+.add__idea__content .text__container input {
   width: 20em;
   font-size: 15px;
   padding: 0.5em;

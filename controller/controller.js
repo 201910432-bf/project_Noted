@@ -50,6 +50,41 @@ const showAddNote = (trigger) => {
   } else {
     showNote.style.visibility = "hidden";
   }
+
+  var activities = document.getElementById("noteMonth");
+  var daysNode = document.getElementById("noteDay");
+  activities.addEventListener("change", function () {
+    console.log(activities.value);
+    /**
+     * jaan 31
+     * feb 28
+     * mar 31
+     * apr 30
+     * may 31
+     * jun 30
+     * jul 31
+     * aug 31
+     * sep 30
+     * oct 31
+     * nov 30
+     * dec 31
+     *
+     *
+     */
+    const date = new Date(2021, activities.value, 0);
+
+    console.log(date.getDate());
+
+    var setDays;
+
+    for (var i = 1; i <= date.getDate(); i++) {
+      setDays += `
+      <option value="${i}">${i}</option>
+      `;
+    }
+
+    daysNode.innerHTML = setDays;
+  });
 };
 
 var lastNode;

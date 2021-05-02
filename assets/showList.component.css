@@ -77,6 +77,26 @@
   color: #5c5454;
 }
 
+.note_node_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.status_label {
+  background-color: rgb(81, 230, 93);
+  padding: 1px 5px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.status_label span:first-child {
+  font-weight: bold;
+  font-size: 10px;
+  color: rgb(46, 46, 46);
+}
+
 .note__time {
   margin: 0.5em 0;
   display: flex;

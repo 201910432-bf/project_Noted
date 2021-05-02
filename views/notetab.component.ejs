@@ -62,7 +62,12 @@
                         <% if(key === parseInt(noteId) && data.priority_level === "HIGH"){ %>
                             <div class="content__list " id="<%= key %>">
                                 <div class="info" onClick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>', '<%= userId %>')">
-                                    <h3><%=data.note_title %></h3>
+                                    <div class="note_node_header">
+                                        <h3><%=data.note_title %></h3>
+                                        <div class="status_label">
+                                            <span>COMPLETED</span>
+                                        </div>
+                                    </div>
                                     <div class="note__time">
                                         <p>Deadline:<%=data.note_deadline %></p>
                                         <span id="spanTimeUpdate"><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>

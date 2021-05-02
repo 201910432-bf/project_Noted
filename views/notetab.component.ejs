@@ -6,7 +6,7 @@
         <!-- <% console.log(fetchData[noteId]) %> -->
 
 
-        <div class="show__list">
+        <div class="show__list" id="list__id">
             <div class="show__list__header">
                 <h3>Note List</h3>
                 <img src="../../images/remove.png" width="22" alt="" onclick="onClickRemoveBtn()">
@@ -46,8 +46,6 @@
 
                 <% console.log("currentUserData") %>
                 <% console.log(fetchData) %>
-                
-
 
                 <% fetchData===""?fetchData="":fetchData.map((data,key) => { %>
                     <% console.log(data) %> 
@@ -156,7 +154,7 @@
                 </div>
                 <div class="main__content__add">
                     <input type="text" id="addListText" value="">
-                    <button type="button" onclick="addList('<%=fetchData[noteId].note_list %>','<%=fetchData[noteId].id %>','<%=fetchData[noteId].note_title%>')">+</button>
+                    <button type="button" id="addBtn" onclick="addList('<%=fetchData[noteId].note_list %>','<%=fetchData[noteId].id %>','<%=fetchData[noteId].note_title%>')">+</button>
                 </div>
                 <div class="main__content__checkbox">
                     <div class="main__content__checkbox__wrap" id="wrapLabel">

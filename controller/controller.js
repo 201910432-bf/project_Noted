@@ -183,7 +183,7 @@ const getNoteData = (key, data, noteId, current, userId) => {
                 </div>
                 <div class="main__content__add">
                     <input type="text" id="addListText" value="">
-                    <button type="button" onclick="addList('${data.noteId}','${data.command[key].id}','${data.command[key].note_title}')">+</button>
+                    <button type="button" id="addBtn" onclick="addList('${data.noteId}','${data.command[key].id}','${data.command[key].note_title}')">+</button>
                 </div>
                 <div class="main__content__checkbox">
                     <div class="main__content__checkbox__wrap" id="wrapLabel">
@@ -464,8 +464,22 @@ const addNote = (listKey) => {
   // request.send(null);
 };
 
+var flag = false;
 const editClick = (noteId) => {
+  const textInput = document.getElementById("addListText");
+  const addBtn = document.getElementById("addBtn");
+  if (flag) {
+    textInput.disabled = false;
+    addBtn.disabled = false;
+    flag = false;
+  } else {
+    textInput.disabled = true;
+    addBtn.disabled = true;
+    flag = true;
+  }
+
   console.log(noteId);
+  console.log(flag);
 
   var timeoutId;
   $(`.editListTextInput`).on("input propertychange change", function () {

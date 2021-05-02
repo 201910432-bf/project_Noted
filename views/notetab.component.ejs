@@ -1,6 +1,7 @@
         <% var counter = 0; %>
         <% var firstNode; %>
-        <% var currentUserData = []; %>
+        <% var currentUserDataHigh = []; %>
+        <% var currentUserDataLow = []; %>
 
         <!-- <% console.log(fetchData[noteId]) %> -->
 
@@ -19,20 +20,37 @@
                 
                 <% fetchData===undefined?fetchData="":fetchData.map((data,key) => { %>
                     
-                    <% if(data.userId === userId) {%>
+                    <% if(data.userId === userId && data.priority_level === "HIGH") {%>
                         <% console.log(data.userId + " true") %>
-                        <% currentUserData.push(data) %>    
+                        <% currentUserDataHigh.push(data) %>    
+                    <% } else if(data.userId === userId && data.priority_level === "LOW"){ %>
+                        <% currentUserDataLow.push(data) %>    
                     <% } %>
-
                 <% }) %>
-                <% console.log("data") %>
+
+
+                <% function compare( a, b ) { %>
+                    <% if ( new Date(a.note_deadline) < new Date(b.note_deadline) ){ %>
+                      <% return -1; %>
+                    <% } %>
+                    <% if ( new Date(a.note_deadline) > new Date(b.note_deadline) ){ %>
+                      <% return 1;%>
+                    <% } %>
+                    <% return 0; %>
+                <% } %>
+                
+                <% currentUserDataHigh.sort( compare ); %>
+                <% currentUserDataLow.sort( compare ); %>
+
+                <% fetchData = currentUserDataHigh.concat(currentUserDataLow); %>
+
                 <% console.log("currentUserData") %>
-                <% console.log(currentUserData) %>
-                <% fetchData = currentUserData; %>
+                <% console.log(fetchData) %>
+                
 
 
                 <% fetchData===""?fetchData="":fetchData.map((data,key) => { %>
-                    <% console.log(key) %> 
+                    <% console.log(data) %> 
                     
                     
                     <% const destructureArray = data.note_list.split(','); %>
@@ -48,7 +66,7 @@
                                 <div class="info" onClick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>', '<%= userId %>')">
                                     <h3><%=data.note_title %></h3>
                                     <div class="note__time">
-                                        <p><%=destructureArray[0] %></p>
+                                        <p>Deadline:<%=data.note_deadline %></p>
                                         <span id="spanTimeUpdate"><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
                                     </div>
                                 </div>
@@ -61,7 +79,7 @@
                                 <div class="info" onclick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>','<%= userId %>')">
                                     <h3><%=data.note_title %></h3>
                                     <div class="note__time">
-                                        <p><%=destructureArray[0] %></p>
+                                        <p>Deadline:<%=data.note_deadline %></p>
                                         <span id="spanTimeUpdate"><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
                                     </div>
                                 </div>
@@ -94,7 +112,7 @@
                                 <div class="info" onClick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>', '<%= userId %>')">
                                     <h3><%=data.note_title %></h3>
                                     <div class="note__time">
-                                        <p><%=destructureArray[0] %></p>
+                                        <p>Deadline:<%=data.note_deadline %></p>
                                         <span id="spanTimeUpdate"><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
                                     </div>
                                 </div>
@@ -107,7 +125,7 @@
                                 <div class="info" onclick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>','<%= userId %>')">
                                     <h3><%=data.note_title %></h3>
                                     <div class="note__time">
-                                        <p><%=destructureArray[0] %></p>
+                                        <p>Deadline:<%=data.note_deadline %></p>
                                         <span id="spanTimeUpdate"><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
                                     </div>
                                 </div>
@@ -231,7 +249,7 @@
                                 <select name="level" id="noteYear">
                                     <% var getYear = new Date().getFullYear(); %>
                                     <% for(var i=getYear; i < getYear+5; i++){ %>
-                                        <option value=<%i%>><%=i%></option>
+                                        <option value=<%=i%>><%=i%></option>
                                     <% } %>
                                 </select>
                             </div>

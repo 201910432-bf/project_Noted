@@ -83,6 +83,10 @@
   justify-content: space-between;
 }
 
+.note__time p {
+  flex: 1;
+}
+
 .content__list p,
 .content__list span {
   color: #908787;
@@ -192,4 +196,26 @@
   border-radius: 5px;
   border-width: thin;
   border-color: lightgray;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(174, 174, 174);
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

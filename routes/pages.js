@@ -90,7 +90,7 @@ router.get("/createNote/note", (req, res) => {
 
   console.log(deadline); // end here
 
-  commands.insertNote(noteName, res, req, listKey);
+  commands.insertNote(noteName, deadline, lvlprio, res, req, listKey);
   // res.send("nice baby");
 });
 

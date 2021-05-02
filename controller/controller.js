@@ -123,17 +123,41 @@ const getNoteData = (key, data, noteId, current, userId) => {
       if (request.status == 200) {
         var response = JSON.parse(request.response);
         var currentUserData = [];
+        var currentUserDataHigh = [];
+        var currentUserDataLow = [];
 
         response.map((data, idkey) => {
           for (var i = 0; i < data.command.length; i++) {
-            if (data.command[i].userId == userId) {
-              console.log("trueeee" + data.command[i].userId + " " + userId);
-              currentUserData.push(data.command[i]);
-            } else {
-              console.log("false" + data.command[i].userId + " " + userId);
+            console;
+            if (
+              data.command[i].userId == userId &&
+              data.command[i].priority_level == "HIGH"
+            ) {
+              currentUserDataHigh.push(data.command[i]);
+            } else if (
+              data.command[i].userId == userId &&
+              data.command[i].priority_level == "LOW"
+            ) {
+              currentUserDataLow.push(data.command[i]);
             }
           }
         });
+
+        function compare(a, b) {
+          if (new Date(a.note_deadline) < new Date(b.note_deadline)) {
+            return -1;
+          }
+          if (new Date(a.note_deadline) > new Date(b.note_deadline)) {
+            return 1;
+          }
+          return 0;
+        }
+
+        currentUserDataHigh.sort(compare);
+        currentUserDataLow.sort(compare);
+
+        currentUserData = currentUserDataHigh.concat(currentUserDataLow);
+        console.log(currentUserData);
         console.log(response);
         response = [{ command: currentUserData, noteId: key }];
         console.log(response);

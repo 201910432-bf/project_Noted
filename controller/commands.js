@@ -35,9 +35,9 @@ const insertData = async (arrayId, arrayValues, title, key) => {
   }
 };
 
-const insertNote = async (note, res, req, listKey) => {
+const insertNote = async (note, deadline, lvlprio, res, req, listKey) => {
   try {
-    const queryString = `INSERT INTO note_table (note_title, note_insertDate, note_updateDate, userId) VALUES ('${note}', '${nowDate}', '${nowDate}', ${req.session.auth.userId}) `;
+    const queryString = `INSERT INTO note_table (note_title, note_insertDate, note_updateDate, note_deadline, priority_level, userId) VALUES ('${note}', '${nowDate}', '${nowDate}', '${deadline}', '${lvlprio}' ,${req.session.auth.userId})`;
 
     await conn.db.promise().query(queryString);
 

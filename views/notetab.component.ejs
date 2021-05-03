@@ -48,9 +48,48 @@
                 <% console.log(fetchData) %>
 
                 <% fetchData===""?fetchData="":fetchData.map((data,key) => { %>
-                    <% console.log(data) %> 
                     
-                    
+                    <% var dataDate = new Date(data.note_deadline); %>
+                    <% var nowdate = new Date(); %>
+
+                    <% var samplemonth = dataDate.getMonth()+1 %>
+                    <% var nowmonth = nowdate.getMonth()+1 %>
+
+                    <% var sampleday = dataDate.getDate(); %>
+                    <% var nowday = nowdate.getDate(); %>
+
+                    <% var sampleyear = dataDate.getFullYear(); %>
+                    <% var nowyear = nowdate.getFullYear(); %>
+
+
+                    <% var status; %>
+                    <% if((samplemonth - nowmonth) < 0 || (sampleday - nowday) < 0){ %>
+                        <% status = "Overdue"; %>
+                    <% } %>
+
+                    <% if((sampleyear - nowyear) < 0){ %>
+                        <% status = "Overdue"; %>
+                    <% }else{ %>
+                        <% if((samplemonth - nowmonth) == 0 && (sampleday - nowday) == 1){ %>
+                            <% status = "Due tommorow"; %>
+                        <% } else if((samplemonth - nowmonth) == 0 && (sampleday - nowday) == 0){ %>
+                            <% status = "Due today"; %>
+                        <% } else if((samplemonth - nowmonth) > 0 && (sampleday - nowday) > 0 || (samplemonth - nowmonth) == 0 && (sampleday - nowday) > 0 || (samplemonth - nowmonth) > 0 && (sampleday - nowday) < 0 || (samplemonth - nowmonth) > 0 && (sampleday - nowday) == 0){ %>
+                            <% status = "Ongoing"; %>
+                        <% } %>
+                    <% } %>
+
+                    <% var bgcolor %>
+                    <% if(status == "Overdue"){ %>
+                        <% bgcolor = "#BABABA" %>
+                    <% } else if(status == "Due tommorow") { %>
+                        <% bgcolor = "#F9BC21" %>
+                    <% } else if(status == "Due today") { %>
+                        <% bgcolor = "#FE7272" %>
+                    <% } else if(status == "Ongoing") { %>
+                        <% bgcolor = "#5AF485" %>
+                    <% } %>
+
                     <% const destructureArray = data.note_list.split(','); %>
                     <% const destructureTime = new Date(data.note_insertDate) %>
 
@@ -64,8 +103,8 @@
                                 <div class="info" onClick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>', '<%= userId %>')">
                                     <div class="note_node_header">
                                         <h3><%=data.note_title %></h3>
-                                        <div class="status_label">
-                                            <span>COMPLETED</span>
+                                        <div class="status_label" style="background-color: <%=bgcolor%>">
+                                            <span><%=status %></span>
                                         </div>
                                     </div>
                                     <div class="note__time">
@@ -80,7 +119,12 @@
                         <% }else if(data.priority_level === "HIGH"){ %>
                             <div class="content__list list__notFocus" id="<%= key %>" >
                                 <div class="info" onclick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>','<%= userId %>')">
-                                    <h3><%=data.note_title %></h3>
+                                    <div class="note_node_header">
+                                        <h3><%=data.note_title %></h3>
+                                        <div class="status_label" style="background-color: <%=bgcolor%>">
+                                            <span><%=status %></span>
+                                        </div>
+                                    </div>
                                     <div class="note__time">
                                         <p>Deadline:<%=data.note_deadline %></p>
                                         <span id="spanTimeUpdate"><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
@@ -100,6 +144,47 @@
 
                 <% fetchData===""?fetchData="":fetchData.map((data,key) => { %>
                     <% console.log(key) %> 
+
+                    <% var dataDate = new Date(data.note_deadline); %>
+                    <% var nowdate = new Date(); %>
+
+                    <% var samplemonth = dataDate.getMonth()+1 %>
+                    <% var nowmonth = nowdate.getMonth()+1 %>
+
+                    <% var sampleday = dataDate.getDate(); %>
+                    <% var nowday = nowdate.getDate(); %>
+
+                    <% var sampleyear = dataDate.getFullYear(); %>
+                    <% var nowyear = nowdate.getFullYear(); %>
+
+
+                    <% var status; %>
+                    <% if((samplemonth - nowmonth) < 0 || (sampleday - nowday) < 0){ %>
+                        <% status = "Overdue"; %>
+                    <% } %>
+
+                    <% if((sampleyear - nowyear) < 0){ %>
+                        <% status = "Overdue"; %>
+                    <% }else{ %>
+                        <% if((samplemonth - nowmonth) == 0 && (sampleday - nowday) == 1){ %>
+                            <% status = "Due tommorow"; %>
+                        <% } else if((samplemonth - nowmonth) == 0 && (sampleday - nowday) == 0){ %>
+                            <% status = "Due today"; %>
+                        <% } else if((samplemonth - nowmonth) > 0 && (sampleday - nowday) > 0 || (samplemonth - nowmonth) == 0 && (sampleday - nowday) > 0 || (samplemonth - nowmonth) > 0 && (sampleday - nowday) < 0 || (samplemonth - nowmonth) > 0 && (sampleday - nowday) == 0){ %>
+                            <% status = "Ongoing"; %>
+                        <% } %>
+                    <% } %>
+
+                    <% var bgcolor %>
+                    <% if(status == "Overdue"){ %>
+                        <% bgcolor = "#BABABA" %>
+                    <% } else if(status == "Due tommorow") { %>
+                        <% bgcolor = "#F9BC21" %>
+                    <% } else if(status == "Due today") { %>
+                        <% bgcolor = "#FE7272" %>
+                    <% } else if(status == "Ongoing") { %>
+                        <% bgcolor = "#5AF485" %>
+                    <% } %>
                     
                     
                     <% const destructureArray = data.note_list.split(','); %>
@@ -109,11 +194,16 @@
                         <% if(key < firstNode || firstNode === undefined){%>
                             <% firstNode = key; %>
                         <% } %>
-                        
+
                         <% if(key === parseInt(noteId) && data.priority_level === "LOW"){ %>
                             <div class="content__list " id="<%= key %>">
                                 <div class="info" onClick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>', '<%= userId %>')">
-                                    <h3><%=data.note_title %></h3>
+                                    <div class="note_node_header">
+                                        <h3><%=data.note_title %></h3>
+                                        <div class="status_label" style="background-color: <%=bgcolor%>">
+                                            <span><%=status %></span>
+                                        </div>
+                                    </div>
                                     <div class="note__time">
                                         <p>Deadline:<%=data.note_deadline %></p>
                                         <span id="spanTimeUpdate"><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
@@ -126,7 +216,12 @@
                         <% }else if(data.priority_level === "LOW"){ %>
                             <div class="content__list list__notFocus" id="<%= key %>" >
                                 <div class="info" onclick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>','<%= userId %>')">
-                                    <h3><%=data.note_title %></h3>
+                                    <div class="note_node_header">
+                                        <h3><%=data.note_title %></h3>
+                                        <div class="status_label" style="background-color: <%=bgcolor%>">
+                                            <span><%=status %></span>
+                                        </div>
+                                    </div>
                                     <div class="note__time">
                                         <p>Deadline:<%=data.note_deadline %></p>
                                         <span id="spanTimeUpdate"><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
@@ -262,4 +357,6 @@
                         <button type="button" onClick="addNote('<%=fetchData.length %>')">Save</button>
                     </div>
                 </div>
-        </div>
+            </div>
+
+  

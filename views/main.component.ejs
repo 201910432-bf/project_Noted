@@ -22,8 +22,48 @@
     ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style>
+      .loading {
+        animation: fadein 1s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .bgloading {
+        animation: fadein 1s;
+        background-color: rgba(95, 95, 95, 0.5);
+        position: absolute;
+        width: 100%;
+        height: 100vh;
+      }
+
+      @keyframes fadein {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+    </style>
+    <script>
+      window.addEventListener("load", function () {
+        setTimeout(function () {
+          var loadscreme = document.getElementById("loading_screen");
+          document.body.removeChild(loadscreme);
+        }, 1000);
+      });
+    </script>
   </head>
   <body>
+    <div class="bgloading" id="loading_screen">
+      <div class="loading">
+        <img src="../assets/images/loading.gif" />
+      </div>
+    </div>
     <div class="container">
       <%- include("./sidebar.component.ejs") -%> <% if(tabKey == "note"){ %> <%-
       include("./notetab.component.ejs") -%> <% }else if(tabKey == "idea"){ %>

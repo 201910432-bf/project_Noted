@@ -10,9 +10,9 @@ const showAddIdea = (trigger) => {
 const addIdea = (ideaKey) => {
   const ideaTitle = document.getElementById("ideaTitle");
   console.log(encodeURIComponent(ideaTitle.value));
-  // window.location.href = `http://localhost:5000/createIdea/idea?ideaname=${encodeURIComponent(
-  //   ideaTitle.value
-  // )}&ideaKey=${ideaKey}`;
+  window.location.href = `http://localhost:5000/createIdea/idea?ideaname=${encodeURIComponent(
+    ideaTitle.value
+  )}&ideaKey=${ideaKey}`;
 
   // var request = new XMLHttpRequest();
 

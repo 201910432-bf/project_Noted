@@ -282,5 +282,72 @@ router.get("/logout", (req, res) => {
   res.send("You are logged out");
 });
 
+/**
+ *
+ *
+ *  archive tab
+ *
+ *
+ */
+
+router.get("/archive", async (req, res) => {
+  if (req.session && req.session.auth && req.session.auth.userId) {
+    res.render("main.component.ejs", {
+      fetchData: await commands.getDataArchiveNote(),
+      fetchDataIdea: commands.getDataArchiveIdea(),
+      noteId: 0,
+      tabKey: "archive",
+      userId: req.session.auth.userId,
+      userName: req.session.auth.userName,
+    });
+  } else {
+    res.redirect("/login");
+  }
+});
+
+router.get("/notearchive/id", (req, res) => {
+  const getID = req.query.id;
+  res.send([{ command: commands.getDataArchiveNote(), noteId: getID }]);
+});
+
+router.get("/notearchive/:id", (req, res) => {
+  const getID = req.params.id;
+
+  if (req.session && req.session.auth && req.session.auth.userId) {
+    res.render("main.component.ejs", {
+      fetchData: commands.getDataArchiveNote(),
+      fetchDataIdea: commands.getDataArchiveIdea(),
+      noteId: getID,
+      tabKey: "archive",
+      userId: req.session.auth.userId,
+      userName: req.session.auth.userName,
+    });
+  } else {
+    res.redirect("/login");
+  }
+});
+
+router.get("/ideaarchive/id", (req, res) => {
+  const getID = req.query.id;
+  res.send([{ command: commands.getDataArchiveIdea(), noteId: getID }]);
+});
+
+router.get("/ideaarchive/:id", (req, res) => {
+  const getID = req.params.id;
+
+  if (req.session && req.session.auth && req.session.auth.userId) {
+    res.render("main.component.ejs", {
+      fetchData: commands.getDataArchiveNote(),
+      fetchDataIdea: commands.getDataArchiveIdea(),
+      noteId: getID,
+      tabKey: "archive",
+      userId: req.session.auth.userId,
+      userName: req.session.auth.userName,
+    });
+  } else {
+    res.redirect("/login");
+  }
+});
+
 //export the router
 module.exports = router;

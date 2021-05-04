@@ -4,6 +4,8 @@ const crypto = require("crypto");
 
 var data;
 var dataIdea;
+var dataArchive;
+var dataArchiveIdea;
 
 const date = new Date();
 const todayTime = date.toLocaleTimeString("en-US", {
@@ -255,6 +257,38 @@ const loginUser = (email, userPassword, res, req) => {
   );
 };
 
+/**
+ *
+ * Archive
+ *
+ */
+
+function getDataArchiveNote() {
+  const queryString = "SELECT * FROM note_archive_table";
+  conn.db.query(queryString, (err, rows, fields) => {
+    if (err) {
+      console.log("Failed", err);
+      return;
+    }
+    dataArchive = JSON.parse(JSON.stringify(rows));
+  });
+  return dataArchive;
+}
+getDataArchiveNote();
+
+function getDataArchiveIdea() {
+  const queryString = "SELECT * FROM idea_archive_table";
+  conn.db.query(queryString, (err, rows, fields) => {
+    if (err) {
+      console.log("Failed", err);
+      return;
+    }
+    dataArchiveIdea = JSON.parse(JSON.stringify(rows));
+  });
+  return dataArchiveIdea;
+}
+getDataArchiveIdea();
+
 module.exports = {
   getData: getData,
   insertData: insertData,
@@ -269,4 +303,6 @@ module.exports = {
   removeIdea: removeIdea,
   createUser: createUser,
   loginUser: loginUser,
+  getDataArchiveNote: getDataArchiveNote,
+  getDataArchiveIdea: getDataArchiveIdea,
 };

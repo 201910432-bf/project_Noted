@@ -87,7 +87,12 @@ a {
   align-items: center;
   border-radius: 1.5em 0 0 0;
 }
-.side__panel__options a:nth-child(2) {
+/* .side__panel__options a:nth-child(2) {
+  display: flex;
+  align-items: center;
+  border-radius: 0 0 0 1.5em;
+} */
+.side__panel__options a:nth-child(3) {
   display: flex;
   align-items: center;
   border-radius: 0 0 0 1.5em;

@@ -1,0 +1,229 @@
+        <% var counter = 0; %>
+        <% var firstNode; %>
+        <% var currentUserDataHigh = []; %>
+        <% var currentUserDataLow = []; %>
+
+        <!-- <% console.log(fetchData[noteId]) %> -->
+
+        
+        <div class="show__list" id="list__id">
+            <div class="show__list__header">
+                <h3>Archive</h3>
+            </div>
+            <div class="show__list__content" id="noteList">
+                <div class="high_prio">
+                    <h3>NOTE: HIGH PRIORITY</h3>
+                </div>
+
+                <% console.log(fetchData) %>
+                
+                <% fetchData===undefined?fetchData="":fetchData.map((data,key) => { %>
+                    
+                    <% if(data.userId === userId && data.priority_level === "HIGH") {%>
+                        <% console.log(data.userId + " true") %>
+                        <% currentUserDataHigh.push(data) %>    
+                    <% } else if(data.userId === userId && data.priority_level === "LOW"){ %>
+                        <% currentUserDataLow.push(data) %>    
+                    <% } %>
+                <% }) %>
+
+
+                <% function compare( a, b ) { %>
+                    <% if ( new Date(a.note_deadline) < new Date(b.note_deadline) ){ %>
+                      <% return -1; %>
+                    <% } %>
+                    <% if ( new Date(a.note_deadline) > new Date(b.note_deadline) ){ %>
+                      <% return 1;%>
+                    <% } %>
+                    <% return 0; %>
+                <% } %>
+                
+                <% currentUserDataHigh.sort( compare ); %>
+                <% currentUserDataLow.sort( compare ); %>
+
+                <% fetchData = currentUserDataHigh.concat(currentUserDataLow); %>
+
+                <% console.log("currentUserData") %>
+                <% console.log(fetchData) %>
+
+                <% fetchData===""?fetchData="":fetchData.map((data,key) => { %>
+                    
+                    <% const destructureArray = data.note_list.split(','); %>
+                    <% const destructureTime = new Date(data.note_insertDate) %>
+
+                    <% if(data.userId === userId){ %>
+                        <% if(key < firstNode || firstNode === undefined){%>
+                            <% firstNode = key; %>
+                        <% } %>
+                        
+                        <% if(key === parseInt(noteId) && data.priority_level === "HIGH"){ %>
+                            <div class="content__list list__notFocus" id="<%= key %>">
+                                <div class="info" onClick="getNoteDataArchive('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>', '<%= userId %>')">
+                                    <div class="note_node_header">
+                                        <h3><%=data.note_title %></h3>
+                                    </div>
+                                    <div class="note__time">
+                                        <p>Deadline:<%=data.note_deadline %></p>
+                                        <span id="spanTimeUpdate"><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
+                                    </div>
+                                </div>
+                                <div id="removeContainer" class="removeClass">
+                                </div>
+                            </div>
+                        <% }else if(data.priority_level === "HIGH"){ %>
+                            <div class="content__list list__notFocus" id="<%= key %>" >
+                                <div class="info" onclick="getNoteDataArchive('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>','<%= userId %>')">
+                                    <div class="note_node_header">
+                                        <h3><%=data.note_title %></h3>
+                                    </div>
+                                    <div class="note__time">
+                                        <p>Deadline:<%=data.note_deadline %></p>
+                                        <span id="spanTimeUpdate"><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
+                                    </div>
+                                </div>
+                                <div id="removeContainer" class="removeClass">
+                                </div>
+                            </div>
+                        <% } %>
+                    <% } %>
+                <% }) %>
+
+                <div class="low_prio">
+                    <h3>NOTE: LOW PRIORITY</h3>
+                </div>
+
+                <% fetchData===""?fetchData="":fetchData.map((data,key) => { %>
+                    <% console.log(key) %> 
+                    <% const destructureArray = data.note_list.split(','); %>
+                    <% const destructureTime = new Date(data.note_insertDate) %>
+
+                    <% if(data.userId === userId){ %>
+                        <% if(key < firstNode || firstNode === undefined){%>
+                            <% firstNode = key; %>
+                        <% } %>
+
+                        <% if(key === parseInt(noteId) && data.priority_level === "LOW"){ %>
+                            <div class="content__list list__notFocus" id="<%= key %>">
+                                <div class="info" onClick="getNoteDataArchive('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>', '<%= userId %>')">
+                                    <div class="note_node_header">
+                                        <h3><%=data.note_title %></h3>
+                                    </div>
+                                    <div class="note__time">
+                                        <p>Deadline:<%=data.note_deadline %></p>
+                                        <span id="spanTimeUpdate"><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
+                                    </div>
+                                </div>
+                                <div id="removeContainer" class="removeClass">
+                                </div>
+                            </div>
+                        <% }else if(data.priority_level === "LOW"){ %>
+                            <div class="content__list list__notFocus" id="<%= key %>" >
+                                <div class="info" onclick="getNoteDataArchive('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>','<%= userId %>')">
+                                    <div class="note_node_header">
+                                        <h3><%=data.note_title %></h3>
+                                    </div>
+                                    <div class="note__time">
+                                        <p>Deadline:<%=data.note_deadline %></p>
+                                        <span id="spanTimeUpdate"><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
+                                    </div>
+                                </div>
+                                <div id="removeContainer" class="removeClass">
+                                </div>
+                            </div>
+                        <% } %>
+                    <% } %>
+                <% }) %>
+
+                <div class="low_prio">
+                    <h3>IDEA ARCHIVE</h3>
+                </div>
+
+                    <% fetchDataIdea.map((data,key) => { %> <% console.log(data) %> <%
+                    console.log("data") %> <% if(data.userId === userId){ %> <% if(key <
+                    firstNode || firstNode === undefined){%> <% firstNode = key; %> <% } %> <%
+                    if(key === parseInt(noteId)){ %>
+                    <div class="content__idea__list list__notFocus" id="<%= key %>idea">
+                    <div
+                        class="info"
+                        onclick='getIdeaDataArchive("<%= key %>","<%= data.idea_data %>","<%= firstNode %>","<%=data.id %>","<%=noteId %>")'
+                    >
+                        <h3><%=data.idea_title %></h3>
+                        <div class="idea__time">
+                        <span id="spanTimeUpdate">4:52 PM</span>
+                        </div>
+                    </div>
+                    </div>
+                    <% }else{ %>
+                    <div class="content__idea__list list__notFocus" id="<%= key %>idea">
+                    <div
+                        class="info"
+                        onclick='getIdeaDataArchive("<%= key %>","<%= data.idea_data %>","<%= firstNode %>","<%=data.id %>","<%=noteId %>")'
+                    >
+                        <h3><%=data.idea_title %></h3>
+                        <div class="idea__time">
+                        <span id="spanTimeUpdate">4:52 PM</span>
+                        </div>
+                    </div>
+                    </div>
+                    <% } %> <% } %> <% }) %>
+
+            </div>
+            <div class="add__note">
+            </div>
+        </div>
+
+        <% if(fetchData[noteId] !== undefined && fetchData[noteId].userId === userId) { %>
+
+        <div class="list__main__content" id="sendfile">
+            <div class="list__main__content__wrap">
+                <div class="main__content__header">
+                    <p><%=fetchData[noteId].note_title%></p>
+                </div>
+                <div class="main__content__remaining__edit">
+                    <span><span id="taskRemaining">0</span> task/s undone</span>
+                </div>
+                <div class="main__content__add">
+                </div>
+                <div class="main__content__checkbox">
+                    <div class="main__content__checkbox__wrap" id="wrapLabel">
+                        <% const listString = fetchData[noteId].note_list; %>
+                        <% const splitData = listString.split(","); %>
+                        <% const listKeysString = fetchData[noteId].note_keys; %>
+                        <% const splitDataKey = listKeysString.split(","); %>
+
+                        <% const objectCheckedData = fetchData[noteId].checked_list; %>
+                        
+                        <% const checkedID = objectCheckedData != "" ? JSON.parse(objectCheckedData) : "" %>
+
+                        <% if(listString !== "") { %>
+                            <% for(let i=0;i<splitData.length;i++){ %>
+                                <% if(checkedID != "" && checkedID.some(e => e.id.replace("checkBox","") == i+1 )) {%>
+                                    <div class="checkBoxLabel checkBoxLabel<%=i%>" >
+                                        <label for="">
+                                            <input disabled type="checkbox" class="ClasscheckBox" value="<%=splitDataKey[i]%>,<%=splitData[i]%>" id="<%=splitDataKey[i]%>checkBox" checked>
+                                            <span class="checkedList spanListText" id="<%=splitDataKey[i]%>checkBoxSpan"><%=splitData[i] %></span>
+                                        </label>
+                                    </div>
+                                <% }else{ %>
+                                    <% counter++; %>
+                                    <div class="checkBoxLabel checkBoxLabel<%=i%>">
+                                        <label for="">
+                                            <input disabled type="checkbox" class="ClasscheckBox" value="<%=splitDataKey[i]%>,<%=splitData[i]%>" id="<%=splitDataKey[i]%>checkBox">
+                                            <span class="spanListText" id="<%=splitDataKey[i]%>checkBoxSpan" ><%=splitData[i] %></span>
+                                        </label>
+                                    </div>
+                                <% } %>
+                            <% }  %>
+                            <script>const counterValue = document.getElementById("taskRemaining").innerHTML = '<%=counter %>' </script>
+                        <% } %>
+                        
+                    </div>
+                </div>
+                <!-- remove class note__savebtn -->
+            </div>
+        </div>
+        <% } else { %>
+        <div class="list__main__content" id="sendfile">
+            <h1>No List</h1>
+        </div>
+        <% } %>

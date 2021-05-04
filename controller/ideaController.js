@@ -89,6 +89,10 @@ const getIdeaData = (key, data, noteId, idNode, current) => {
   }
   lastNode = key;
 
+  if (lastNode !== undefined && current == key) {
+    getCurrentNode.classList.remove("list__notFocus");
+  }
+
   var request = new XMLHttpRequest();
 
   request.onreadystatechange = function () {

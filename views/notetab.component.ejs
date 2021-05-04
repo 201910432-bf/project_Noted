@@ -232,6 +232,7 @@
                                 </div>
                             </div>
                         <% } %>
+                        <!--add js tab then remove the error bug in style--->
                     <% } %>
                 <% }) %>
 
@@ -246,7 +247,9 @@
         <div class="list__main__content" id="sendfile">
             <div class="list__main__content__wrap">
                 <div class="main__content__header">
-                    <p><%=fetchData[noteId].note_title%></p>
+                    <p id="ptitle"><%=fetchData[noteId].note_title%></p>
+                    <input type="text" class="titleInputText" id="titleInputText" value="<%=fetchData[noteId].note_title%>">
+                    <input type="date" name="dateofdeadline" id="dateofdeadline">
                 </div>
                 <div class="main__content__remaining__edit">
                     <span><span id="taskRemaining">0</span> tasks remaining</span>
@@ -298,6 +301,21 @@
                 <!-- remove class note__savebtn -->
             </div>
         </div>
+
+        <script type="text/javascript">
+                var now = new Date('<%= fetchData[noteId].note_deadline %>');
+
+                var day = ("0" + now.getDate()).slice(-2);
+                var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+                var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+                console.log("today")
+                console.log(today)
+
+                $('#dateofdeadline').val(today);
+                document.getElementById("dateofdeadline").disabled = true;
+        </script>
         <% } else { %>
         <div class="list__main__content" id="sendfile">
             <h1>No List</h1>

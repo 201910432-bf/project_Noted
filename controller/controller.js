@@ -1,4 +1,5 @@
 var globalDataVariable = [];
+var flag = false;
 
 var showRemoveIcon = false;
 const onClickRemoveBtn = () => {
@@ -90,6 +91,7 @@ const showAddNote = (trigger) => {
 var lastNode;
 const getNoteData = (key, data, noteId, current, userId) => {
   console.log(noteId, key, lastNode, current, userId);
+  flag = false;
 
   const remove = document.querySelectorAll("#removeContainer");
 
@@ -107,16 +109,20 @@ const getNoteData = (key, data, noteId, current, userId) => {
   const getFirstNode = document.getElementById(noteId);
   const getCurrentNode = document.getElementById(key);
   const getLastNode = document.getElementById(lastNode);
+  const getLastNodeBackup = document.getElementById(current);
 
   getFirstNode.classList.add("list__notFocus");
   getCurrentNode.classList.remove("list__notFocus");
   if (lastNode != undefined && lastNode != key) {
     getLastNode.classList.add("list__notFocus");
   } else {
-    const getLastNodeBackup = document.getElementById(current);
     getLastNodeBackup.classList.add("list__notFocus");
   }
   lastNode = key;
+
+  if (lastNode !== undefined && current == key) {
+    getCurrentNode.classList.remove("list__notFocus");
+  }
 
   request.onreadystatechange = function () {
     if (request.readyState == XMLHttpRequest.DONE) {
@@ -175,7 +181,10 @@ const getNoteData = (key, data, noteId, current, userId) => {
           sendfile.innerHTML = `
             <div class="list__main__content__wrap">
                 <div class="main__content__header">
-                    <p>${data.command[key].note_title}</p>
+                    <p id="ptitle">${data.command[key].note_title}</p>
+                    <input type="text" class="titleInputText" id="titleInputText" value="${data.command[key].note_title}">
+                    <input type="date" name="dateofdeadline" id="dateofdeadline">
+                    
                 </div>
                 <div class="main__content__remaining__edit">
                   <span><span id="taskRemaining">0</span> tasks remaining</span>
@@ -247,6 +256,15 @@ const getNoteData = (key, data, noteId, current, userId) => {
           }
           document.getElementById("taskRemaining").innerHTML = counter;
           document.getElementById("wrapLabel").innerHTML = template;
+
+          var now = new Date(data.command[key].note_deadline);
+
+          var day = ("0" + now.getDate()).slice(-2);
+          var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+          var today = now.getFullYear() + "-" + month + "-" + day;
+          $("#dateofdeadline").val(today);
+          document.getElementById("dateofdeadline").disabled = true;
         });
         window.history.replaceState(null, null, `/note/${key}`);
       }
@@ -464,17 +482,34 @@ const addNote = (listKey) => {
   // request.send(null);
 };
 
-var flag = false;
 const editClick = (noteId) => {
   const textInput = document.getElementById("addListText");
   const addBtn = document.getElementById("addBtn");
+  const setdate = document.getElementById("dateofdeadline");
+  const titleInputText = document.getElementById("titleInputText");
+  const ptitle = document.getElementById("ptitle");
+
+  var timeoutgetdate;
+  setdate.addEventListener("change", function () {
+    clearTimeout(timeoutgetdate);
+    timeoutgetdate = setTimeout(function () {
+      console.log(setdate.value + " " + noteId);
+    }, 1000);
+  });
+
   if (flag) {
     textInput.disabled = false;
     addBtn.disabled = false;
     flag = false;
+    titleInputText.style.display = "none";
+    ptitle.style.display = "block";
+    setdate.disabled = true;
   } else {
     textInput.disabled = true;
     addBtn.disabled = true;
+    setdate.disabled = false;
+    titleInputText.style.display = "block";
+    ptitle.style.display = "none";
     flag = true;
   }
 
@@ -488,7 +523,7 @@ const editClick = (noteId) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(function () {
       saveToDB(noteId);
-    }, 1000);
+    }, 500);
   });
 
   const checkBoxRemove = document.querySelectorAll(".removeBtn");
@@ -557,6 +592,9 @@ function saveToDB(noteId) {
   request.onreadystatechange = function () {
     if (request.readyState === XMLHttpRequest.DONE) {
       if (request.status === 200) {
+        allInput.forEach((item, idkey) => {
+          item.blur();
+        });
       }
     }
   };

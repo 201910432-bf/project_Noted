@@ -22,6 +22,36 @@
   margin-top: 3em;
 }
 
+.main__content__header .titleInputText {
+  display: none;
+  padding: 5px;
+  margin: 5px 0px;
+}
+
+.main__content__header [type="date"] {
+  background: #fff
+    url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png)
+    97% 50% no-repeat;
+}
+.main__content__header [type="date"]::-webkit-inner-spin-button {
+  display: none;
+}
+.main__content__header [type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
+
+.main__content__header label {
+  display: block;
+}
+.main__content__header input {
+  border: 1px solid #c4c4c4;
+  border-radius: 5px;
+  background-color: #fff;
+  padding: 3px 5px;
+  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.1);
+  width: 190px;
+}
+
 .main__content__header p {
   font-size: 2em;
   font-weight: bold;

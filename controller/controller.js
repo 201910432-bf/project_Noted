@@ -131,20 +131,33 @@ const getNoteData = (key, data, noteId, current, userId) => {
         var currentUserData = [];
         var currentUserDataHigh = [];
         var currentUserDataLow = [];
+        var currentUserDataComplete = [];
 
         response.map((data, idkey) => {
           for (var i = 0; i < data.command.length; i++) {
-            console;
+            const destructureArray = data.command[i].note_list.split(",");
+            const destructureArrayCheck = data.command[i].checked_list;
+            const checkDataMatch =
+              destructureArrayCheck != ""
+                ? JSON.parse(destructureArrayCheck)
+                : "empty";
             if (
               data.command[i].userId == userId &&
-              data.command[i].priority_level == "HIGH"
+              data.command[i].priority_level == "HIGH" &&
+              destructureArray.length !== checkDataMatch.length
             ) {
               currentUserDataHigh.push(data.command[i]);
             } else if (
               data.command[i].userId == userId &&
-              data.command[i].priority_level == "LOW"
+              data.command[i].priority_level == "LOW" &&
+              destructureArray.length !== checkDataMatch.length
             ) {
               currentUserDataLow.push(data.command[i]);
+            } else if (
+              destructureArray.length === checkDataMatch.length &&
+              checkDataMatch !== "empty"
+            ) {
+              currentUserDataComplete.push(data.command[i]);
             }
           }
         });
@@ -161,8 +174,12 @@ const getNoteData = (key, data, noteId, current, userId) => {
 
         currentUserDataHigh.sort(compare);
         currentUserDataLow.sort(compare);
+        currentUserDataComplete.sort(compare);
 
-        currentUserData = currentUserDataHigh.concat(currentUserDataLow);
+        currentUserData = currentUserDataHigh.concat(
+          currentUserDataLow.concat(currentUserDataComplete)
+        );
+
         console.log(currentUserData);
         console.log(response);
         response = [{ command: currentUserData, noteId: key }];
@@ -188,7 +205,7 @@ const getNoteData = (key, data, noteId, current, userId) => {
                 </div>
                 <div class="main__content__remaining__edit">
                   <span><span id="taskRemaining">0</span> tasks remaining</span>
-                    <a href="javascript:void(0)" onclick="editClick('${data.command[key].id}')">Edit</a>
+                    <a href="javascript:void(0)" onclick="editClick('${data.command[key].id}', ${key})">Edit</a>
                 </div>
                 <div class="main__content__add">
                     <input type="text" id="addListText" value="">
@@ -482,19 +499,71 @@ const addNote = (listKey) => {
   // request.send(null);
 };
 
-const editClick = (noteId) => {
+const editClick = (noteId, currentNode) => {
   const textInput = document.getElementById("addListText");
   const addBtn = document.getElementById("addBtn");
   const setdate = document.getElementById("dateofdeadline");
   const titleInputText = document.getElementById("titleInputText");
   const ptitle = document.getElementById("ptitle");
+  const getListNote = document.querySelectorAll(".note_node_header h3");
+
+  console.log(getListNote[currentNode]);
 
   var timeoutgetdate;
   setdate.addEventListener("change", function () {
     clearTimeout(timeoutgetdate);
     timeoutgetdate = setTimeout(function () {
-      console.log(setdate.value + " " + noteId);
+      var newdeadline = new Date(setdate.value);
+      const deadline = newdeadline.toLocaleDateString("en", {
+        weekday: "short",
+        year: "numeric",
+        month: "2-digit",
+        day: "numeric",
+      });
+
+      var request = new XMLHttpRequest();
+
+      request.onreadystatechange = function () {
+        if (request.readyState === XMLHttpRequest.DONE) {
+          if (request.status === 200) {
+          }
+        }
+      };
+
+      request.open(
+        "GET",
+        `http://localhost:5000/update/deadline?newdeadline=${deadline}&noteId=${noteId}`,
+        true
+      );
+      request.send(null);
     }, 1000);
+  });
+
+  var timeoutgetinput;
+  $(`.titleInputText`).on("input propertychange change", function () {
+    console.log("running");
+
+    clearTimeout(timeoutgetinput);
+    timeoutgetinput = setTimeout(function () {
+      console.log(titleInputText.value);
+      var request = new XMLHttpRequest();
+
+      request.onreadystatechange = function () {
+        if (request.readyState === XMLHttpRequest.DONE) {
+          if (request.status === 200) {
+            getListNote[currentNode].innerHTML = titleInputText.value;
+            ptitle.innerHTML = titleInputText.value;
+          }
+        }
+      };
+
+      request.open(
+        "GET",
+        `http://localhost:5000/update/notetitle?notetitle=${titleInputText.value}&noteId=${noteId}`,
+        true
+      );
+      request.send(null);
+    }, 500);
   });
 
   if (flag) {

@@ -154,6 +154,16 @@ router.get("/update/noteList", (req, res) => {
   res.send(req.query.noteName + " " + req.query.noteId);
 });
 
+router.get("/update/deadline", (req, res) => {
+  commands.UpdateDeadline(req.query.newdeadline, req.query.noteId);
+  res.send(req.query.newdeadline + " " + req.query.noteId);
+});
+
+router.get("/update/notetitle", (req, res) => {
+  commands.UpdateNoteTitle(req.query.notetitle, req.query.noteId);
+  res.send(req.query.notetitle + " " + req.query.noteId);
+});
+
 /**
  *
  *        Idea TAB

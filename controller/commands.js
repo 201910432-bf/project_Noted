@@ -102,6 +102,34 @@ const UpdateNoteList = (checkedData, noteId) => {
   });
 };
 
+const UpdateDeadline = (deadLine, noteId) => {
+  console.log("from command");
+  console.log(deadLine, noteId);
+
+  const record = [deadLine, nowDate, noteId];
+  const queryString =
+    "UPDATE note_table SET note_deadline=?, note_updateDate=? WHERE id=?  ";
+  conn.db.query(queryString, record, (err, result) => {
+    if (err) throw err;
+    else console.log("success");
+    getData();
+  });
+};
+
+const UpdateNoteTitle = (title, noteId) => {
+  console.log("from command");
+  console.log(title, noteId);
+
+  const record = [title, nowDate, noteId];
+  const queryString =
+    "UPDATE note_table SET note_title=?, note_updateDate=? WHERE id=?  ";
+  conn.db.query(queryString, record, (err, result) => {
+    if (err) throw err;
+    else console.log("success");
+    getData();
+  });
+};
+
 function getData() {
   const queryString = "SELECT * FROM note_table";
 
@@ -305,4 +333,6 @@ module.exports = {
   loginUser: loginUser,
   getDataArchiveNote: getDataArchiveNote,
   getDataArchiveIdea: getDataArchiveIdea,
+  UpdateDeadline: UpdateDeadline,
+  UpdateNoteTitle: UpdateNoteTitle,
 };

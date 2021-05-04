@@ -10,7 +10,7 @@
             <div class="show__list__header">
                 <h3>Archive</h3>
             </div>
-            <div class="show__list__content" id="noteList">
+            <div class="show__list__content" style="flex: 4;" id="noteList">
                 <div class="high_prio">
                     <h3>NOTE: HIGH PRIORITY</h3>
                 </div>
@@ -113,8 +113,7 @@
                                         <span id="spanTimeUpdate"><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
                                     </div>
                                 </div>
-                                <div id="removeContainer" class="removeClass">
-                                </div>
+
                             </div>
                         <% }else if(data.priority_level === "LOW"){ %>
                             <div class="content__list list__notFocus" id="<%= key %>" >
@@ -127,8 +126,7 @@
                                         <span id="spanTimeUpdate"><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
                                     </div>
                                 </div>
-                                <div id="removeContainer" class="removeClass">
-                                </div>
+
                             </div>
                         <% } %>
                     <% } %>
@@ -138,41 +136,26 @@
                     <h3>IDEA ARCHIVE</h3>
                 </div>
 
-                    <% fetchDataIdea.map((data,key) => { %> <% console.log(data) %> <%
-                    console.log("data") %> <% if(data.userId === userId){ %> <% if(key <
-                    firstNode || firstNode === undefined){%> <% firstNode = key; %> <% } %> <%
-                    if(key === parseInt(noteId)){ %>
-                    <div class="content__idea__list list__notFocus" id="<%= key %>idea">
-                    <div
-                        class="info"
-                        onclick='getIdeaDataArchive("<%= key %>","<%= data.idea_data %>","<%= firstNode %>","<%=data.id %>","<%=noteId %>")'
-                    >
-                        <h3><%=data.idea_title %></h3>
-                        <div class="idea__time">
-                        <span id="spanTimeUpdate">4:52 PM</span>
-                        </div>
-                    </div>
-                    </div>
-                    <% }else{ %>
-                    <div class="content__idea__list list__notFocus" id="<%= key %>idea">
-                    <div
-                        class="info"
-                        onclick='getIdeaDataArchive("<%= key %>","<%= data.idea_data %>","<%= firstNode %>","<%=data.id %>","<%=noteId %>")'
-                    >
-                        <h3><%=data.idea_title %></h3>
-                        <div class="idea__time">
-                        <span id="spanTimeUpdate">4:52 PM</span>
-                        </div>
-                    </div>
-                    </div>
-                    <% } %> <% } %> <% }) %>
+                    <% fetchDataIdea.map((data,key) => { %> <% console.log(data) %> 
 
+                    <div class="content__idea__list list__notFocus" id="<%= key %>idea">
+                    <div
+                        class="info"
+                        onclick='getIdeaDataArchive("<%= key %>","<%= data.idea_data %>","<%= firstNode %>","<%=data.id %>","<%=noteId %>")'
+                    >
+                        <h3><%=data.idea_title %></h3>
+                        <div class="idea__time">
+                        <span id="spanTimeUpdate">4:52 PM</span>
+                        </div>
+                    </div>
+                    </div>
+                    <% }) %>
             </div>
-            <div class="add__note">
-            </div>
+
         </div>
 
-        <% if(fetchData[noteId] !== undefined && fetchData[noteId].userId === userId) { %>
+
+        <% if(fetchData[noteId] !== undefined && fetchData[noteId].userId === userId && dataLayer === "notelayer") { %>
 
         <div class="list__main__content" id="sendfile">
             <div class="list__main__content__wrap">
@@ -222,6 +205,23 @@
                 <!-- remove class note__savebtn -->
             </div>
         </div>
+        <% } else if(fetchDataIdea[noteId] !== undefined && fetchDataIdea[noteId].userId === userId && dataLayer === "idealayer") { %>
+            <div class="list__main__content" id="sendfile">
+                <div class="list__main__content__wrap">
+                <div class="main__content__header">
+                    <p> <%- fetchDataIdea[noteId].idea_title %></p>
+                </div>
+                <div class="main__content__remaining__edit">
+                </div>
+                <div class="main__content__add">
+                </div>
+                <div class="main__content__checkbox">
+                    <div class="main__content__checkbox__wrap" id="wrapLabel">
+                        <%- fetchDataIdea[noteId].idea_data %>
+                    </div>
+                </div>
+            </div>
+            </div>
         <% } else { %>
         <div class="list__main__content" id="sendfile">
             <h1>No List</h1>

@@ -295,6 +295,7 @@ router.get("/archive", async (req, res) => {
     res.render("main.component.ejs", {
       fetchData: await commands.getDataArchiveNote(),
       fetchDataIdea: commands.getDataArchiveIdea(),
+      dataLayer: "notelayer",
       noteId: 0,
       tabKey: "archive",
       userId: req.session.auth.userId,
@@ -317,6 +318,7 @@ router.get("/notearchive/:id", (req, res) => {
     res.render("main.component.ejs", {
       fetchData: commands.getDataArchiveNote(),
       fetchDataIdea: commands.getDataArchiveIdea(),
+      dataLayer: "notelayer",
       noteId: getID,
       tabKey: "archive",
       userId: req.session.auth.userId,
@@ -329,6 +331,8 @@ router.get("/notearchive/:id", (req, res) => {
 
 router.get("/ideaarchive/id", (req, res) => {
   const getID = req.query.id;
+  var fullUrl = req.protocol + "://" + req.get("host") + req.originalUrl;
+  console.log(fullUrl);
   res.send([{ command: commands.getDataArchiveIdea(), noteId: getID }]);
 });
 
@@ -339,6 +343,7 @@ router.get("/ideaarchive/:id", (req, res) => {
     res.render("main.component.ejs", {
       fetchData: commands.getDataArchiveNote(),
       fetchDataIdea: commands.getDataArchiveIdea(),
+      dataLayer: "idealayer",
       noteId: getID,
       tabKey: "archive",
       userId: req.session.auth.userId,

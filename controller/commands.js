@@ -44,7 +44,7 @@ const insertNote = async (note, deadline, lvlprio, res, req, listKey) => {
     await conn.db.promise().query(queryString);
 
     await getData();
-    await res.redirect(`/note/${listKey}`);
+    await res.redirect(`/note/${0}`);
   } catch (err) {
     console.log(err);
   }

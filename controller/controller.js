@@ -131,33 +131,19 @@ const getNoteData = (key, data, noteId, current, userId) => {
         var currentUserData = [];
         var currentUserDataHigh = [];
         var currentUserDataLow = [];
-        var currentUserDataComplete = [];
 
         response.map((data, idkey) => {
           for (var i = 0; i < data.command.length; i++) {
-            const destructureArray = data.command[i].note_list.split(",");
-            const destructureArrayCheck = data.command[i].checked_list;
-            const checkDataMatch =
-              destructureArrayCheck != ""
-                ? JSON.parse(destructureArrayCheck)
-                : "empty";
             if (
               data.command[i].userId == userId &&
-              data.command[i].priority_level == "HIGH" &&
-              destructureArray.length !== checkDataMatch.length
+              data.command[i].priority_level == "HIGH"
             ) {
               currentUserDataHigh.push(data.command[i]);
             } else if (
               data.command[i].userId == userId &&
-              data.command[i].priority_level == "LOW" &&
-              destructureArray.length !== checkDataMatch.length
+              data.command[i].priority_level == "LOW"
             ) {
               currentUserDataLow.push(data.command[i]);
-            } else if (
-              destructureArray.length === checkDataMatch.length &&
-              checkDataMatch !== "empty"
-            ) {
-              currentUserDataComplete.push(data.command[i]);
             }
           }
         });
@@ -174,11 +160,8 @@ const getNoteData = (key, data, noteId, current, userId) => {
 
         currentUserDataHigh.sort(compare);
         currentUserDataLow.sort(compare);
-        currentUserDataComplete.sort(compare);
 
-        currentUserData = currentUserDataHigh.concat(
-          currentUserDataLow.concat(currentUserDataComplete)
-        );
+        currentUserData = currentUserDataHigh.concat(currentUserDataLow);
 
         console.log(currentUserData);
         console.log(response);
@@ -351,6 +334,7 @@ const checkboxClick = (idKey, originalData, key) => {
   console.log(checkboxId);
   var dataElement = {};
   let counterValue = document.getElementById("taskRemaining").innerHTML;
+  var flag = false;
 
   if (document.getElementById(idKey).checked) {
     dataElement.id = idKey;
@@ -360,12 +344,18 @@ const checkboxClick = (idKey, originalData, key) => {
     document.getElementById("taskRemaining").innerHTML = Math.abs(
       1 - parseInt(counterValue)
     );
+    if (1 - parseInt(counterValue) === 0) {
+      flag = true;
+    }
   } else {
     const index = globalDataVariable.filter((item) => item.id != idKey);
     globalDataVariable = index;
     checkSpanId.classList.remove("checkedList");
     document.getElementById("taskRemaining").innerHTML =
       parseInt(counterValue) + 1;
+    if (parseInt(counterValue) === 0) {
+      flag = true;
+    }
   }
 
   var timeoutId;
@@ -374,12 +364,12 @@ const checkboxClick = (idKey, originalData, key) => {
 
     clearTimeout(timeoutId);
     timeoutId = setTimeout(function () {
-      DBupdateCheckBox(key);
+      DBupdateCheckBox(key, flag);
     }, 300);
   });
 };
 
-function DBupdateCheckBox(key) {
+function DBupdateCheckBox(key, flag) {
   console.log("from functionm");
   console.log(globalDataVariable);
   var request = new XMLHttpRequest();
@@ -387,6 +377,11 @@ function DBupdateCheckBox(key) {
   request.onreadystatechange = function () {
     if (request.readyState === XMLHttpRequest.DONE) {
       if (request.status === 200) {
+        if (flag) {
+          // window.location.href = "http://localhost:5000/note/";
+          console.log(JSON.parse(request.responseText));
+          //stop here gawa ka isang function na magrereplicate nung nasa side bar na nagshoshow ng list
+        }
       }
     }
   };

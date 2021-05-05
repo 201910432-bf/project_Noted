@@ -7,6 +7,7 @@ const conn = require("../conn");
 
 const router = express.Router();
 const commands = require("../controller/commands");
+const { getData } = require("../controller/commands");
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
@@ -36,6 +37,7 @@ router.get("/", async (req, res) => {
 
 //when click note button show the first value of note
 router.get("/note", async (req, res) => {
+  commands.getData();
   if (req.session && req.session.auth && req.session.auth.userId) {
     res.render("main.component.ejs", {
       fetchData: await commands.getData(),
@@ -145,7 +147,7 @@ router.get("/update/note", (req, res) => {
 router.get("/update/noteCheck", (req, res) => {
   commands.UpdateCheckNoteList(req.query.objectChecked, req.query.key);
 
-  res.send(req.query.objectChecked + " " + req.query.key);
+  res.send(commands.getData());
 });
 
 router.get("/update/noteList", (req, res) => {

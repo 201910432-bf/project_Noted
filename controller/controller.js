@@ -89,7 +89,7 @@ const showAddNote = (trigger) => {
 };
 
 var lastNode;
-const getNoteData = (key, data, noteId, current, userId) => {
+const getNoteData = (key, data, noteId, current, userId, sortType) => {
   console.log(noteId, key, lastNode, current, userId);
   flag = false;
 
@@ -162,11 +162,9 @@ const getNoteData = (key, data, noteId, current, userId) => {
         currentUserDataLow.sort(compare);
 
         currentUserData = currentUserDataHigh.concat(currentUserDataLow);
+        currentUserData = customSortingAlgo(currentUserData, sortType);
 
-        console.log(currentUserData);
-        console.log(response);
         response = [{ command: currentUserData, noteId: key }];
-        console.log(response);
 
         response.map((data, idkey) => {
           const listString = data.command[data.noteId].note_list;
@@ -275,6 +273,152 @@ const getNoteData = (key, data, noteId, current, userId) => {
   request.send(null);
 };
 
+const customSortingAlgo = (fetchData, sortType) => {
+  if (sortType == "completeSort") {
+    var newSetHigh = [];
+    var newSetLow = [];
+    var overdue = [];
+    var duetoday = [];
+    var duetom = [];
+    var ongoing = [];
+    var complete = [];
+    fetchData === ""
+      ? (fetchData = "")
+      : fetchData.map((data, key) => {
+          var dataDate = new Date(data.note_deadline);
+          var nowdate = new Date();
+
+          var samplemonth = dataDate.getMonth() + 1;
+          var nowmonth = nowdate.getMonth() + 1;
+
+          var sampleday = dataDate.getDate();
+          var nowday = nowdate.getDate();
+
+          var sampleyear = dataDate.getFullYear();
+          var nowyear = nowdate.getFullYear();
+
+          var status;
+          if (samplemonth - nowmonth < 0 || sampleday - nowday < 0) {
+            status = "Overdue";
+          }
+
+          const destructureArray = data.note_list.split(",");
+          const destructureArrayCheck = data.checked_list;
+          const checkDataMatch =
+            destructureArrayCheck != ""
+              ? JSON.parse(destructureArrayCheck)
+              : "empty";
+
+          if (destructureArray.length === checkDataMatch.length) {
+            status = "Complete";
+          } else if (sampleyear - nowyear < 0) {
+            status = "Overdue";
+          } else {
+            if (samplemonth - nowmonth == 0 && sampleday - nowday == 1) {
+              status = "Due tommorow";
+            } else if (samplemonth - nowmonth == 0 && sampleday - nowday == 0) {
+              status = "Due today";
+            } else if (
+              (samplemonth - nowmonth > 0 && sampleday - nowday > 0) ||
+              (samplemonth - nowmonth == 0 && sampleday - nowday > 0) ||
+              (samplemonth - nowmonth > 0 && sampleday - nowday < 0) ||
+              (samplemonth - nowmonth > 0 && sampleday - nowday == 0)
+            ) {
+              status = "Ongoing";
+            }
+          }
+          if (data.priority_level === "HIGH") {
+            if (status === "Overdue") {
+              overdue.push(data);
+            } else if (status === "Due tommorow") {
+              duetom.push(data);
+            } else if (status === "Due today") {
+              duetoday.push(data);
+            } else if (status === "Ongoing") {
+              ongoing.push(data);
+            } else if (status === "Complete") {
+              complete.push(data);
+            }
+          }
+        });
+    newSetHigh = complete.concat(
+      overdue.concat(duetom.concat(duetoday.concat(ongoing)))
+    );
+    overdue = [];
+    duetoday = [];
+    duetom = [];
+    ongoing = [];
+    complete = [];
+
+    fetchData === ""
+      ? (fetchData = "")
+      : fetchData.map((data, key) => {
+          var dataDate = new Date(data.note_deadline);
+          var nowdate = new Date();
+
+          var samplemonth = dataDate.getMonth() + 1;
+          var nowmonth = nowdate.getMonth() + 1;
+
+          var sampleday = dataDate.getDate();
+          var nowday = nowdate.getDate();
+
+          var sampleyear = dataDate.getFullYear();
+          var nowyear = nowdate.getFullYear();
+
+          var status;
+          if (samplemonth - nowmonth < 0 || sampleday - nowday < 0) {
+            status = "Overdue";
+          }
+
+          const destructureArray = data.note_list.split(",");
+          const destructureArrayCheck = data.checked_list;
+          const checkDataMatch =
+            destructureArrayCheck != ""
+              ? JSON.parse(destructureArrayCheck)
+              : "empty";
+
+          if (destructureArray.length === checkDataMatch.length) {
+            status = "Complete";
+          } else if (sampleyear - nowyear < 0) {
+            status = "Overdue";
+          } else {
+            if (samplemonth - nowmonth == 0 && sampleday - nowday == 1) {
+              status = "Due tommorow";
+            } else if (samplemonth - nowmonth == 0 && sampleday - nowday == 0) {
+              status = "Due today";
+            } else if (
+              (samplemonth - nowmonth > 0 && sampleday - nowday > 0) ||
+              (samplemonth - nowmonth == 0 && sampleday - nowday > 0) ||
+              (samplemonth - nowmonth > 0 && sampleday - nowday < 0) ||
+              (samplemonth - nowmonth > 0 && sampleday - nowday == 0)
+            ) {
+              status = "Ongoing";
+            }
+          }
+          if (data.priority_level === "LOW") {
+            if (status === "Overdue") {
+              overdue.push(data);
+            } else if (status === "Due tommorow") {
+              duetom.push(data);
+            } else if (status === "Due today") {
+              duetoday.push(data);
+            } else if (status === "Ongoing") {
+              ongoing.push(data);
+            } else if (status === "Complete") {
+              complete.push(data);
+            }
+          }
+        });
+    newSetLow = complete.concat(
+      overdue.concat(duetom.concat(duetoday.concat(ongoing)))
+    );
+
+    fetchData = newSetHigh.concat(newSetLow);
+  }
+
+  return fetchData;
+};
+
 const addList = (listData, listId, listTitle) => {
   console.log(listData);
   console.log(listId);
@@ -378,7 +522,7 @@ function DBupdateCheckBox(key, flag) {
     if (request.readyState === XMLHttpRequest.DONE) {
       if (request.status === 200) {
         if (flag) {
-          // window.location.href = "http://localhost:5000/note/";
+          window.location.href = "http://localhost:5000/hard/reload";
           console.log(JSON.parse(request.responseText));
           //stop here gawa ka isang function na magrereplicate nung nasa side bar na nagshoshow ng list
         }
@@ -737,4 +881,8 @@ const removeClick = (key, arrayData, noteId) => {
   // window.location.href = `http://localhost:5000/update/note?noteName=${arrayName}&noteId=${arrayId}&checkList=${JSON.stringify(
   //   setNewArrayObj
   // )}`;
+};
+
+const sortMe = (sortType, userId) => {
+  window.location.href = `http://localhost:5000/update/sortType?sortType=${sortType}&userId=${userId}`;
 };

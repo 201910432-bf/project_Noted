@@ -3,12 +3,10 @@
         <% var currentUserDataHigh = []; %>
         <% var currentUserDataLow = []; %>
 
-        <!-- <% console.log(fetchData[noteId]) %> -->
-
-        
         <div class="show__list" id="list__id">
             <div class="show__list__header">
                 <h3>Note List</h3>
+                <button onclick="sortMe('completeSort','<%= userId %>')">Sort</button>
                 <img src="../../images/remove.png" width="22" alt="" onclick="onClickRemoveBtn()">
             </div>
             <div class="show__list__content" id="noteList">
@@ -26,8 +24,6 @@
                     <% } else if(data.userId === userId && data.priority_level === "LOW"){ %>
                         <% currentUserDataLow.push(data) %>    
                     <% } %>
-
-
                 <% }) %>
 
 
@@ -45,9 +41,128 @@
                 <% currentUserDataLow.sort( compare ); %>
 
                 <% fetchData = currentUserDataHigh.concat(currentUserDataLow); %>
+                
+                <%
+                    if(sortType == "completeSort"){
+                        var newSetHigh = [];
+                        var newSetLow = [];
+                        var overdue = [];
+                        var duetoday = [];
+                        var duetom = [];
+                        var ongoing = [];
+                        var complete = [];
+                        fetchData===""?fetchData="":fetchData.map((data,key) => {
+                            var dataDate = new Date(data.note_deadline);
+                            var nowdate = new Date();
+        
+                            var samplemonth = dataDate.getMonth()+1
+                            var nowmonth = nowdate.getMonth()+1
+        
+                            var sampleday = dataDate.getDate();
+                            var nowday = nowdate.getDate();
+        
+                            var sampleyear = dataDate.getFullYear();
+                            var nowyear = nowdate.getFullYear();
+        
+        
+                            var status;
+                            if((samplemonth - nowmonth) < 0 || (sampleday - nowday) < 0){
+                                status = "Overdue";
+                            }
 
-                <% console.log("currentUserData") %>
-                <% console.log(fetchData) %>
+                            const destructureArray = data.note_list.split(',');
+                            const destructureArrayCheck = data.checked_list;
+                            const checkDataMatch = destructureArrayCheck != "" ? JSON.parse(destructureArrayCheck) : "empty"
+                            
+                            if(destructureArray.length === checkDataMatch.length){
+                                status = "Complete";
+                            }else if((sampleyear - nowyear) < 0){
+                                status = "Overdue";
+                            }else{
+                                if((samplemonth - nowmonth) == 0 && (sampleday - nowday) == 1){
+                                    status = "Due tommorow";
+                                } else if((samplemonth - nowmonth) == 0 && (sampleday - nowday) == 0){
+                                    status = "Due today";
+                                } else if((samplemonth - nowmonth) > 0 && (sampleday - nowday) > 0 || (samplemonth - nowmonth) == 0 && (sampleday - nowday) > 0 || (samplemonth - nowmonth) > 0 && (sampleday - nowday) < 0 || (samplemonth - nowmonth) > 0 && (sampleday - nowday) == 0){
+                                    status = "Ongoing";
+                                }
+                            }
+                            if(data.priority_level === "HIGH"){
+                                if(status === "Overdue"){
+                                    overdue.push(data)
+                                }else if(status === "Due tommorow"){
+                                    duetom.push(data)
+                                }else if(status === "Due today"){
+                                    duetoday.push(data)
+                                }else if(status === "Ongoing"){
+                                    ongoing.push(data)
+                                }else if(status === "Complete"){
+                                    complete.push(data)
+                                }
+                            }
+                        });
+                        newSetHigh = complete.concat(overdue.concat(duetom.concat(duetoday.concat(ongoing))))
+                        overdue = [];
+                        duetoday = [];
+                        duetom = [];
+                        ongoing = [];
+                        complete = [];
+
+                        fetchData===""?fetchData="":fetchData.map((data,key) => {
+                            var dataDate = new Date(data.note_deadline);
+                            var nowdate = new Date();
+        
+                            var samplemonth = dataDate.getMonth()+1
+                            var nowmonth = nowdate.getMonth()+1
+        
+                            var sampleday = dataDate.getDate();
+                            var nowday = nowdate.getDate();
+        
+                            var sampleyear = dataDate.getFullYear();
+                            var nowyear = nowdate.getFullYear();
+        
+                            var status;
+                            if((samplemonth - nowmonth) < 0 || (sampleday - nowday) < 0){
+                                status = "Overdue";
+                            }
+
+                            const destructureArray = data.note_list.split(',');
+                            const destructureArrayCheck = data.checked_list;
+                            const checkDataMatch = destructureArrayCheck != "" ? JSON.parse(destructureArrayCheck) : "empty"
+                            
+                            if(destructureArray.length === checkDataMatch.length){
+                                status = "Complete";
+                            }else if((sampleyear - nowyear) < 0){
+                                status = "Overdue";
+                            }else{
+                                if((samplemonth - nowmonth) == 0 && (sampleday - nowday) == 1){
+                                    status = "Due tommorow";
+                                } else if((samplemonth - nowmonth) == 0 && (sampleday - nowday) == 0){
+                                    status = "Due today";
+                                } else if((samplemonth - nowmonth) > 0 && (sampleday - nowday) > 0 || (samplemonth - nowmonth) == 0 && (sampleday - nowday) > 0 || (samplemonth - nowmonth) > 0 && (sampleday - nowday) < 0 || (samplemonth - nowmonth) > 0 && (sampleday - nowday) == 0){
+                                    status = "Ongoing";
+                                }
+                            }
+                            if(data.priority_level === "LOW"){
+                                if(status === "Overdue"){
+                                    overdue.push(data)
+                                }else if(status === "Due tommorow"){
+                                    duetom.push(data)
+                                }else if(status === "Due today"){
+                                    duetoday.push(data)
+                                }else if(status === "Ongoing"){
+                                    ongoing.push(data)
+                                }else if(status === "Complete"){
+                                    complete.push(data)
+                                }
+                            }
+                        });
+                        newSetLow = complete.concat(overdue.concat(duetom.concat(duetoday.concat(ongoing))))
+
+                        fetchData = newSetHigh.concat(newSetLow);
+                    }
+                %>
+
 
                 <% fetchData===""?fetchData="":fetchData.map((data,key) => { %>
                     
@@ -94,19 +209,23 @@
 
                     <% const destructureTime = new Date(data.note_insertDate) %>
 
+                    <% const destructureArray = data.note_list.split(','); %>
+                    <% const destructureArrayCheck = data.checked_list; %>
+                    <% const checkDataMatch = destructureArrayCheck != "" ? JSON.parse(destructureArrayCheck) : "empty" %>
+
 
                     <% if(data.userId === userId){ %>
                         <% if(key < firstNode || firstNode === undefined){%>
                             <% firstNode = key; %>
                         <% } %>
                         
-                        <% if(key === parseInt(noteId) && data.priority_level === "HIGH"){ %>
+                        <% if(key === parseInt(noteId) && data.priority_level === "HIGH" && destructureArray.length === checkDataMatch.length){ %>
                             <div class="content__list " id="<%= key %>">
-                                <div class="info" onClick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>', '<%= userId %>')">
+                                <div class="info" onClick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>', '<%= userId %>', '<%= sortType %>')">
                                     <div class="note_node_header">
                                         <h3><%=data.note_title %></h3>
-                                        <div class="status_label" style="background-color: <%=bgcolor%>">
-                                            <span><%=status %></span>
+                                        <div class="status_label" style="background-color: #5AF485">
+                                            <span>Complete</span>
                                         </div>
                                     </div>
                                     <div class="note__time">
@@ -118,9 +237,45 @@
                                     <img width="20"src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgMzg0IDM4NCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzg0IDM4NDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPGc+DQoJPGc+DQoJCTxnPg0KCQkJPHBhdGggZD0iTTY0LDM0MS4zMzNDNjQsMzY0LjkwNyw4My4wOTMsMzg0LDEwNi42NjcsMzg0aDE3MC42NjdDMzAwLjkwNywzODQsMzIwLDM2NC45MDcsMzIwLDM0MS4zMzN2LTI1Nkg2NFYzNDEuMzMzeiIvPg0KCQkJPHBvbHlnb24gcG9pbnRzPSIyNjYuNjY3LDIxLjMzMyAyNDUuMzMzLDAgMTM4LjY2NywwIDExNy4zMzMsMjEuMzMzIDQyLjY2NywyMS4zMzMgNDIuNjY3LDY0IDM0MS4zMzMsNjQgMzQxLjMzMywyMS4zMzMgCQkJIi8+DQoJCTwvZz4NCgk8L2c+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8L3N2Zz4NCg==" />
                                 </div>
                             </div>
-                        <% }else if(data.priority_level === "HIGH"){ %>
+                        <% }else if(key === parseInt(noteId) && data.priority_level === "HIGH"){ %>
+                            <div class="content__list" id="<%= key %>" >
+                                <div class="info" onclick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>','<%= userId %>', '<%= sortType %>')">
+                                    <div class="note_node_header">
+                                        <h3><%=data.note_title %></h3>
+                                        <div class="status_label" style="background-color:<%=bgcolor%>">
+                                            <span><%=status %></span>
+                                        </div>
+                                    </div>
+                                    <div class="note__time">
+                                        <p>Deadline:<%=data.note_deadline %></p>
+                                        <span id="spanTimeUpdate"><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
+                                    </div>
+                                </div>
+                                <div id="removeContainer" class="removeClass" onclick="removeNoteFromList('<%=data.id%>')">
+                                    <img width="20"src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgMzg0IDM4NCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzg0IDM4NDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPGc+DQoJPGc+DQoJCTxnPg0KCQkJPHBhdGggZD0iTTY0LDM0MS4zMzNDNjQsMzY0LjkwNyw4My4wOTMsMzg0LDEwNi42NjcsMzg0aDE3MC42NjdDMzAwLjkwNywzODQsMzIwLDM2NC45MDcsMzIwLDM0MS4zMzN2LTI1Nkg2NFYzNDEuMzMzeiIvPg0KCQkJPHBvbHlnb24gcG9pbnRzPSIyNjYuNjY3LDIxLjMzMyAyNDUuMzMzLDAgMTM4LjY2NywwIDExNy4zMzMsMjEuMzMzIDQyLjY2NywyMS4zMzMgNDIuNjY3LDY0IDM0MS4zMzMsNjQgMzQxLjMzMywyMS4zMzMgCQkJIi8+DQoJCTwvZz4NCgk8L2c+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8L3N2Zz4NCg==" />
+                                </div>
+                            </div>
+                        <% } else if(data.priority_level === "HIGH" && destructureArray.length === checkDataMatch.length){ %>
                             <div class="content__list list__notFocus" id="<%= key %>" >
-                                <div class="info" onclick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>','<%= userId %>')">
+                                <div class="info" onclick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>','<%= userId %>', '<%= sortType %>')">
+                                    <div class="note_node_header">
+                                        <h3><%=data.note_title %></h3>
+                                        <div class="status_label" style="background-color: #5AF485">
+                                            <span>Complete</span>
+                                        </div>
+                                    </div>
+                                    <div class="note__time">
+                                        <p>Deadline:<%=data.note_deadline %></p>
+                                        <span id="spanTimeUpdate"><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
+                                    </div>
+                                </div>
+                                <div id="removeContainer" class="removeClass" onclick="removeNoteFromList('<%=data.id%>')">
+                                    <img width="20"src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgMzg0IDM4NCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzg0IDM4NDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPGc+DQoJPGc+DQoJCTxnPg0KCQkJPHBhdGggZD0iTTY0LDM0MS4zMzNDNjQsMzY0LjkwNyw4My4wOTMsMzg0LDEwNi42NjcsMzg0aDE3MC42NjdDMzAwLjkwNywzODQsMzIwLDM2NC45MDcsMzIwLDM0MS4zMzN2LTI1Nkg2NFYzNDEuMzMzeiIvPg0KCQkJPHBvbHlnb24gcG9pbnRzPSIyNjYuNjY3LDIxLjMzMyAyNDUuMzMzLDAgMTM4LjY2NywwIDExNy4zMzMsMjEuMzMzIDQyLjY2NywyMS4zMzMgNDIuNjY3LDY0IDM0MS4zMzMsNjQgMzQxLjMzMywyMS4zMzMgCQkJIi8+DQoJCTwvZz4NCgk8L2c+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8L3N2Zz4NCg==" />
+                                </div>
+                            </div>
+                        <% } else if(data.priority_level === "HIGH"){ %>
+                            <div class="content__list list__notFocus" id="<%= key %>" >
+                                <div class="info" onclick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>','<%= userId %>', '<%= sortType %>')">
                                     <div class="note_node_header">
                                         <h3><%=data.note_title %></h3>
                                         <div class="status_label" style="background-color: <%=bgcolor%>">
@@ -190,19 +345,23 @@
                     
                     <% const destructureTime = new Date(data.note_insertDate) %>
 
+                    <% const destructureArray = data.note_list.split(','); %>
+                    <% const destructureArrayCheck = data.checked_list; %>
+                    <% const checkDataMatch = destructureArrayCheck != "" ? JSON.parse(destructureArrayCheck) : "empty" %>
+
 
                     <% if(data.userId === userId){ %>
                         <% if(key < firstNode || firstNode === undefined){%>
                             <% firstNode = key; %>
                         <% } %>
 
-                        <% if(key === parseInt(noteId) && data.priority_level === "LOW"){ %>
+                        <% if(key === parseInt(noteId) && data.priority_level === "LOW" && destructureArray.length === checkDataMatch.length){ %>
                             <div class="content__list " id="<%= key %>">
-                                <div class="info" onClick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>', '<%= userId %>')">
+                                <div class="info" onClick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>', '<%= userId %>', '<%= sortType %>')">
                                     <div class="note_node_header">
                                         <h3><%=data.note_title %></h3>
-                                        <div class="status_label" style="background-color: <%=bgcolor%>">
-                                            <span><%=status %></span>
+                                        <div class="status_label" style="background-color: #5AF485">
+                                            <span>Complete</span>
                                         </div>
                                     </div>
                                     <div class="note__time">
@@ -214,9 +373,45 @@
                                     <img width="20"src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgMzg0IDM4NCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzg0IDM4NDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPGc+DQoJPGc+DQoJCTxnPg0KCQkJPHBhdGggZD0iTTY0LDM0MS4zMzNDNjQsMzY0LjkwNyw4My4wOTMsMzg0LDEwNi42NjcsMzg0aDE3MC42NjdDMzAwLjkwNywzODQsMzIwLDM2NC45MDcsMzIwLDM0MS4zMzN2LTI1Nkg2NFYzNDEuMzMzeiIvPg0KCQkJPHBvbHlnb24gcG9pbnRzPSIyNjYuNjY3LDIxLjMzMyAyNDUuMzMzLDAgMTM4LjY2NywwIDExNy4zMzMsMjEuMzMzIDQyLjY2NywyMS4zMzMgNDIuNjY3LDY0IDM0MS4zMzMsNjQgMzQxLjMzMywyMS4zMzMgCQkJIi8+DQoJCTwvZz4NCgk8L2c+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8L3N2Zz4NCg==" />
                                 </div>
                             </div>
+                        <% }else if(key === parseInt(noteId) && data.priority_level === "LOW"){ %>
+                            <div class="content__list " id="<%= key %>" >
+                                <div class="info" onclick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>','<%= userId %>', '<%= sortType %>')">
+                                    <div class="note_node_header">
+                                        <h3><%=data.note_title %></h3>
+                                        <div class="status_label" style="background-color: <%=bgcolor%>">
+                                            <span><%=status %></span>
+                                        </div>
+                                    </div>
+                                    <div class="note__time">
+                                        <p>Deadline:<%=data.note_deadline %></p>
+                                        <span id="spanTimeUpdate"><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
+                                    </div>
+                                </div>
+                                <div id="removeContainer" class="removeClass" onclick="removeNoteFromList('<%=data.id%>')">
+                                    <img width="20"src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgMzg0IDM4NCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzg0IDM4NDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPGc+DQoJPGc+DQoJCTxnPg0KCQkJPHBhdGggZD0iTTY0LDM0MS4zMzNDNjQsMzY0LjkwNyw4My4wOTMsMzg0LDEwNi42NjcsMzg0aDE3MC42NjdDMzAwLjkwNywzODQsMzIwLDM2NC45MDcsMzIwLDM0MS4zMzN2LTI1Nkg2NFYzNDEuMzMzeiIvPg0KCQkJPHBvbHlnb24gcG9pbnRzPSIyNjYuNjY3LDIxLjMzMyAyNDUuMzMzLDAgMTM4LjY2NywwIDExNy4zMzMsMjEuMzMzIDQyLjY2NywyMS4zMzMgNDIuNjY3LDY0IDM0MS4zMzMsNjQgMzQxLjMzMywyMS4zMzMgCQkJIi8+DQoJCTwvZz4NCgk8L2c+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8L3N2Zz4NCg==" />
+                                </div>
+                            </div>
+                        <% }else if(data.priority_level === "LOW" && destructureArray.length === checkDataMatch.length){ %>
+                            <div class="content__list list__notFocus" id="<%= key %>" >
+                                <div class="info" onclick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>','<%= userId %>', '<%= sortType %>')">
+                                    <div class="note_node_header">
+                                        <h3><%=data.note_title %></h3>
+                                        <div class="status_label" style="background-color: #5AF485">
+                                            <span>Complete</span>
+                                        </div>
+                                    </div>
+                                    <div class="note__time">
+                                        <p>Deadline:<%=data.note_deadline %></p>
+                                        <span id="spanTimeUpdate"><%=destructureTime.toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
+                                    </div>
+                                </div>
+                                <div id="removeContainer" class="removeClass" onclick="removeNoteFromList('<%=data.id%>')">
+                                    <img width="20"src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgMzg0IDM4NCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzg0IDM4NDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPGc+DQoJPGc+DQoJCTxnPg0KCQkJPHBhdGggZD0iTTY0LDM0MS4zMzNDNjQsMzY0LjkwNyw4My4wOTMsMzg0LDEwNi42NjcsMzg0aDE3MC42NjdDMzAwLjkwNywzODQsMzIwLDM2NC45MDcsMzIwLDM0MS4zMzN2LTI1Nkg2NFYzNDEuMzMzeiIvPg0KCQkJPHBvbHlnb24gcG9pbnRzPSIyNjYuNjY3LDIxLjMzMyAyNDUuMzMzLDAgMTM4LjY2NywwIDExNy4zMzMsMjEuMzMzIDQyLjY2NywyMS4zMzMgNDIuNjY3LDY0IDM0MS4zMzMsNjQgMzQxLjMzMywyMS4zMzMgCQkJIi8+DQoJCTwvZz4NCgk8L2c+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8L3N2Zz4NCg==" />
+                                </div>
+                            </div>
                         <% }else if(data.priority_level === "LOW"){ %>
                             <div class="content__list list__notFocus" id="<%= key %>" >
-                                <div class="info" onclick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>','<%= userId %>')">
+                                <div class="info" onclick="getNoteData('<%= key %>','<%= JSON.stringify(data) %>','<%= firstNode %>','<%= noteId %>','<%= userId %>', '<%= sortType %>')">
                                     <div class="note_node_header">
                                         <h3><%=data.note_title %></h3>
                                         <div class="status_label" style="background-color: <%=bgcolor%>">

@@ -29,6 +29,7 @@ router.get("/", async (req, res) => {
       tabKey: "note",
       userId: req.session.auth.userId,
       userName: req.session.auth.userName,
+      sortType: req.session.auth.sort_type,
     });
   } else {
     res.redirect("/login");
@@ -45,6 +46,7 @@ router.get("/note", async (req, res) => {
       tabKey: "note",
       userId: req.session.auth.userId,
       userName: req.session.auth.userName,
+      sortType: req.session.auth.sort_type,
     });
   } else {
     res.redirect("/login");
@@ -68,6 +70,7 @@ router.get("/note/:id", (req, res) => {
       tabKey: "note",
       userId: req.session.auth.userId,
       userName: req.session.auth.userName,
+      sortType: req.session.auth.sort_type,
     });
   } else {
     res.redirect("/login");
@@ -102,6 +105,11 @@ router.get("/remove/note", (req, res) => {
   commands.removeNote(idNote, res);
   // res.send(idNote);
   // res.redirect("/note");
+});
+
+router.get("/hard/reload", (req, res) => {
+  // res.send(idNote);
+  res.redirect("/note");
 });
 
 router.post("/savenote/note", (req, res) => {
@@ -279,6 +287,14 @@ router.post("/login/auth", (req, res) => {
   const userPassword = req.body.password;
 
   commands.loginUser(email, userPassword, res, req);
+});
+
+router.get("/update/sortType", (req, res) => {
+  const sortType = req.query.sortType;
+  const userId = req.query.userId;
+  req.session.auth.sort_type = sortType;
+
+  commands.updateSortUser(sortType, userId, res, req);
 });
 
 router.get("/login/auth-check", (req, res) => {

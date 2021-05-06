@@ -207,6 +207,17 @@ getDataIdea();
  *
  */
 
+const updateSortUser = (sortType, userId, res, req) => {
+  const record = [sortType, userId];
+  const queryString = "UPDATE user_table SET sort_type=? WHERE id=?  ";
+  conn.db.query(queryString, record, (err, result) => {
+    if (err) throw err;
+    else console.log("success");
+    getData();
+    res.redirect(`/note/${0}`);
+  });
+};
+
 const createUser = (username, email, userPassword, userCPassword, res, req) => {
   conn.db.query(
     "SELECT * FROM user_table WHERE username = ?",
@@ -268,10 +279,12 @@ const loginUser = (email, userPassword, res, req) => {
             req.session.auth = {
               userId: result[0].id,
               userName: result[0].username,
+              sort_type: result[0].sort_type,
             };
 
             console.log(req.session.auth.userId);
             console.log(req.session.auth.userName);
+            console.log(req.session.auth.sort_type);
 
             res.sendStatus(200);
             console.log("Credentials correct");
@@ -335,4 +348,5 @@ module.exports = {
   getDataArchiveIdea: getDataArchiveIdea,
   UpdateDeadline: UpdateDeadline,
   UpdateNoteTitle: UpdateNoteTitle,
+  updateSortUser: updateSortUser,
 };

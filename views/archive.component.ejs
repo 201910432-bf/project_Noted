@@ -137,18 +137,19 @@
                 </div>
 
                     <% fetchDataIdea.map((data,key) => { %> <% console.log(data) %> 
-
-                    <div class="content__idea__list list__notFocus" id="<%= key %>idea">
-                    <div
-                        class="info"
-                        onclick='getIdeaDataArchive("<%= key %>","<%= data.idea_data %>","<%= firstNode %>","<%=data.id %>","<%=noteId %>")'
-                    >
-                        <h3><%=data.idea_title %></h3>
-                        <div class="idea__time">
-                        <span id="spanTimeUpdate">4:52 PM</span>
-                        </div>
-                    </div>
-                    </div>
+                        <% if(data.userId === userId){ %>
+                            <div class="content__idea__list list__notFocus" id="<%= key %>idea">
+                            <div
+                                class="info"
+                                onclick='getIdeaDataArchive("<%= key %>","<%= data.idea_data %>","<%= firstNode %>","<%=data.id %>","<%=noteId %>")'
+                            >
+                                <h3><%=data.idea_title %></h3>
+                                <div class="idea__time">
+                                <span id="spanTimeUpdate">4:52 PM</span>
+                                </div>
+                            </div>
+                            </div>
+                        <% } %>
                     <% }) %>
             </div>
 

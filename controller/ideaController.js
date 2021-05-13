@@ -70,8 +70,8 @@ const removeIdeaFromList = (idIdea) => {
 
 var idKey;
 var lastNode;
-const getIdeaData = (key, data, noteId, idNode, current) => {
-  console.log(noteId, key, data, idNode);
+const getIdeaData = (key, data, noteId, idNode, current, userId) => {
+  console.log(noteId, key, data, idNode, userId);
 
   idKey = idNode;
 
@@ -98,14 +98,22 @@ const getIdeaData = (key, data, noteId, idNode, current) => {
   request.onreadystatechange = function () {
     if (request.readyState === XMLHttpRequest.DONE) {
       if (request.status === 200) {
+        const userDataIdea = [];
         const response = JSON.parse(request.response);
-        response.map((data, mapkey) => {
-          const dataIdea = data.command[data.noteId].idea_data;
-
-          CKEDITOR.instances.textAreaContent.setData(dataIdea);
-
-          window.history.replaceState(null, null, `/idea/${key}`);
+        console.log(response[0].command);
+        response[0].command.map((data, mapkey) => {
+          if (data.userId == userId) {
+            userDataIdea.push(data);
+          }
         });
+
+        console.log(userDataIdea[key]);
+
+        // const dataIdea = data.command[data.noteId].idea_data;
+
+        CKEDITOR.instances.textAreaContent.setData(userDataIdea[key].idea_data);
+
+        window.history.replaceState(null, null, `/idea/${key}`);
       }
     }
   };
@@ -123,11 +131,12 @@ const runFetchCkEditor = (nodeId) => {
     idKey = nodeId;
   }
 
+  console.log(nodeId);
   var timeoutId;
   $(function () {
     CKEDITOR.instances["textAreaContent"].on("change", function () {
       let value = CKEDITOR.instances.textAreaContent.getData();
-      // console.log(CKEDITOR.instances.textAreaContent.getData());
+      console.log(CKEDITOR.instances.textAreaContent.getData());
 
       clearTimeout(timeoutId);
       timeoutId = setTimeout(function () {
@@ -138,7 +147,7 @@ const runFetchCkEditor = (nodeId) => {
 };
 
 const DBupdateTextArea = (key, value) => {
-  console.log(value);
+  console.log(value + " new");
   var request = new XMLHttpRequest();
 
   request.open(

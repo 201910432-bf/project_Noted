@@ -1,4 +1,5 @@
-<% var firstNode; %>
+<% var firstNode; %> <% var userData = []; %>
+
 <div class="show__idea__list">
   <div class="show__idea__header">
     <h3>My Ideas</h3>
@@ -10,14 +11,16 @@
     />
   </div>
   <div class="show__idea__content">
-    <% fetchData.map((data,key) => { %> <% console.log(data) %> <%
-    console.log("data") %> <% if(data.userId === userId){ %> <% if(key <
-    firstNode || firstNode === undefined){%> <% firstNode = key; %> <% } %> <%
-    if(key === parseInt(noteId)){ %>
+    <% fetchData===undefined?fetchData="":fetchData.map((data,key) => { %> <%
+    if(data.userId === userId) {%> <% console.log("data") %> <%
+    console.log(data) %> <% userData.push(data) %> <% } %> <% }) %> <% fetchData
+    = userData %> <% fetchData.map((data,key) => { %> <% if(data.userId ===
+    userId){ %> <% if(key < firstNode || firstNode === undefined){%> <%
+    firstNode = key; %> <% } %> <% if(key === parseInt(noteId)){ %>
     <div class="content__idea__list" id="<%= key %>idea">
       <div
         class="info"
-        onclick='getIdeaData("<%= key %>","<%= data.idea_data %>","<%= firstNode %>","<%=data.id %>","<%=noteId %>")'
+        onclick='getIdeaData("<%= key %>","<%= data.idea_data %>","<%= firstNode %>","<%=data.id %>","<%=noteId %>","<%=userId %>")'
       >
         <h3><%=data.idea_title %></h3>
         <div class="idea__time">
@@ -39,7 +42,7 @@
     <div class="content__idea__list list__notFocus" id="<%= key %>idea">
       <div
         class="info"
-        onclick='getIdeaData("<%= key %>","<%= data.idea_data %>","<%= firstNode %>","<%=data.id %>","<%=noteId %>")'
+        onclick='getIdeaData("<%= key %>","<%= data.idea_data %>","<%= firstNode %>","<%=data.id %>","<%=noteId %>","<%=userId %>")'
       >
         <h3><%=data.idea_title %></h3>
         <div class="idea__time">
